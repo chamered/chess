@@ -3,11 +3,10 @@ package pieces;
 public abstract class Piece {
     public enum PieceColor {BLACK, WHITE}
 
-    int value;
+    int VALUE;
     PieceColor color;
 
-    public Piece(int value, PieceColor color){
-        this.value = value;
+    public Piece(PieceColor color) {
         this.color = color;
     }
 
