@@ -4,10 +4,11 @@ public abstract class Piece {
     public enum PieceColor {BLACK, WHITE}
 
     int VALUE;
-    PieceColor color;
+    PieceColor COLOR;
+    int currentCell;
 
     public Piece(PieceColor color) {
-        this.color = color;
+        this.COLOR = color;
     }
 
     /**
