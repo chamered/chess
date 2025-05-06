@@ -22,13 +22,13 @@ public abstract class Piece {
      */
     abstract public boolean eatOtherPiece(Piece piece);
     public PieceColor getColor(){
-        return color;
+        return COLOR;
     }
     @Override
     public String toString() {
         return "Piece{" +
                 "VALUE=" + VALUE +
-                ", color=" + color +
+                ", color=" + COLOR +
                 '}';
     }
 }
