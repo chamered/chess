@@ -1,7 +1,6 @@
 package board;
 import game.PlayerTurnEnum;
 import pieces.*;
-
 import java.util.Map;
 import java.util.Set;
 
@@ -14,8 +13,7 @@ public class ChessBoard implements ChessBoardInterface {
 
     @Override
     public void setupBoard() {
-        board[0][0] = new King(Piece.PieceColor.BLACK);
-        board[7][7] = new Queen(Piece.PieceColor.WHITE);
+        //TODO
     }
     @Override
     public boolean containsPiece(int x, int y){
