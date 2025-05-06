@@ -1,4 +1,19 @@
 package pieces;
 
-public class King extends Piece{
+public class King extends Piece {
+
+    public King(PieceColor color) {
+        super(color);
+        VALUE = color == PieceColor.WHITE ? 900 : -900;
+    }
+
+    @Override
+    public void move() {
+
+    }
+
+    @Override
+    public boolean eatOtherPiece(Piece piece) {
+        return false;
+    }
 }
