@@ -21,14 +21,4 @@ public abstract class Piece {
      * @return true iff this Piece can eat the other piece
      */
     abstract public boolean eatOtherPiece(Piece piece);
-    public PieceColor getColor(){
-        return this.color;
-    }
-    @Override
-    public String toString() {
-        return "Piece{" +
-                "value=" + value +
-                ", color=" + color +
-                '}';
-    }
 }
