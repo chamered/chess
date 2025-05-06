@@ -8,6 +8,10 @@ import java.util.Set;
 
 public interface ChessBoardInterface {
     /**
+     * Method which setups the initial board
+     */
+    void setupBoard();
+    /**
      *
      * @return a set containing all the pieces currently present in the Board
      */

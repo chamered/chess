@@ -8,6 +8,9 @@ import java.util.Set;
 public class ChessBoard implements ChessBoardInterface {
     public Piece[][] board;
 
+    public ChessBoard(Piece[][] board){
+        this.board = board;
+    }
     @Override
     public Set<Piece> getPiecesOnBoard() {
         return Set.of();

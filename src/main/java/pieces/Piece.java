@@ -1,6 +1,10 @@
 package pieces;
 
 public abstract class Piece {
+    int value;
+    public Piece(int value){
+        this.value = value;
+    }
     /**
      *  Moves the piece according to it's capabilities
      */
