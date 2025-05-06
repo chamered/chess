@@ -1,6 +1,6 @@
 package board;
 import game.PlayerTurnEnum;
-import pieces.Piece;
+import pieces.*;
 
 import java.util.Map;
 import java.util.Set;
@@ -8,8 +8,18 @@ import java.util.Set;
 public class ChessBoard implements ChessBoardInterface {
     public Piece[][] board;
 
-    public ChessBoard(Piece[][] board){
-        this.board = board;
+    public ChessBoard(){
+        board = new Piece[8][8];
+    }
+
+    @Override
+    public void setupBoard() {
+        board[0][0] = new King(Piece.PieceColor.BLACK);
+        board[7][7] = new Queen(Piece.PieceColor.WHITE);
+    }
+    @Override
+    public boolean containsPiece(int x, int y){
+        return board[x][y] != null;
     }
     @Override
     public Set<Piece> getPiecesOnBoard() {
@@ -39,5 +49,14 @@ public class ChessBoard implements ChessBoardInterface {
     @Override
     public boolean checkMate() {
         return false;
+    }
+
+    public void printBoard(){
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                System.out.print(board[i][j] != null ? board[i][j].getColor() == Piece.PieceColor.BLACK ? "\u001B[30m*\u001B[0m" : "\u001B[37m*\u001B[0m" : "");
+            }
+            System.out.println();
+        }
     }
 }

@@ -45,4 +45,11 @@ public interface ChessBoardInterface {
      * @return true iff a player is in the checkmate state
      */
     boolean checkMate();
+
+    /**
+     * @param x first coordinate
+     * @param y second coordinate
+     * @return true iff the cell contains a piece
+     */
+    boolean containsPiece(int x, int y);
 }
