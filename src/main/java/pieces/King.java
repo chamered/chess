@@ -1,5 +1,7 @@
 package pieces;
 
+import java.util.List;
+
 public class King extends Piece {
 
     public King(PieceColor color) {
@@ -15,5 +17,10 @@ public class King extends Piece {
     @Override
     public boolean eatOtherPiece(Piece piece) {
         return false;
+    }
+
+    @Override
+    List<String> generatePossibleMoves() {
+        return List.of();
     }
 }
