@@ -1,111 +1,56 @@
-# Chess – Project Plan
 
-## 🧩 Overview
+# Chess Project in Java (Chess CLI Bot)
 
-A fully playable chess game in the terminal using Java. The game should support:
-- Standard chess rules
-- Player vs Bot
-- (Optional) Two-player mode (local)
-- Text-based board display
-- Input handling (e.g., "e2 e4")
+## 🧠 Objective
+Create a chess game playable in the terminal using Java, with the possibility to play against a bot. The project will be fully developed as a team, focusing on collaboration, code quality, and task division.
 
----
+## ⚙️ Requirements
+- Java 17+
+- Terminal-based gameplay (CLI)
+- Mode: 1v1 (player vs bot)
+- Follow standard chess rules
+- Basic AI (valid moves + simple strategy)
 
-## 📁 Project Structure
+## 🏗️ Project Architecture
 
 ```
 chess/
 │
 ├── src/
-│   ├── board/
-│   │   └── ChessBoard.java
-│   ├── pieces/
-│   │   ├── Piece.java
-│   │   ├── King.java
-│   │   ├── Queen.java
-│   │   ├── Rook.java
-│   │   ├── Bishop.java
-│   │   ├── Knight.java
-│   │   └── Pawn.java
-│   ├── game/
-│   │   ├── ChessGame.java
-│   │   └── MoveValidator.java
-│   └── ui/
-│       └── TerminalUI.java
+|   ├── main/
+|   |   └── java/
+|   |       ├── board/
+|   |       ├── game/
+|   |       └── pieces/
+│   └── test/
 │
-├── tests/
-│   └── (Unit test files for core logic)
-│
-├── README.md
-└── Main.java
+├── .gitignore
+├── LICENSE
+├── pom.xml
+└── README.md
 ```
 
----
+## 🧑‍🤝‍🧑 Task Division
 
-## ✅ Features
+### 👤 Nicholas – Game Management
+- `Game.java`, `Main.java`
+- Turn logic, win/loss conditions, new game setup
+- Coordination between board and players
 
-### Core Features
-- [ ] Render board in terminal
-- [ ] Standard piece movement
-- [ ] Turn system (White / Black)
-- [ ] Bot
-- [ ] Basic move validation
-- [ ] Check & checkmate detection
-- [ ] Castling, en passant, pawn promotion
+### 👤 Khushika – Piece Modeling
+- `Piece.java` + subclasses (`King`, `Queen`, etc.)
+- Valid move logic for each piece
+- Special rules: castling, promotion, check
 
-### Future Features
-- [ ] Undo/Redo
-- [ ] Save/Load game
-- [ ] AI opponent
-- [ ] Highlight legal moves
+### 👤 Samuele – Board and Input
+- `Board.java`: CLI rendering, drawing pieces
+- `InputHandler.java`: input parsing (e.g., `e2e4`)
+- Valid move detection and display
 
----
+### 👤 Kevin - Unit Tests
+- Testing with JUnit
 
-## 🧠 Class Overview
-
-### `ChessBoard`
-- 2D array to store board state
-- Initialize with default layout
-- Methods: `movePiece`, `getPiece`, `isInCheck`
-
-### `Piece` (Abstract)
-- Fields: color, position
-- Methods: `getLegalMoves()`, `getSymbol()`
-
-#### Concrete Pieces
-- `King`, `Queen`, `Rook`, `Bishop`, `Knight`, `Pawn`
-- Implement `getLegalMoves()` based on movement rules
-
-### `MoveValidator`
-- Check if a move is legal
-- Detect check/checkmate
-
-### `ChessGame`
-- Manages game flow
-- Stores current turn, move history
-
-### `TerminalUI`
-- Handles input/output
-- Displays board
-- Prompts user for move
-
----
-
-## 🧪 Testing Strategy
-
-- Unit tests for:
-  - Each piece’s movement logic
-  - Board updates after moves
-  - Check and checkmate detection
-- Use JUnit for testing
-
----
-
-## 🎯 Milestones
-
-| Milestone      | Description                           | Target Date |
-| -------------- | ------------------------------------- | ----------- |
-| Project setup  | Define structure, create base classes | Apr 15      |
-| Basic gameplay | Pieces move, board renders, turns     | Apr 18      |
-| Rules handling | Check/checkmate, castling, promotion  | Apr 21      |
-| Polish & test  | UI improvements, testing, bug fixes   | Apr 24      |
+### 👤 All – Bot
+- `BotPlayer.java`: legal move generation
+- Basic heuristics (e.g., capture, random, defense)
+- Simple check/checkmate evaluation
