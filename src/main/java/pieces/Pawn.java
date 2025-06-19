@@ -1,12 +1,31 @@
 package pieces;
 
 public class Pawn extends Piece{
-    public Pawn(boolean isWhite) {
 
-        super(isWhite);
+    public Pawn(PieceColor color) {
+
+        super(1,color);
+    }
+
+    public boolean isWhite(){
+        return this.color == PieceColor.WHITE;
     }
 
     @Override
+    public void move(){
+    // In your game you could perform the movement here
+    System.out.println("Pawn moves one or two squares forward (or captures diagonally)");
+    }
+
+
+
+    @Override
+    public boolean eatOtherPiece(Piece piece){
+        // A pawn can only capture opposing pieces
+        return piece != null && piece.color != this.color;
+    }
+
+
     public boolean isValidMove(int startX, int startY, int endX, int endY, Piece[][] board) {
         // Check if target coordinates are in the playing field
         if (endX < 0 || endX >= 8 || endY < 0 || endY >= 8) {
@@ -14,34 +33,38 @@ public class Pawn extends Piece{
         }
 
 
-
         // Direction of movement: white up (-1), black down (+1)
-        int direction = isWhite ? -1 : 1;
-        int startRow = isWhite ? 6 : 1;// white pawns start in row 6, black in row 1
+        int direction = isWhite() ? -1 : 1;
+        int startRow = isWhite() ? 6 : 1;// white pawns start in row 6, black in row 1
 
-        // Normal movement: one square straight forward
-        if (startX + direction == endX && startY == endY && board[endX][endY] == null) {
+
+        // 1 space forward (only if free)
+        if (endX == startX + direction && endY == startY && board[endX][endY] == null) {
             return true;
         }
 
-        // First move: two spaces forward, only if both spaces are empty
-        if (startX == startRow && endX == startX + 2 * direction && startY == endY
-                && board[startX + direction][startY] == null && board[endX][endY] == null) {
+
+        // 2 spaces forward (only on the first move and if both spaces are free)
+
+        if (startX == startRow && endX == startX + 2 * direction && endY == startY &&
+                board[startX + direction][startY] == null && board[endX][endY] == null) {
             return true;
         }
 
-        // Capture: one square diagonally forward with an opponent's piece
-        if (startX + direction == endX && Math.abs(startY - endY) == 1
-                && board[endX][endY] != null && board[endX][endY].isWhite() != this.isWhite()) {
-            return true;
+
+        // Strike diagonally (1 square diagonally forward if opponent is present)
+
+        if (endX == startX + direction && Math.abs(endY - startY) == 1) {
+            Piece target = board[endX][endY];
+            if (target != null && target.color != this.color) {
+                return true;
+            }
         }
 
-        return false; // all other movements are invalid
+        // Everything else is invalid
+        return false;
     }
 }
-
-
-
 
 
 
