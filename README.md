@@ -29,9 +29,19 @@ chess/
 ├── pom.xml
 └── README.md
 ```
+---
+## 👥 Individual Tasks
+### 👤 Nicholas
+- [ ] To be filled
+### 👤 Khuskika
+- [ ] To be filled
+### 👤 Samuele
+- [ ] To be filled
+### 👤 Kevin 
+- [ ] To be filled
 
+---
 ## 🧑‍🤝‍🧑 Task Division
-
 ### 👤 Nicholas – Game Management
 - `Game.java`, `Main.java`
 - Turn logic, win/loss conditions, new game setup
