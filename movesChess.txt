@@ -1,0 +1,17 @@
+MOVES CHESS: 
+0-7
+a-h
+64 sqaures(8x8)
+
+
+Loops 
+Arrays
+
+ 
+
+
+
+
+(arrocco onlien suchen)
+
+
