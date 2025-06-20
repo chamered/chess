@@ -39,3 +39,31 @@ public abstract class Piece {
  */
 abstract public List<Move> generatePossibleMoves(ChessBoard board, Position currentPos);
 }
+
+public static String toAlgebraic (int row, int col){
+    if(row <0 || row >7 || col < 0 || col > 7 ){
+        throw new IllegalArgumentException(
+                "Invalid board coordinates: row =" + row + ", col =" + col + ". Must be in range 0-7."
+        );
+
+    }
+    char file = (char)('a' + col);
+    int rank = 8 - rows;
+
+    return"" +file +rank;
+}
+
+public static int [] fromAlgebraic(String notation){
+    if(notation == null || notation.length() != 2){
+        throw new IllegalArgumentException("Invalid algebrac notation:" + notation);
+    }
+    char file = notation.charAt(0);// a to h
+    int rank= Character.getNumericValue(notation.charAt(1)); //1-8
+
+    if(row <0 || row >7 || col <0 || col >7){
+        throw new IllegalArgumentException("Algebraic notation out of bounds:" + notation);
+
+    }
+    return new int[]{row, col};
+
+}
