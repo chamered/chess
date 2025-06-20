@@ -1,5 +1,14 @@
 package pieces;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
+import board.ChessBoard;
+import board.Move;
+import board.Position;
+
+
 public class Pawn extends Piece{
 
     public Pawn(PieceColor color) {
@@ -25,6 +34,10 @@ public class Pawn extends Piece{
         return piece != null && piece.color != this.color;
     }
 
+    /**
+     * Check if a move from (startX, startY) to (endX, endY) is valid on the given board
+     * (This method can be useful if you want to check a single move.)
+     */
 
     public boolean isValidMove(int startX, int startY, int endX, int endY, Piece[][] board) {
         // Check if target coordinates are in the playing field
@@ -64,7 +77,83 @@ public class Pawn extends Piece{
         // Everything else is invalid
         return false;
     }
+
+    /**
+     * Generate a list of all possible moves this pawn can make from currentPos on the given board
+     */
+
+    @Override
+    public List<Move> generatePossibleMoves(ChessBoard board, Position currentPos){
+        List<Move> possibleMoves= new ArrayList<>();
+
+        int startX= currentPos.getRow(); // current row
+        int startY= currentPos.getCol(); //current column
+
+        int direction= isWhite() ? -1 : 1;
+        int startRow= isWhite() ? 6: 1;
+
+        Piece[][] boardState = board.board;
+
+        // 1 step forward
+        int oneStepX = startX + direction;
+        if (isInsideBoard(oneStepX, startY) && boardState[oneStepX][startY] == null) {
+            possibleMoves.add(new Move(currentPos, new Position(oneStepX, startY)));
+
+            // 2 steps forward (only from start row and if both spaces are free)
+            int twoStepX = startX + 2 * direction;
+            if (startX == startRow && boardState[twoStepX][startY] == null && boardState[oneStepX][startY] == null) {
+                possibleMoves.add(new Move(currentPos, new Position(twoStepX, startY)));
+            }
+        }
+
+        // Diagonal capture left
+        int diagLeftY = startY - 1;
+        if (isInsideBoard(oneStepX, diagLeftY)) {
+            Piece target = boardState[oneStepX][diagLeftY];
+            if (eatOtherPiece(target)) {
+                possibleMoves.add(new Move(currentPos, new Position(oneStepX, diagLeftY)));
+            }
+        }
+
+        // Diagonal capture right
+        int diagRightY = startY + 1;
+        if (isInsideBoard(oneStepX, diagRightY)) {
+            Piece target = boardState[oneStepX][diagRightY];
+            if (eatOtherPiece(target)) {
+                possibleMoves.add(new Move(currentPos, new Position(oneStepX, diagRightY)));
+            }
+        }
+
+        return possibleMoves;
+    }
+
+    // Helper method to make sure coordinates are on the board (0 to 7)
+    private boolean isInsideBoard(int x, int y) {
+        return x >= 0 && x < 8 && y >= 0 && y < 8;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
