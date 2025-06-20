@@ -1,5 +1,7 @@
 package pieces;
 
+import board.ChessBoard;
+
 import java.util.List;
 
 public class Bishop extends Piece {
@@ -10,17 +12,12 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public void move() {
-
-    }
-
-    @Override
     public boolean eatOtherPiece(Piece piece) {
         return false;
     }
 
     @Override
-    List<String> generatePossibleMoves() {
+    List<String> generatePossibleMoves(ChessBoard board, int row, int col) {
         return List.of();
     }
 }
