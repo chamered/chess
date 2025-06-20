@@ -1,6 +1,7 @@
 package pieces;
 
 import board.ChessBoard;
+import board.Position;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    List<String> generatePossibleMoves(ChessBoard board, int row, int col) {
+    public List<String> generatePossibleMoves(ChessBoard board, Position pos) {
         return List.of();
     }
 }

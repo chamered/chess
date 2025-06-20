@@ -3,21 +3,29 @@ package pieces;
 
 import java.util.List;
 
+import java.util.List;
 import board.ChessBoard;
-import game.Move;     // This is a class that holds information about a move
-import board.Position; // This is a class that tells where a piece is on the board
-
+import board.Position;
+import game.Move;
 
 public abstract class Piece {
 
     public enum PieceColor {BLACK, WHITE}
 
-    int value;
-    PieceColor color;
+    protected int value;
+    protected PieceColor color;
 
     public Piece(int value, PieceColor color){
         this.value = value;
         this.color = color;
+    }
+
+    public PieceColor getColor() {
+        return color;
+    }
+
+    public int getValue() {
+        return value;
     }
 
     /**
@@ -30,11 +38,10 @@ public abstract class Piece {
      * Find all possible moves this piece can make from its current position
      *
      * @param board The current game board (so we know which squares are free or taken)
-     * @param row The row position of the piece
-     * @param col The column position of the Piece
+     * @param pos The current position of the piece
      * @return A list of all possible moves this piece can make
      */
-    abstract public List<Move> generatePossibleMoves(ChessBoard board, int row, int col);
+    abstract public List<String> generatePossibleMoves(ChessBoard board, Position pos);
 
     public static String toAlgebraic (int row, int col){
         if(row <0 || row >7 || col < 0 || col > 7 ){

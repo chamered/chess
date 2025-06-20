@@ -13,7 +13,7 @@ public class King extends Piece{
         }
 
     @Override
-    public List<Move> generatePossibleMoves(ChessBoard board, int row, int col) {
+    public List<String> generatePossibleMoves(ChessBoard board, Position pos) {
         return List.of();
     }
 

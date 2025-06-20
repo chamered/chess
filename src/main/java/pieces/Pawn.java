@@ -30,7 +30,7 @@ public class Pawn extends Piece{
      */
 
     @Override
-    public List<String> generatePossibleMoves(ChessBoard board, int row, int col){
+    public List<String> generatePossibleMoves(ChessBoard board, Position pos){
         List<String> possibleMoves= new ArrayList<>();
 
         int direction= isWhite() ? -1 : 1;
