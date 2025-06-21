@@ -1,24 +1,76 @@
 package pieces;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import board.ChessBoard;
 import board.Position;
 
-import java.util.List;
-
 public class Queen extends Piece {
 
+    // Constructor: set queen value based on color
     public Queen(PieceColor color) {
-        super(color);
-        VALUE = color == PieceColor.WHITE ? 90 : -90;
+        super(color == PieceColor.WHITE ? 90 : -90, color);
     }
 
+    /**
+     * Check if this queen can capture the other piece.
+     * A queen can only capture opponent's pieces.
+     */
     @Override
     public boolean eatOtherPiece(Piece piece) {
-        return false;
+        return piece != null && piece.color != this.color;
     }
 
+    /**
+     * Generate all possible moves for the queen from current position.
+     * The queen can move any number of squares in any direction (horizontal, vertical, diagonal),
+     * until it hits another piece or the edge of the board.
+     */
     @Override
-    public List<String> generatePossibleMoves(ChessBoard board, Position pos) {
-        return List.of();
+    public List<Move> generatePossibleMoves(ChessBoard board, Position currentPos) {
+        List<Move> possibleMoves = new ArrayList<>();
+
+        int[][] directions = {
+                {-1, 0},  // up
+                {1, 0},   // down
+                {0, -1},  // left
+                {0, 1},   // right
+                {-1, -1}, // up-left diagonal
+                {-1, 1},  // up-right diagonal
+                {1, -1},  // down-left diagonal
+                {1, 1}    // down-right diagonal
+        };
+
+        for (int[] direction : directions) {
+            int row = currentPos.getRow();
+            int col = currentPos.getCol();
+
+            // Move step by step in one direction
+            while (true) {
+                row += direction[0];
+                col += direction[1];
+
+                // Check if new position is inside the board
+                if (row < 0 || row > 7 || col < 0 || col > 7) {
+                    break; // outside board
+                }
+
+                Piece target = board.getPieceAt(row, col); // Assuming this method exists
+
+                if (target == null) {
+                    // Square is free, add move
+                    possibleMoves.add(new Move(currentPos, new Position(row, col)));
+                } else {
+                    // Square occupied: can capture only if opponent piece
+                    if (eatOtherPiece(target)) {
+                        possibleMoves.add(new Move(currentPos, new Position(row, col)));
+                    }
+                    break; // Can't jump over pieces
+                }
+            }
+        }
+
+        return possibleMoves;
     }
 }

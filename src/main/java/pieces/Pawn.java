@@ -12,7 +12,7 @@ public class Pawn extends Piece{
 
     public Pawn(PieceColor color) {
 
-        super(1,color);
+        super(color == PieceColor.WHITE ? 10 : -10, color);
     }
 
     public boolean isWhite(){
@@ -74,22 +74,6 @@ public class Pawn extends Piece{
         return x >= 0 && x < 8 && y >= 0 && y < 8;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
