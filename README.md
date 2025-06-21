@@ -38,7 +38,7 @@ chess/
 ### 👤 Samuele
 - [ ] To be filled
 ### 👤 Kevin 
-- [ ] To be filled
+- [ ] Unit test for ToAlgebraic/From algebraic
 
 ---
 ## 🧑‍🤝‍🧑 Task Division
