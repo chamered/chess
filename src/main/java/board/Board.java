@@ -1,5 +1,7 @@
 package board;
 
+import game.Move;
+import pieces.Color;
 import pieces.Piece;
 
 public interface Board {
@@ -28,6 +30,10 @@ public interface Board {
      * @param piece the piece to place, or null to clear the square
      */
     void setPieceAt(Position pos, Piece piece);
+
+    void makeMove(Move move);
+
+    Position findKingPosition(Color color);
 
     /**
      * Resets the board to the initial game setup.

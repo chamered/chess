@@ -14,6 +14,11 @@ public class Bishop extends Piece {
     }
 
     @Override
+    public Piece copy() {
+        return new Bishop(this.COLOR);
+    }
+
+    @Override
     public boolean eatOtherPiece(Piece piece) {
         // A bishop can only eat pieces of the opposite color
         return piece != null && piece.COLOR != this.COLOR;

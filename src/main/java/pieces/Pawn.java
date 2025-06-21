@@ -19,6 +19,11 @@ public class Pawn extends Piece{
     }
 
     @Override
+    public Piece copy() {
+        return new Pawn(this.COLOR);
+    }
+
+    @Override
     public boolean eatOtherPiece(Piece piece){
         // A pawn can only capture opposing pieces
         return piece != null && piece.COLOR != this.COLOR;
@@ -54,7 +59,7 @@ public class Pawn extends Piece{
         // Diagonal captures (left and right)
         int[] diagOffsets = {-1, 1};
         for (int dc : diagOffsets) {
-            Position pos = new Position(col + dc, row + direction);
+            Position pos = new Position( row + direction, col + dc);
 
             if (isInsideBoard(pos)) {
                 Piece target = boardState[pos.getRow()][pos.getColumn()];

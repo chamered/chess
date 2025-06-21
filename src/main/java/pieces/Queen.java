@@ -13,6 +13,11 @@ public class Queen extends Piece {
         super(color == Color.WHITE ? 90 : -90, 'Q', color);
     }
 
+    @Override
+    public Piece copy() {
+        return new Queen(this.COLOR);
+    }
+
     /**
      * Check if this queen can capture the other piece.
      * A queen can only capture opponent's pieces.

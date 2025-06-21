@@ -5,6 +5,10 @@ import board.Position;
 import pieces.Color;
 import pieces.Piece;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class Game {
     private static BoardImpl board;
     private Player whitePlayer;
@@ -52,8 +56,9 @@ public class Game {
 
     //Check validity of the move
     public boolean isMoveValid(Position from, Position to) {
-        //TODO
-        return false;
+        Move move = new Move(from, to);
+        RulesEngine engine = new RulesEngine();
+        return engine.isLegalMove(board, move, currentTurn);
     }
 
     //Changes the turn
@@ -61,22 +66,31 @@ public class Game {
         currentTurn = (currentTurn == Color.WHITE) ? Color.BLACK : Color.WHITE;
     }
 
-    //Checks if the king is in check
-    public boolean isInCheck(Color color) {
-        //TODO
-        return false;
+
+    //Used in getLegalMoves
+    public List<String> getUnfilteredPossibleMoves(Position from) {
+        Piece piece = board.getPieceAt(from);
+
+        if (piece == null) {
+            System.out.println("No piece at given position.");
+            return Collections.emptyList();
+        }
+
+        return piece.generatePossibleMoves(board, from);
     }
 
-    //Check if it is checkmate
-    public boolean isCheckmate(Color color) {
-        //TODO
-        return false;
-    }
-
-    //Check for stalemate
-    public boolean isStalemate(Color color) {
-        //TODO
-        return false;
+    //Could be helpful for Moves Generation
+    public List<String> getLegalMoves(Position from) {
+        List<String> legalMoves = new ArrayList<>();
+        List<String> possibleMoves = getUnfilteredPossibleMoves(from);
+        for (String move : possibleMoves) {
+            int[] coordinates = Piece.fromAlgebraic(move);
+            Position to = new Position(coordinates[0], coordinates[1]);
+            if (isMoveValid(from, to)) {
+                legalMoves.add(move);
+            }
+        }
+        return legalMoves;
     }
 
     public void printWelcomeMessage() {

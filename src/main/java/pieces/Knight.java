@@ -14,6 +14,10 @@ public class Knight extends Piece {
     }
 
 
+    @Override
+    public Piece copy() {
+        return new Knight(this.COLOR);
+    }
 
     @Override
     public boolean eatOtherPiece(Piece piece) {

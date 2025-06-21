@@ -10,7 +10,12 @@ public class Rook extends Piece {
 
     // Constructor: set rook value based on color
     public Rook(Color color) {
-        super(color == Color.WHITE ? 50 : -50, 'Q', color);
+        super(color == Color.WHITE ? 50 : -50, 'R', color);
+    }
+
+    @Override
+    public Piece copy() {
+        return new Rook(this.COLOR);
     }
 
     /**

@@ -1,6 +1,7 @@
 package board;
 
 import pieces.*;
+import game.Move;
 
 public class BoardImpl implements Board {
 
@@ -53,6 +54,44 @@ public class BoardImpl implements Board {
         }
 
         System.out.println("\n    a b c d e f g h");
+    }
+
+    //Method to generate an hypothetical move for simulation purposes
+    public void makeMove(Move move) {
+        Piece piece = getPieceAt(move.getFrom());
+        setPieceAt(move.getFrom(), null);
+        setPieceAt(move.getTo(), piece);
+    }
+
+    //Copy of the board
+    public BoardImpl copy() {
+        BoardImpl newBoard = new BoardImpl();
+
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Piece piece = board[row][col];
+                if (piece != null) {
+                    newBoard.board[row][col] = piece.copy();
+                }
+            }
+        }
+
+        return newBoard;
+    }
+
+    public Position findKingPosition(Color color) {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Piece piece = board[row][col];
+                if (piece instanceof King &&
+                        piece.getCOLOR() == color) {
+                    return new Position(row, col);
+                }
+            }
+        }
+
+        // This should never happen in a legal game state
+        throw new IllegalStateException("King of color " + color + " not found on the board.");
     }
 
     @Override
