@@ -22,8 +22,8 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public List<Position> generatePossibleMoves(ChessBoard board, Position currentPos) {
-        List<Position> possibleMoves = new ArrayList<>();
+    public List<String> generatePossibleMoves(ChessBoard board, Position currentPos) {
+        List<String> possibleMoves = new ArrayList<>();
 
         int row = currentPos.getRow();
         int col = currentPos.getCol();
@@ -47,11 +47,11 @@ public class Bishop extends Piece {
 
                 if (target == null) {
                     // The square is empty – valid move
-                    possibleMoves.add(new Position(newRow, newCol));
+                    possibleMoves.add(toAlgebraic(newRow, newCol));
                 } else {
                     // There's a piece there – can we capture it?
                     if (eatOtherPiece(target)) {
-                        possibleMoves.add(new Position(newRow, newCol));
+                        possibleMoves.add(toAlgebraic(newRow, newCol));
                     }
                     break; // can't go past another piece
                 }
@@ -63,10 +63,5 @@ public class Bishop extends Piece {
         }
 
         return possibleMoves;
-    }
-
-    // Check if the given coordinates are within the 8x8 board
-    private boolean isInsideBoard(int row, int col) {
-        return row >= 0 && row < 8 && col >= 0 && col < 8;
     }
 }

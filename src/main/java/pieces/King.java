@@ -20,8 +20,8 @@ public class King extends Piece {
     }
 
     @Override
-    public List<Position> generatePossibleMoves(ChessBoard board, Position currentPos) {
-        List<Position> possibleMoves = new ArrayList<>();
+    public List<String> generatePossibleMoves(ChessBoard board, Position currentPos) {
+        List<String> possibleMoves = new ArrayList<>();
 
         int row = currentPos.getRow();
         int col = currentPos.getCol();
@@ -37,18 +37,14 @@ public class King extends Piece {
 
                 if (isInsideBoard(newRow, newCol)) {
                     Piece target = boardState[newRow][newCol];
+
                     if (target == null || eatOtherPiece(target)) {
-                        possibleMoves.add(new Position(newRow, newCol));
+                        possibleMoves.add(toAlgebraic(newRow, newCol));
                     }
                 }
             }
         }
 
         return possibleMoves;
-    }
-
-    // Helper method to check if a square is on the board
-    private boolean isInsideBoard(int row, int col) {
-        return row >= 0 && row < 8 && col >= 0 && col < 8;
     }
 }

@@ -28,8 +28,8 @@ public class Rook extends Piece {
      * until it hits another piece or the edge of the board.
      */
     @Override
-    public List<Move> generatePossibleMoves(ChessBoard board, Position currentPos) {
-        List<Move> possibleMoves = new ArrayList<>();
+    public List<String> generatePossibleMoves(ChessBoard board, Position currentPos) {
+        List<String> possibleMoves = new ArrayList<>();
 
         // Rook moves only in 4 directions: up, down, left, right
         int[][] directions = {
@@ -39,32 +39,28 @@ public class Rook extends Piece {
                 {0, 1}    // right
         };
 
+        int startRow = currentPos.getRow();
+        int startCol = currentPos.getCol();
+        Piece[][] boardState = board.board;
+
         for (int[] direction : directions) {
-            int row = currentPos.getRow();
-            int col = currentPos.getCol();
+            int row = startRow + direction[0];
+            int col = startCol + direction[1];
 
-            // Move step by step in one direction
-            while (true) {
-                row += direction[0];
-                col += direction[1];
-
-                // Check if new position is inside the board
-                if (row < 0 || row > 7 || col < 0 || col > 7) {
-                    break; // outside board
-                }
-
-                Piece target = board.getPieceAt(row, col); // Assuming this method exists
+            while (isInsideBoard(row, col)) {
+                Piece target = boardState[row][col];
 
                 if (target == null) {
-                    // Square is free, add move
-                    possibleMoves.add(new Move(currentPos, new Position(row, col)));
+                    possibleMoves.add(toAlgebraic(row, col));
                 } else {
-                    // Square occupied: can capture only if opponent piece
                     if (eatOtherPiece(target)) {
-                        possibleMoves.add(new Move(currentPos, new Position(row, col)));
+                        possibleMoves.add(toAlgebraic(row, col));
                     }
-                    break; // Can't jump over pieces
+                    break; // Stop at any piece (own or enemy)
                 }
+
+                row += direction[0];
+                col += direction[1];
             }
         }
 

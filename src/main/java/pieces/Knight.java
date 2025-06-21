@@ -22,8 +22,8 @@ public class Knight extends Piece {
     }
 
     @Override
-    public List<Move> generatePossibleMoves(ChessBoard board, Position currentPos) {
-        List<Move> possibleMoves = new ArrayList<>();
+    public List<String> generatePossibleMoves(ChessBoard board, Position currentPos) {
+        List<String> possibleMoves = new ArrayList<>();
 
         int[][] moveOffsets = {
                 {2, 1}, {2, -1}, {-2, 1}, {-2, -1},
@@ -44,16 +44,11 @@ public class Knight extends Piece {
 
                 // Knight can move if target square is empty or contains opponent's piece
                 if (targetPiece == null || eatOtherPiece(targetPiece)) {
-                    possibleMoves.add(new Move(currentPos, new Position(newRow, newCol)));
+                    possibleMoves.add(toAlgebraic(newRow, newCol));
                 }
             }
         }
 
         return possibleMoves;
-    }
-
-    // Helper method to check if coordinates are on the board (0 to 7)
-    private boolean isInsideBoard(int row, int col) {
-        return row >= 0 && row < 8 && col >= 0 && col < 8;
     }
 }

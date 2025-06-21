@@ -30,48 +30,43 @@ public class Pawn extends Piece{
      */
 
     @Override
-    public List<String> generatePossibleMoves(ChessBoard board, Position pos){
-        List<String> possibleMoves= new ArrayList<>();
+    public List<String> generatePossibleMoves(ChessBoard board, Position currentPos) {
+        List<String> possibleMoves = new ArrayList<>();
 
-        int direction= isWhite() ? -1 : 1;
-        int startRow= isWhite() ? 6: 1;
+        int row = currentPos.getRow();
+        int col = currentPos.getCol();
+        Piece[][] boardState = board.board;
 
-        // 1 step forward
-        int oneStepX = startX + direction;
-        if (isInsideBoard(oneStepX, startY) && boardState[oneStepX][startY] == null) {
-            possibleMoves.add(new Move(currentPos, new Position(oneStepX, startY)));
+        int direction = isWhite() ? -1 : 1;
+        int startRow = isWhite() ? 6 : 1;
 
-            // 2 steps forward (only from start row and if both spaces are free)
-            int twoStepX = startX + 2 * direction;
-            if (startX == startRow && boardState[twoStepX][startY] == null && boardState[oneStepX][startY] == null) {
-                possibleMoves.add(new Move(currentPos, new Position(twoStepX, startY)));
+        // One step forward
+        int oneStepRow = row + direction;
+        if (isInsideBoard(oneStepRow, col) && boardState[oneStepRow][col] == null) {
+            possibleMoves.add(toAlgebraic(oneStepRow, col));
+
+            // Two steps forward from starting row
+            int twoStepRow = row + 2 * direction;
+            if (row == startRow && boardState[twoStepRow][col] == null) {
+                possibleMoves.add(toAlgebraic(twoStepRow, col));
             }
         }
 
-        // Diagonal capture left
-        int diagLeftY = startY - 1;
-        if (isInsideBoard(oneStepX, diagLeftY)) {
-            Piece target = boardState[oneStepX][diagLeftY];
-            if (eatOtherPiece(target)) {
-                possibleMoves.add(new Move(currentPos, new Position(oneStepX, diagLeftY)));
-            }
-        }
+        // Diagonal captures (left and right)
+        int[] diagOffsets = {-1, 1};
+        for (int dc : diagOffsets) {
+            int newCol = col + dc;
+            int newRow = row + direction;
 
-        // Diagonal capture right
-        int diagRightY = startY + 1;
-        if (isInsideBoard(oneStepX, diagRightY)) {
-            Piece target = boardState[oneStepX][diagRightY];
-            if (eatOtherPiece(target)) {
-                possibleMoves.add(new Move(currentPos, new Position(oneStepX, diagRightY)));
+            if (isInsideBoard(newRow, newCol)) {
+                Piece target = boardState[newRow][newCol];
+                if (target != null && eatOtherPiece(target)) {
+                    possibleMoves.add(toAlgebraic(newRow, newCol));
+                }
             }
         }
 
         return possibleMoves;
-    }
-
-    // Helper method to make sure coordinates are on the board (0 to 7)
-    private boolean isInsideBoard(int x, int y) {
-        return x >= 0 && x < 8 && y >= 0 && y < 8;
     }
 }
 
