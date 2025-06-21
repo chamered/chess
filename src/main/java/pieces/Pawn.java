@@ -4,25 +4,24 @@ package pieces;
 import java.util.ArrayList;
 import java.util.List;
 
-import board.ChessBoard;
+import board.BoardImpl;
 import board.Position;
 
 
 public class Pawn extends Piece{
 
-    public Pawn(PieceColor color) {
-
-        super(color == PieceColor.WHITE ? 10 : -10, color);
+    public Pawn(Color color) {
+        super(color == Color.WHITE ? 10 : -10, 'p', color);
     }
 
     public boolean isWhite(){
-        return this.color == PieceColor.WHITE;
+        return this.COLOR == Color.WHITE;
     }
 
     @Override
     public boolean eatOtherPiece(Piece piece){
         // A pawn can only capture opposing pieces
-        return piece != null && piece.color != this.color;
+        return piece != null && piece.COLOR != this.COLOR;
     }
 
     /**
@@ -30,38 +29,37 @@ public class Pawn extends Piece{
      */
 
     @Override
-    public List<String> generatePossibleMoves(ChessBoard board, Position currentPos) {
+    public List<String> generatePossibleMoves(BoardImpl board, Position currentPos) {
         List<String> possibleMoves = new ArrayList<>();
 
         int row = currentPos.getRow();
-        int col = currentPos.getCol();
-        Piece[][] boardState = board.board;
+        int col = currentPos.getColumn();
+        Piece[][] boardState = board.getBoard();
 
         int direction = isWhite() ? -1 : 1;
         int startRow = isWhite() ? 6 : 1;
 
         // One step forward
-        int oneStepRow = row + direction;
-        if (isInsideBoard(oneStepRow, col) && boardState[oneStepRow][col] == null) {
-            possibleMoves.add(toAlgebraic(oneStepRow, col));
+        Position oneStepRowPos = new Position(row + direction, col);
+        if (isInsideBoard(oneStepRowPos) && boardState[oneStepRowPos.getRow()][oneStepRowPos.getColumn()] == null) {
+            possibleMoves.add(toAlgebraic(oneStepRowPos));
 
             // Two steps forward from starting row
-            int twoStepRow = row + 2 * direction;
-            if (row == startRow && boardState[twoStepRow][col] == null) {
-                possibleMoves.add(toAlgebraic(twoStepRow, col));
+            Position twoStepRowPos = new Position(row + 2 * direction, col);
+            if (row == startRow && boardState[twoStepRowPos.getRow()][twoStepRowPos.getColumn()] == null) {
+                possibleMoves.add(toAlgebraic(twoStepRowPos));
             }
         }
 
         // Diagonal captures (left and right)
         int[] diagOffsets = {-1, 1};
         for (int dc : diagOffsets) {
-            int newCol = col + dc;
-            int newRow = row + direction;
+            Position pos = new Position(col + dc, row + direction);
 
-            if (isInsideBoard(newRow, newCol)) {
-                Piece target = boardState[newRow][newCol];
+            if (isInsideBoard(pos)) {
+                Piece target = boardState[pos.getRow()][pos.getColumn()];
                 if (target != null && eatOtherPiece(target)) {
-                    possibleMoves.add(toAlgebraic(newRow, newCol));
+                    possibleMoves.add(toAlgebraic(pos));
                 }
             }
         }

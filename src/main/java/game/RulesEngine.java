@@ -1,7 +1,6 @@
 package game;
 
-import board.ChessBoard;
-import pieces.Piece;
+import board.BoardImpl;
 
 import java.util.List;
 
@@ -10,19 +9,19 @@ public class RulesEngine {
     //Legality validation
 
     //Check if a move is legal
-    public boolean isLegalMove(ChessBoard board, Move move, PlayerTurnEnum turn) {
+    public boolean isLegalMove(BoardImpl board, Move move, PlayerTurnEnum turn) {
         //TODO
         return false;
     }
 
     //Check if the move is going to cause a self check (illegal)
-    public boolean wouldCauseSelfCheck(ChessBoard board, Move move, PlayerTurnEnum turn) {
+    public boolean wouldCauseSelfCheck(BoardImpl board, Move move, PlayerTurnEnum turn) {
         //TODO
         return false;
     }
 
     //Returns a list of valid moves (not illegal)
-    public List<Move> getAllValidMoves(ChessBoard board, PlayerTurnEnum turn) {
+    public List<Move> getAllValidMoves(BoardImpl board, PlayerTurnEnum turn) {
         //TODO
         return List.of();
     }

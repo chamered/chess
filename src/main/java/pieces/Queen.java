@@ -3,14 +3,14 @@ package pieces;
 import java.util.ArrayList;
 import java.util.List;
 
-import board.ChessBoard;
+import board.BoardImpl;
 import board.Position;
 
 public class Queen extends Piece {
 
     // Constructor: set queen value based on color
-    public Queen(PieceColor color) {
-        super(color == PieceColor.WHITE ? 90 : -90, color);
+    public Queen(Color color) {
+        super(color == Color.WHITE ? 90 : -90, 'Q', color);
     }
 
     /**
@@ -19,7 +19,7 @@ public class Queen extends Piece {
      */
     @Override
     public boolean eatOtherPiece(Piece piece) {
-        return piece != null && piece.color != this.color;
+        return piece != null && piece.COLOR != this.COLOR;
     }
 
     /**
@@ -28,7 +28,7 @@ public class Queen extends Piece {
      * until it hits another piece or the edge of the board.
      */
     @Override
-    public List<String> generatePossibleMoves(ChessBoard board, Position currentPos) {
+    public List<String> generatePossibleMoves(BoardImpl board, Position currentPos) {
         List<String> possibleMoves = new ArrayList<>();
 
         int[][] directions = {
@@ -43,28 +43,29 @@ public class Queen extends Piece {
         };
 
         int startRow = currentPos.getRow();
-        int startCol = currentPos.getCol();
-        Piece[][] boardState = board.board;
+        int startCol = currentPos.getColumn();
+        Piece[][] boardState = board.getBoard();
 
         for (int[] direction : directions) {
-            int row = startRow + direction[0];
-            int col = startCol + direction[1];
+            Position pos = new Position(startRow + direction[0], startCol + direction[1]);
+            int row = pos.getRow();
+            int col = pos.getColumn();
 
             // Move step by step in one direction
-            while (isInsideBoard(row, col)) {
+            while (isInsideBoard(pos)) {
                 Piece target = boardState[row][col];
 
                 if (target == null) {
-                    possibleMoves.add(toAlgebraic(row, col));
+                    possibleMoves.add(toAlgebraic(pos));
                 } else {
                     if (eatOtherPiece(target)) {
-                        possibleMoves.add(toAlgebraic(row, col));
+                        possibleMoves.add(toAlgebraic(pos));
                     }
                     break; // Stop at first piece
                 }
 
-                row += direction[0];
-                col += direction[1];
+                pos.setRow(row + direction[0]);
+                pos.setColumn(col + direction[1]);
             }
         }
         return possibleMoves;

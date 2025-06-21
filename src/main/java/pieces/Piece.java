@@ -3,20 +3,21 @@ package pieces;
 
 import java.util.List;
 
-import board.ChessBoard;
-import game.Move;     // This is a class that holds information about a move
+import board.BoardImpl;
 import board.Position; // This is a class that tells where a piece is on the board
 
 
 public abstract class Piece {
-    public enum PieceColor {BLACK, WHITE}
+    public enum Color {BLACK, WHITE}
 
-    int value;
-    PieceColor color;
+    private final int VALUE;
+    private final char SYMBOL;
+    final Color COLOR;
 
-    public Piece(int value, PieceColor color){
-        this.value = value;
-        this.color = color;
+    public Piece(int value, char symbol, Color color){
+        this.VALUE = value;
+        this.SYMBOL = symbol;
+        this.COLOR = color;
     }
 
     /**
@@ -32,9 +33,12 @@ public abstract class Piece {
      * @param currentPos Where this piece is right now on the board
      * @return A list of all possible moves this piece can make
      */
-    abstract public List<String> generatePossibleMoves(ChessBoard board, Position currentPos);
+    abstract public List<String> generatePossibleMoves(BoardImpl board, Position currentPos);
 
-    public static String toAlgebraic (int row, int col){
+    public static String toAlgebraic (Position pos) {
+        int row = pos.getRow();
+        int col = pos.getColumn();
+
         if(row <0 || row >7 || col < 0 || col > 7 ){
             throw new IllegalArgumentException(
                     "Invalid board coordinates: row =" + row + ", col =" + col + ". Must be in range 0-7."
@@ -65,13 +69,17 @@ public abstract class Piece {
         return new int[]{row, col};
     }
 
-        /**
-        * Check if given coordinates are inside the chessboard (0-7)
-        */
-        public static boolean isInsideBoard(int row, int col){
-            return row >= 0 && row < 8 && col >= 0 && col < 8;
-        }
-
-
+    /**
+    * Check if given coordinates are inside the chessboard (0-7)
+    */
+    public static boolean isInsideBoard(Position pos) {
+        int row = pos.getRow();
+        int col = pos.getColumn();
+        return row >= 0 && row < 8 && col >= 0 && col < 8;
     }
+
+    public char getSYMBOL() {
+        return SYMBOL;
+    }
+}
 

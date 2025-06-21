@@ -1,12 +1,12 @@
 package game;
 
-import board.ChessBoard;
+import board.BoardImpl;
 
 public class Game {
 
     //Set up the game and responds to player interaction
 
-    private ChessBoard board;
+    private BoardImpl board;
     private Player withePlayer;
     private Player blackPlayer;
     private GameStateEnum gameState;

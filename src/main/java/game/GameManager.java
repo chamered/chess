@@ -1,15 +1,14 @@
 package game;
 
-import board.ChessBoard;
-import pieces.Piece;
+import board.BoardImpl;
 
 public class GameManager {
 
     //Checking and applying moves
 
-    private ChessBoard board;
+    private BoardImpl board;
 
-    public GameManager(ChessBoard board) {
+    public GameManager(BoardImpl board) {
         this.board = board;
     }
 
@@ -43,11 +42,11 @@ public class GameManager {
         return false;
     }
 
-    public ChessBoard getBoard() {
+    public BoardImpl getBoard() {
         return board;
     }
 
-    public void setBoard(ChessBoard board) {
+    public void setBoard(BoardImpl board) {
         this.board = board;
     }
 }

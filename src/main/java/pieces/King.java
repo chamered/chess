@@ -3,43 +3,42 @@ package pieces;
 import java.util.ArrayList;
 import java.util.List;
 
-import board.ChessBoard;
+import board.BoardImpl;
 import board.Position;
 
 public class King extends Piece {
 
-    public King(PieceColor color) {
-        super(color == PieceColor.WHITE ? 1000 : -1000, color); // Kings are usually very high value (1000+)
+    public King(Color color) {
+        super(color == Color.WHITE ? 1000 : -1000, 'K', color); // Kings are usually very high value (1000+)
     }
 
 
     @Override
     public boolean eatOtherPiece(Piece piece) {
         // The king can only capture enemy pieces
-        return piece != null && piece.color != this.color;
+        return piece != null && piece.COLOR != this.COLOR;
     }
 
     @Override
-    public List<String> generatePossibleMoves(ChessBoard board, Position currentPos) {
+    public List<String> generatePossibleMoves(BoardImpl board, Position currentPos) {
         List<String> possibleMoves = new ArrayList<>();
 
         int row = currentPos.getRow();
-        int col = currentPos.getCol();
-        Piece[][] boardState = board.board;
+        int col = currentPos.getColumn();
+        Piece[][] boardState = board.getBoard();
 
         // King can move to 8 surrounding squares (one step in each direction)
         for (int rowOffset = -1; rowOffset <= 1; rowOffset++) {
             for (int colOffset = -1; colOffset <= 1; colOffset++) {
                 if (rowOffset == 0 && colOffset == 0) continue; // skip the current position
 
-                int newRow = row + rowOffset;
-                int newCol = col + colOffset;
+                Position pos = new Position(row + rowOffset, col + colOffset);
 
-                if (isInsideBoard(newRow, newCol)) {
-                    Piece target = boardState[newRow][newCol];
+                if (isInsideBoard(pos)) {
+                    Piece target = boardState[pos.getRow()][pos.getColumn()];
 
                     if (target == null || eatOtherPiece(target)) {
-                        possibleMoves.add(toAlgebraic(newRow, newCol));
+                        possibleMoves.add(toAlgebraic(pos));
                     }
                 }
             }

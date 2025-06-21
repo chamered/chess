@@ -3,31 +3,29 @@ package pieces;
 import java.util.ArrayList;
 import java.util.List;
 
-import board.ChessBoard;
+import board.BoardImpl;
 import board.Position;
 
 public class Bishop extends Piece {
 
     // Constructor: set bishop value based on color
-    public Bishop(PieceColor color) {
-        super(color == PieceColor.WHITE ? 30 : -30, color);
+    public Bishop(Color color) {
+        super(color == Color.WHITE ? 30 : -30, 'B', color);
     }
-
-
 
     @Override
     public boolean eatOtherPiece(Piece piece) {
         // A bishop can only eat pieces of the opposite color
-        return piece != null && piece.color != this.color;
+        return piece != null && piece.COLOR != this.COLOR;
     }
 
     @Override
-    public List<String> generatePossibleMoves(ChessBoard board, Position currentPos) {
+    public List<String> generatePossibleMoves(BoardImpl board, Position currentPos) {
         List<String> possibleMoves = new ArrayList<>();
 
         int row = currentPos.getRow();
-        int col = currentPos.getCol();
-        Piece[][] boardState = board.board;
+        int col = currentPos.getColumn();
+        Piece[][] boardState = board.getBoard();
 
         // A bishop moves diagonally in all 4 directions
         int[][] directions = {
@@ -38,27 +36,28 @@ public class Bishop extends Piece {
         };
 
         for (int[] dir : directions) {
-            int newRow = row + dir[0];
-            int newCol = col + dir[1];
+            Position pos = new Position(row + dir[0], col + dir[1]);
+            int newRow = pos.getRow();
+            int newCol = pos.getColumn();
 
             // Keep going in the same direction until we hit the edge or something
-            while (isInsideBoard(newRow, newCol)) {
+            while (isInsideBoard(pos)) {
                 Piece target = boardState[newRow][newCol];
 
                 if (target == null) {
                     // The square is empty – valid move
-                    possibleMoves.add(toAlgebraic(newRow, newCol));
+                    possibleMoves.add(toAlgebraic(pos));
                 } else {
                     // There's a piece there – can we capture it?
                     if (eatOtherPiece(target)) {
-                        possibleMoves.add(toAlgebraic(newRow, newCol));
+                        possibleMoves.add(toAlgebraic(pos));
                     }
                     break; // can't go past another piece
                 }
 
                 // Move one step further in the same direction
-                newRow += dir[0];
-                newCol += dir[1];
+                pos.setRow(row + dir[0]);
+                pos.setColumn(col + dir[1]);
             }
         }
 
