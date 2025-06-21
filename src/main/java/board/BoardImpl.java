@@ -1,35 +1,41 @@
 package board;
+
 import pieces.*;
 
 public class BoardImpl implements Board {
 
-    Piece[][] board;
+    private Piece[][] board;
+    private Color currentTurn = Color.WHITE;
 
     public BoardImpl() {
+        setupBoard();
+    }
+
+    public void setupBoard() {
         board = new Piece[8][8];
 
-        board[0][0] = new Rook(Piece.Color.BLACK);
-        board[0][1] = new Knight(Piece.Color.BLACK);
-        board[0][2] = new Bishop(Piece.Color.BLACK);
-        board[0][3] = new Queen(Piece.Color.BLACK);
-        board[0][4] = new King(Piece.Color.BLACK);
-        board[0][5] = new Bishop(Piece.Color.BLACK);
-        board[0][6] = new Knight(Piece.Color.BLACK);
-        board[0][7] = new Rook(Piece.Color.BLACK);
+        board[0][0] = new Rook(Color.BLACK);
+        board[0][1] = new Knight(Color.BLACK);
+        board[0][2] = new Bishop(Color.BLACK);
+        board[0][3] = new Queen(Color.BLACK);
+        board[0][4] = new King(Color.BLACK);
+        board[0][5] = new Bishop(Color.BLACK);
+        board[0][6] = new Knight(Color.BLACK);
+        board[0][7] = new Rook(Color.BLACK);
         for (int i = 0; i < 8; i++) {
-            board[1][i] = new Pawn(Piece.Color.BLACK);
+            board[1][i] = new Pawn(Color.BLACK);
         }
 
-        board[7][0] = new Rook(Piece.Color.WHITE);
-        board[7][1] = new Knight(Piece.Color.WHITE);
-        board[7][2] = new Bishop(Piece.Color.WHITE);
-        board[7][3] = new Queen(Piece.Color.WHITE);
-        board[7][4] = new King(Piece.Color.WHITE);
-        board[7][5] = new Bishop(Piece.Color.WHITE);
-        board[7][6] = new Knight(Piece.Color.WHITE);
-        board[7][7] = new Rook(Piece.Color.WHITE);
+        board[7][0] = new Rook(Color.WHITE);
+        board[7][1] = new Knight(Color.WHITE);
+        board[7][2] = new Bishop(Color.WHITE);
+        board[7][3] = new Queen(Color.WHITE);
+        board[7][4] = new King(Color.WHITE);
+        board[7][5] = new Bishop(Color.WHITE);
+        board[7][6] = new Knight(Color.WHITE);
+        board[7][7] = new Rook(Color.WHITE);
         for (int i = 0; i < 8; i++) {
-            board[6][i] = new Pawn(Piece.Color.WHITE);
+            board[6][i] = new Pawn(Color.WHITE);
         }
     }
 
@@ -61,8 +67,29 @@ public class BoardImpl implements Board {
     }
 
     @Override
+    public void setPieceAt(Position pos, Piece piece) {
+        board[pos.getRow()][pos.getColumn()] = piece;
+    }
+
+    @Override
     public boolean movePiece(Position from, Position to) {
-        return false;
+        Piece piece = getPieceAt(from);
+
+        if (piece == null || piece.getCOLOR() != currentTurn) {
+            return false;
+        }
+
+        if (!isMoveValid(from, to)) {
+            System.out.println("Move is invalid.");
+            return false;
+        }
+
+        setPieceAt(from, null);
+        setPieceAt(to, piece);
+
+        switchPlayer();
+
+        return true;
     }
 
     @Override
@@ -86,13 +113,18 @@ public class BoardImpl implements Board {
     }
 
     @Override
-    public void switchPlayer() {
+    public Color getCurrentPlayer() {
+        return currentTurn;
+    }
 
+    @Override
+    public void switchPlayer() {
+        currentTurn = (currentTurn == Color.WHITE) ? Color.BLACK : Color.WHITE;
     }
 
     @Override
     public void resetBoard() {
-
+        setupBoard();
     }
 
     @Override
@@ -107,6 +139,8 @@ public class BoardImpl implements Board {
 
     public static void main(String[] args) {
         BoardImpl board = new BoardImpl();
+        board.printBoard();
+        board.movePiece(new Position(6, 7), new Position(4, 7));
         board.printBoard();
     }
 }

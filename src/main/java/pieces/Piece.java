@@ -8,11 +8,9 @@ import board.Position; // This is a class that tells where a piece is on the boa
 
 
 public abstract class Piece {
-    public enum Color {BLACK, WHITE}
-
     private final int VALUE;
     private final char SYMBOL;
-    final Color COLOR;
+    protected final Color COLOR;
 
     public Piece(int value, char symbol, Color color){
         this.VALUE = value;
@@ -35,7 +33,7 @@ public abstract class Piece {
      */
     abstract public List<String> generatePossibleMoves(BoardImpl board, Position currentPos);
 
-    public static String toAlgebraic (Position pos) {
+    public static String toAlgebraic(Position pos) {
         int row = pos.getRow();
         int col = pos.getColumn();
 
@@ -70,8 +68,8 @@ public abstract class Piece {
     }
 
     /**
-    * Check if given coordinates are inside the chessboard (0-7)
-    */
+     * Check if given coordinates are inside the chessboard (0-7)
+     */
     public static boolean isInsideBoard(Position pos) {
         int row = pos.getRow();
         int col = pos.getColumn();
@@ -81,5 +79,8 @@ public abstract class Piece {
     public char getSYMBOL() {
         return SYMBOL;
     }
-}
 
+    public Color getCOLOR() {
+        return COLOR;
+    }
+}
