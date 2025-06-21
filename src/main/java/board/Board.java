@@ -1,12 +1,6 @@
 package board;
 
-import game.Player;
-import game.PlayerTurnEnum;
-import pieces.Color;
 import pieces.Piece;
-
-import java.util.Map;
-import java.util.Set;
 
 public interface Board {
 

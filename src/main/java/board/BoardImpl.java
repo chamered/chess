@@ -10,7 +10,7 @@ public class BoardImpl implements Board {
         setupBoard();
     }
 
-    public void setupBoard() {
+    private void setupBoard() {
         board = new Piece[8][8];
 
         board[0][0] = new Rook(Color.BLACK);
