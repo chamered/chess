@@ -36,44 +36,7 @@ public interface Board {
     void setPieceAt(Position pos, Piece piece);
 
     /**
-     * Moves a piece form one position to another.
-     * @param from the starting position
-     * @param to the destination position
-     * @return true if the move is valid and was executed, false otherwise
-     */
-    boolean movePiece(Position from, Position to);
-
-    /**
-     * Checks if a move from one position to another is valid.
-     * @param from the starting position
-     * @param to the destination position
-     * @return true if the move is valid, false otherwise
-     */
-    boolean isMoveValid(Position from, Position to);
-
-    boolean inCheck();
-
-    boolean isCheckmate();
-
-    boolean isStalemate();
-
-    /**
-     * Returns the color of the current player.
-     * @return the current player's color
-     */
-    Color getCurrentPlayer();
-
-    /**
-     * Switches the turn to the next player.
-     */
-    void switchPlayer();
-
-    /**
      * Resets the board to the initial game setup.
      */
     void resetBoard();
-
-    boolean canCastle();
-
-    boolean isEnPassantPossible();
 }

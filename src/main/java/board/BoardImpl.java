@@ -5,7 +5,6 @@ import pieces.*;
 public class BoardImpl implements Board {
 
     private Piece[][] board;
-    private Color currentTurn = Color.WHITE;
 
     public BoardImpl() {
         setupBoard();
@@ -72,75 +71,7 @@ public class BoardImpl implements Board {
     }
 
     @Override
-    public boolean movePiece(Position from, Position to) {
-        Piece piece = getPieceAt(from);
-
-        if (piece == null || piece.getCOLOR() != currentTurn) {
-            return false;
-        }
-
-        if (!isMoveValid(from, to)) {
-            System.out.println("Move is invalid.");
-            return false;
-        }
-
-        setPieceAt(from, null);
-        setPieceAt(to, piece);
-
-        switchPlayer();
-
-        return true;
-    }
-
-    @Override
-    public boolean isMoveValid(Position from, Position to) {
-        return false;
-    }
-
-    @Override
-    public boolean inCheck() {
-        return false;
-    }
-
-    @Override
-    public boolean isCheckmate() {
-        return false;
-    }
-
-    @Override
-    public boolean isStalemate() {
-        return false;
-    }
-
-    @Override
-    public Color getCurrentPlayer() {
-        return currentTurn;
-    }
-
-    @Override
-    public void switchPlayer() {
-        currentTurn = (currentTurn == Color.WHITE) ? Color.BLACK : Color.WHITE;
-    }
-
-    @Override
     public void resetBoard() {
         setupBoard();
-    }
-
-    @Override
-    public boolean canCastle() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnPassantPossible() {
-        return false;
-    }
-
-    public static void main(String[] args) {
-        BoardImpl board = new BoardImpl();
-        board.printBoard();
-        board.movePiece(new Position(6, 7), new Position(4, 7));
-        board.printBoard();
     }
 }
