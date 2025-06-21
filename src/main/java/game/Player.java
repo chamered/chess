@@ -1,12 +1,12 @@
 package game;
 
-import pieces.*;
+import pieces.Piece;
 
 import java.util.Set;
 
 public class Player {
     private String name;
-    private Color color;
+    private PlayerTurnEnum turn;
     private Set<Piece> capturedPieces;
 
     //add a piece to the set of capturedPieces
@@ -14,8 +14,8 @@ public class Player {
         //TODO
     }
 
-    public Color getColor(){
-        return color;
+    public PlayerTurnEnum getTurn(){
+        return turn;
     }
 
     public Set<Piece> getCapturedPieces(){
