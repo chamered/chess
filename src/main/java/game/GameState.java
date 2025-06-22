@@ -1,6 +1,6 @@
 package game;
 
-public enum GameStateEnum {
+public enum GameState {
     ACTIVE,
     CHECK,
     CHECKMATE,

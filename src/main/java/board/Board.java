@@ -31,12 +31,27 @@ public interface Board {
      */
     void setPieceAt(Position pos, Piece piece);
 
+    /**
+     * Makes a hypothetical move for simulation purposes.
+     * @param move the move to make
+     */
     void makeMove(Move move);
 
-    Position findKingPosition(Color color);
+    /**
+     * Returns the position on the board in which the king is located.
+     * @param color the color of the player
+     * @return the king position on the board
+     */
+    Position getKingPosition(Color color);
 
     /**
      * Resets the board to the initial game setup.
      */
     void resetBoard();
+
+    /**
+     * Returns a deep copy of the board.
+     * @return a new Board instance with the same state
+     */
+    BoardImpl copy();
 }

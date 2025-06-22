@@ -9,6 +9,11 @@ public class Player {
     private Color color;
     private Set<Piece> capturedPieces;
 
+    public Player(String name, Color color) {
+        this.name = name;
+        this.color = color;
+    }
+
     //add a piece to the set of capturedPieces
     public void addCapturedPiece(Piece piece){
         //TODO

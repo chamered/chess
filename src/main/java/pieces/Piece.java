@@ -8,14 +8,14 @@ import board.Position; // This is a class that tells where a piece is on the boa
 
 
 public abstract class Piece {
-    private final int VALUE;
-    private final char SYMBOL;
-    protected final Color COLOR;
+    private final int value;
+    private final char symbol;
+    protected final Color color;
 
     public Piece(int value, char symbol, Color color){
-        this.VALUE = value;
-        this.SYMBOL = symbol;
-        this.COLOR = color;
+        this.value = value;
+        this.symbol = symbol;
+        this.color = color;
     }
 
     /**
@@ -81,11 +81,11 @@ public abstract class Piece {
         return row >= 0 && row < 8 && col >= 0 && col < 8;
     }
 
-    public char getSYMBOL() {
-        return SYMBOL;
+    public char getSymbol() {
+        return symbol;
     }
 
-    public Color getCOLOR() {
-        return COLOR;
+    public Color getColor() {
+        return color;
     }
 }

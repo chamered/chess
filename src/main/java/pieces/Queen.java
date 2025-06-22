@@ -15,7 +15,7 @@ public class Queen extends Piece {
 
     @Override
     public Piece copy() {
-        return new Queen(this.COLOR);
+        return new Queen(this.color);
     }
 
     /**
@@ -24,7 +24,7 @@ public class Queen extends Piece {
      */
     @Override
     public boolean eatOtherPiece(Piece piece) {
-        return piece != null && piece.COLOR != this.COLOR;
+        return piece != null && piece.color != this.color;
     }
 
     /**

@@ -15,13 +15,13 @@ public class King extends Piece {
 
     @Override
     public Piece copy() {
-        return new King(this.COLOR);
+        return new King(this.color);
     }
 
     @Override
     public boolean eatOtherPiece(Piece piece) {
         // The king can only capture enemy pieces
-        return piece != null && piece.COLOR != this.COLOR;
+        return piece != null && piece.color != this.color;
     }
 
     @Override

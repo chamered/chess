@@ -16,7 +16,7 @@ public class RulesEngine {
     public boolean isLegalMove(BoardImpl board, Move move, Color color) {
         Piece piece = board.getPieceAt(move.getFrom());
 
-        if (piece == null || piece.getCOLOR() != color) return false;
+        if (piece == null || piece.getColor() != color) return false;
 
         List<String> legalDestinations = piece.generatePossibleMoves(board, move.getFrom());
         String toAlgebraic = Piece.toAlgebraic(move.getTo());
@@ -41,7 +41,7 @@ public class RulesEngine {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 Piece piece = boardState[row][col];
-                if (piece != null && piece.getCOLOR() == color) {
+                if (piece != null && piece.getColor() == color) {
                     Position from = new Position(row, col);
                     List<String> possibleDestinations = piece.generatePossibleMoves(board, from);
                     for (String algebraic : possibleDestinations) {
@@ -61,13 +61,13 @@ public class RulesEngine {
 
     //Checks if the king is in check
     public boolean isKingInCheck(Color color, BoardImpl board) {
-        Position kingPos = board.findKingPosition(color);
+        Position kingPos = board.getKingPosition(color);
         Piece[][] boardState = board.getBoard();
 
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 Piece piece = boardState[row][col];
-                if (piece != null && piece.getCOLOR() != color) {
+                if (piece != null && piece.getColor() != color) {
                     Position from = new Position(row, col);
                     List<String> enemyMoves = piece.generatePossibleMoves(board, from);
                     for (String move : enemyMoves) {

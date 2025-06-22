@@ -14,18 +14,26 @@ public class Game {
     private Player whitePlayer;
     private Player blackPlayer;
     private Color currentTurn;
-    private GameStateEnum gameState;
+    private GameState gameState;
+    private InputHandler inputHandler;
 
     public Game() {
         board = new BoardImpl();
         currentTurn = Color.WHITE;
+        inputHandler = new InputHandler();
     }
 
     //Initializes board and players
     public void start() {
         printWelcomeMessage();
+        String mode = inputHandler.selectMode();
 
-        //board.printBoard();
+        if (mode.equals("1v1")) {
+            whitePlayer = new Player("White Player", Color.WHITE);
+            blackPlayer = new Player("Black Player", Color.BLACK);
+
+            runGameLoop();
+        }
     }
 
     //Check, Checkmate, etc.
@@ -37,7 +45,7 @@ public class Game {
     public boolean movePiece(Position from, Position to) {
         Piece piece = board.getPieceAt(from);
 
-        if (piece == null || piece.getCOLOR() != currentTurn) {
+        if (piece == null || piece.getColor() != currentTurn) {
             return false;
         }
 
@@ -66,6 +74,10 @@ public class Game {
         currentTurn = (currentTurn == Color.WHITE) ? Color.BLACK : Color.WHITE;
     }
 
+    // Returns the current player turn
+    public Player getCurrentPlayer() {
+        return whitePlayer.getColor() == currentTurn ? whitePlayer : blackPlayer;
+    }
 
     //Used in getLegalMoves
     public List<String> getUnfilteredPossibleMoves(Position from) {
@@ -93,16 +105,56 @@ public class Game {
         return legalMoves;
     }
 
+    public void runGameLoop() {
+        boolean running = true;
+
+        while (running) {
+            board.printBoard();
+            System.out.println(getCurrentPlayer().getName() + "'s turn");
+
+            System.out.println("Enter your move (e.g., e2 e4)");
+            System.out.print("> ");
+            String input = inputHandler.readLine();
+
+            if (input.equalsIgnoreCase("exit")) {
+                System.out.println("Game ended.");
+                break;
+            }
+
+            String[] tokens = input.split("\\s+"); // Split the input by the white spaces
+            if (tokens.length != 2) {
+                System.out.println("Invalid input. Please use format: e2 e4");
+                continue;
+            }
+
+            try {
+                Position from = new Position(Piece.fromAlgebraic(tokens[0])[0], Piece.fromAlgebraic(tokens[0])[1]);
+                Position to = new Position(Piece.fromAlgebraic(tokens[1])[0], Piece.fromAlgebraic(tokens[1])[1]);
+
+                boolean success = movePiece(from, to);
+                if (!success) {
+                    System.out.println("Invalid move. Try again.");
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid coordinates. Please use format: e2 e4");
+            }
+        }
+    }
+
     public void printWelcomeMessage() {
         System.out.println(
-                "=======================\n" +
-                "  JAVA TERMINAL CHESS  \n" +
-                "=======================\n" +
-                "Welcome to the game of Chess!\n" +
-                "\nWhite always starts.\n" +
-                "To make a move, type coordinates in the format: e2 e4\n" +
-                "\nType 'help' for commands or 'exit' to quit.\n" +
-                "Let the game begin!"
+                """
+                =======================
+                  JAVA TERMINAL CHESS \s
+                =======================
+                Welcome to the game of Chess!
+                
+                White always starts.
+                To make a move, type coordinates in the format: e2 e4
+                
+                Type 'help' for commands or 'exit' to quit.
+                Let the game begin!
+                """
         );
     }
 }

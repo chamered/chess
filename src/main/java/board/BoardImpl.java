@@ -3,14 +3,33 @@ package board;
 import pieces.*;
 import game.Move;
 
-public class BoardImpl implements Board {
+/*
+ANSI Escape Codes for Text Color
+Reset: \u001B[0m
+Blue: \u001B[34m
+Cyan: \u001B[36m
+Red: \u001B[31m
+Green: \u001B[32m
+White: \u001B[37m
+Yellow: \u001B[33m
+Black: \u001B[30m
+Magenta: \u001B[35m
+ */
 
+public class BoardImpl implements Board {
     private Piece[][] board;
 
+    // First constructor
     public BoardImpl() {
         setupBoard();
     }
 
+    // Second constructor
+    public BoardImpl(Piece[][] board) {
+        this.board = board;
+    }
+
+    // Initializes the board to the standard chess starting position
     private void setupBoard() {
         board = new Piece[8][8];
 
@@ -41,57 +60,26 @@ public class BoardImpl implements Board {
 
     @Override
     public void printBoard() {
+        final String BLACK = "\u001B[34m";
+        final String WHITE = "\u001B[33m";
+        final String RESET = "\u001B[0m";
+
         System.out.println("    a b c d e f g h\n");
 
         for (int i = 0; i < 8; i++) {
             System.out.print(8 - i + "   ");
             for (int j = 0; j < 8; j++) {
                 Piece piece = board[i][j];
-                if (piece != null) System.out.print(piece.getSYMBOL() + " ");
+                if (piece != null) {
+                    String colorCode = (piece.getColor() == Color.WHITE) ? WHITE : BLACK;
+                    System.out.print(colorCode + piece.getSymbol() + RESET + " ");
+                }
                 else System.out.print("X ");
             }
             System.out.println("  " + (8 - i));
         }
 
         System.out.println("\n    a b c d e f g h");
-    }
-
-    //Method to generate an hypothetical move for simulation purposes
-    public void makeMove(Move move) {
-        Piece piece = getPieceAt(move.getFrom());
-        setPieceAt(move.getFrom(), null);
-        setPieceAt(move.getTo(), piece);
-    }
-
-    //Copy of the board
-    public BoardImpl copy() {
-        BoardImpl newBoard = new BoardImpl();
-
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                Piece piece = board[row][col];
-                if (piece != null) {
-                    newBoard.board[row][col] = piece.copy();
-                }
-            }
-        }
-
-        return newBoard;
-    }
-
-    public Position findKingPosition(Color color) {
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                Piece piece = board[row][col];
-                if (piece instanceof King &&
-                        piece.getCOLOR() == color) {
-                    return new Position(row, col);
-                }
-            }
-        }
-
-        // This should never happen in a legal game state
-        throw new IllegalStateException("King of color " + color + " not found on the board.");
     }
 
     @Override
@@ -110,7 +98,36 @@ public class BoardImpl implements Board {
     }
 
     @Override
+    public void makeMove(Move move) {
+        Piece piece = getPieceAt(move.getFrom());
+        setPieceAt(move.getFrom(), null);
+        setPieceAt(move.getTo(), piece);
+    }
+
+    @Override
+    public Position getKingPosition(Color color) {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Piece piece = board[row][col];
+                if (piece instanceof King &&
+                        piece.getColor() == color) {
+                    return new Position(row, col);
+                }
+            }
+        }
+
+        // This should never happen in a legal game state
+        throw new IllegalStateException("King of color " + color + " not found on the board.");
+    }
+
+    @Override
     public void resetBoard() {
         setupBoard();
+    }
+
+    @Override
+    public BoardImpl copy() {
+        Piece[][] boardCopy = board.clone();
+        return new BoardImpl(boardCopy);
     }
 }

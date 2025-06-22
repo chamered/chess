@@ -15,18 +15,18 @@ public class Pawn extends Piece{
     }
 
     public boolean isWhite(){
-        return this.COLOR == Color.WHITE;
+        return this.color == Color.WHITE;
     }
 
     @Override
     public Piece copy() {
-        return new Pawn(this.COLOR);
+        return new Pawn(this.color);
     }
 
     @Override
     public boolean eatOtherPiece(Piece piece){
         // A pawn can only capture opposing pieces
-        return piece != null && piece.COLOR != this.COLOR;
+        return piece != null && piece.color != this.color;
     }
 
     /**
