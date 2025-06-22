@@ -45,12 +45,7 @@ public class Game {
     public boolean movePiece(Position from, Position to) {
         Piece piece = board.getPieceAt(from);
 
-        if (piece == null || piece.getColor() != currentTurn) {
-            return false;
-        }
-
-        if (!isMoveValid(from, to)) {
-            System.out.println("Move is invalid.");
+        if (piece == null || piece.getColor() != currentTurn || !isMoveValid(from, to)) {
             return false;
         }
 
