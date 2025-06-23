@@ -36,7 +36,6 @@ public class Rook extends Piece {
     public List<String> generatePossibleMoves(BoardImpl board, Position currentPos) {
         List<String> possibleMoves = new ArrayList<>();
 
-        // Rook moves only in 4 directions: up, down, left, right
         int[][] directions = {
                 {-1, 0},  // up
                 {1, 0},   // down
@@ -44,17 +43,13 @@ public class Rook extends Piece {
                 {0, 1}    // right
         };
 
-        int startRow = currentPos.getRow();
-        int startCol = currentPos.getColumn();
         Piece[][] boardState = board.getBoard();
 
         for (int[] direction : directions) {
-            Position pos = new Position(startRow + direction[0], startCol + direction[1]);
-            int row = pos.getRow();
-            int col = pos.getColumn();
+            Position pos = new Position(currentPos.getRow() + direction[0], currentPos.getColumn() + direction[1]);
 
             while (isInsideBoard(pos)) {
-                Piece target = boardState[row][col];
+                Piece target = boardState[pos.getRow()][pos.getColumn()];
 
                 if (target == null) {
                     possibleMoves.add(toAlgebraic(pos));
@@ -62,14 +57,13 @@ public class Rook extends Piece {
                     if (eatOtherPiece(target)) {
                         possibleMoves.add(toAlgebraic(pos));
                     }
-                    break; // Stop at any piece (own or enemy)
+                    break;
                 }
 
-                pos.setRow(row + direction[0]);
-                pos.setColumn(col + direction[1]);
+                pos.setRow(pos.getRow() + direction[0]);
+                pos.setColumn(pos.getColumn() + direction[1]);
             }
         }
-
         return possibleMoves;
     }
 }
