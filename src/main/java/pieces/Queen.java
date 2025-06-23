@@ -41,24 +41,22 @@ public class Queen extends Piece {
                 {1, 0},   // down
                 {0, -1},  // left
                 {0, 1},   // right
-                {-1, -1}, // up-left diagonal
-                {-1, 1},  // up-right diagonal
-                {1, -1},  // down-left diagonal
-                {1, 1}    // down-right diagonal
+                {-1, -1}, // up-left
+                {-1, 1},  // up-right
+                {1, -1},  // down-left
+                {1, 1}    // down-right
         };
 
-        int startRow = currentPos.getRow();
-        int startCol = currentPos.getColumn();
         Piece[][] boardState = board.getBoard();
 
         for (int[] direction : directions) {
-            Position pos = new Position(startRow + direction[0], startCol + direction[1]);
-            int row = pos.getRow();
-            int col = pos.getColumn();
+            Position pos = new Position(
+                    currentPos.getRow() + direction[0],
+                    currentPos.getColumn() + direction[1]
+            );
 
-            // Move step by step in one direction
             while (isInsideBoard(pos)) {
-                Piece target = boardState[row][col];
+                Piece target = boardState[pos.getRow()][pos.getColumn()];
 
                 if (target == null) {
                     possibleMoves.add(toAlgebraic(pos));
@@ -66,13 +64,15 @@ public class Queen extends Piece {
                     if (eatOtherPiece(target)) {
                         possibleMoves.add(toAlgebraic(pos));
                     }
-                    break; // Stop at first piece
+                    break; // Can't go beyond this piece
                 }
 
-                pos.setRow(row + direction[0]);
-                pos.setColumn(col + direction[1]);
+                // Move further in the same direction
+                pos.setRow(pos.getRow() + direction[0]);
+                pos.setColumn(pos.getColumn() + direction[1]);
             }
         }
+
         return possibleMoves;
     }
 }
