@@ -5,10 +5,15 @@ import java.util.Scanner;
 public class InputHandler {
     private final Scanner scanner;
 
+    // Constructor
     public InputHandler() {
         this.scanner = new Scanner(System.in);
     }
 
+    /**
+     * Returns a string with the selected mode.
+     * @return the selected mode as String
+     */
     public String selectMode() {
         System.out.println("Select the game mode:\n1v1 or 1vBot");
         System.out.print("> ");
@@ -29,6 +34,10 @@ public class InputHandler {
         }
     }
 
+    /**
+     * Returns the user input without spaces.
+     * @return the user input
+     */
     public String readLine() {
         return scanner.nextLine().trim();
     }

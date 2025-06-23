@@ -17,13 +17,16 @@ public class Game {
     private GameState gameState;
     private InputHandler inputHandler;
 
+    // Constructor
     public Game() {
         board = new BoardImpl();
         currentTurn = Color.WHITE;
         inputHandler = new InputHandler();
     }
 
-    //Initializes board and players
+    /**
+     * Start the game.
+     */
     public void start() {
         printWelcomeMessage();
         String mode = inputHandler.selectMode();
@@ -41,35 +44,47 @@ public class Game {
         //TODO
     }
 
-    //Makes the move
-    public boolean movePiece(Position from, Position to) {
-        Piece piece = board.getPieceAt(from);
+    /**
+     * Attempts to move a piece.
+     * @param move the move to make
+     * @return true if the move is valid and was executed, false otherwise
+     */
+    public boolean movePiece(Move move) {
+        Piece piece = board.getPieceAt(move.getFrom());
 
-        if (piece == null || piece.getColor() != currentTurn || !isMoveValid(from, to)) {
+        if (piece == null || piece.getColor() != currentTurn || !isMoveValid(move)) {
             return false;
         }
 
-        board.setPieceAt(from, null);
-        board.setPieceAt(to, piece);
+        board.setPieceAt(move.getFrom(), null);
+        board.setPieceAt(move.getTo(), piece);
 
         switchPlayer();
 
         return true;
     }
 
-    //Check validity of the move
-    public boolean isMoveValid(Position from, Position to) {
-        Move move = new Move(from, to);
+    /**
+     * Checks if a move is valid.
+     * @param move the move to check
+     * @return true if the move is valid
+     */
+    public boolean isMoveValid(Move move) {
         RulesEngine engine = new RulesEngine();
         return engine.isLegalMove(board, move, currentTurn);
     }
 
-    //Changes the turn
+    /**
+     * Switches the turn to the next player.
+     */
     public void switchPlayer() {
         currentTurn = (currentTurn == Color.WHITE) ? Color.BLACK : Color.WHITE;
     }
 
-    // Returns the current player turn
+    /**
+     * Returns the current player.
+     * @return the current player
+     */
     public Player getCurrentPlayer() {
         return whitePlayer.getColor() == currentTurn ? whitePlayer : blackPlayer;
     }
@@ -90,16 +105,24 @@ public class Game {
     public List<String> getLegalMoves(Position from) {
         List<String> legalMoves = new ArrayList<>();
         List<String> possibleMoves = getUnfilteredPossibleMoves(from);
-        for (String move : possibleMoves) {
-            int[] coordinates = Piece.fromAlgebraic(move);
-            Position to = new Position(coordinates[0], coordinates[1]);
-            if (isMoveValid(from, to)) {
-                legalMoves.add(move);
+        for (String m : possibleMoves) {
+            int[] coordinates = Piece.fromAlgebraic(m);
+            Move move = new Move(from, new Position(coordinates[0], coordinates[1]));
+            if (isMoveValid(move)) {
+                legalMoves.add(m);
             }
         }
         return legalMoves;
     }
 
+    /**
+     * Starts the main game loop for the chess match.
+     * This method alternates turns between players, prints the updated state of the board,
+     * reads player input from the console, and attempts to perform the specified move.
+     * The loop continues until the one player types "exit" or the game ends by other rules
+     * (e.g., checkmate or stalemate).
+     * Invalid input formats and illegal moves are detected and handled with appropriate messages.
+     */
     public void runGameLoop() {
         boolean running = true;
 
@@ -126,7 +149,7 @@ public class Game {
                 Position from = new Position(Piece.fromAlgebraic(tokens[0])[0], Piece.fromAlgebraic(tokens[0])[1]);
                 Position to = new Position(Piece.fromAlgebraic(tokens[1])[0], Piece.fromAlgebraic(tokens[1])[1]);
 
-                boolean success = movePiece(from, to);
+                boolean success = movePiece(new Move(from, to));
                 if (!success) {
                     System.out.println("Invalid move. Try again.");
                 }
@@ -136,6 +159,9 @@ public class Game {
         }
     }
 
+    /**
+     * Prints the welcome message when the program is executed.
+     */
     public void printWelcomeMessage() {
         System.out.println(
                 """
