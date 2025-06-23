@@ -15,7 +15,7 @@ public class Game {
     private Player blackPlayer;
     private Color currentTurn;
     private GameState gameState;
-    private InputHandler inputHandler;
+    private final InputHandler inputHandler;
 
     // Constructor
     public Game() {
@@ -128,20 +128,21 @@ public class Game {
 
         while (running) {
             board.printBoard();
-            System.out.println(getCurrentPlayer().getName() + "'s turn");
+            String textColor = currentTurn == Color.WHITE ? "\u001B[33m" : "\u001B[34m";
+            System.out.println(textColor + getCurrentPlayer().getName() + "'s\u001B[0m turn.");
 
             System.out.println("Enter your move (e.g., e2 e4)");
             System.out.print("> ");
             String input = inputHandler.readLine();
 
             if (input.equalsIgnoreCase("exit")) {
-                System.out.println("Game ended.");
+                System.out.println("\u001B[31mGame ended.\u001B[0m");
                 break;
             }
 
             String[] tokens = input.split("\\s+"); // Split the input by the white spaces
             if (tokens.length != 2) {
-                System.out.println("Invalid input. Please use format: e2 e4");
+                System.out.println("\u001B[31mInvalid input. Please use format: e2 e4\u001B[0m");
                 continue;
             }
 
@@ -151,7 +152,7 @@ public class Game {
 
                 boolean success = movePiece(new Move(from, to));
                 if (!success) {
-                    System.out.println("Invalid move. Try again.");
+                    System.out.println("\u001B[31mInvalid move. Try again.\u001B[0m");
                 }
             } catch (IllegalArgumentException e) {
                 System.out.println("Invalid coordinates. Please use format: e2 e4");

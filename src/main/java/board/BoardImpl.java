@@ -51,7 +51,7 @@ public class BoardImpl implements Board {
         final String WHITE = "\u001B[33m";
         final String RESET = "\u001B[0m";
 
-        System.out.println("    a b c d e f g h\n");
+        System.out.println("\n    a b c d e f g h\n");
 
         for (int i = 0; i < 8; i++) {
             System.out.print(8 - i + "   ");
@@ -66,7 +66,7 @@ public class BoardImpl implements Board {
             System.out.println("  " + (8 - i));
         }
 
-        System.out.println("\n    a b c d e f g h");
+        System.out.println("\n    a b c d e f g h\n");
     }
 
     @Override

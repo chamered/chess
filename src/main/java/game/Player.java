@@ -5,8 +5,8 @@ import pieces.*;
 import java.util.Set;
 
 public class Player {
-    private String name;
-    private Color color;
+    private final String name;
+    private final Color color;
     private Set<Piece> capturedPieces;
 
     public Player(String name, Color color) {
