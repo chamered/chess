@@ -49,8 +49,6 @@ public class Game {
             return false;
         }
 
-        System.out.println("non dovrebbe arrivare qui");
-
         board.setPieceAt(from, null);
         board.setPieceAt(to, piece);
 

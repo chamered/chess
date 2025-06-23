@@ -3,19 +3,6 @@ package board;
 import pieces.*;
 import game.Move;
 
-/*
-ANSI Escape Codes for Text Color
-Reset: \u001B[0m
-Blue: \u001B[34m
-Cyan: \u001B[36m
-Red: \u001B[31m
-Green: \u001B[32m
-White: \u001B[37m
-Yellow: \u001B[33m
-Black: \u001B[30m
-Magenta: \u001B[35m
- */
-
 public class BoardImpl implements Board {
     private Piece[][] board;
 
