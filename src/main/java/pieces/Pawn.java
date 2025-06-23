@@ -71,6 +71,11 @@ public class Pawn extends Piece{
 
         return possibleMoves;
     }
+
+    @Override
+    public Piece clone() {
+        return new Pawn(this.color);
+    }
 }
 
 

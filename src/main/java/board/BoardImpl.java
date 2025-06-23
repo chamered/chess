@@ -127,7 +127,17 @@ public class BoardImpl implements Board {
 
     @Override
     public BoardImpl copy() {
-        Piece[][] boardCopy = board.clone();
+        Piece[][] boardCopy = new Piece[8][8];
+
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Piece piece = board[row][col];
+                if (piece != null) {
+                    boardCopy[row][col] = piece.clone();
+                }
+            }
+        }
+
         return new BoardImpl(boardCopy);
     }
 }

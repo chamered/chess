@@ -75,4 +75,9 @@ public class Queen extends Piece {
 
         return possibleMoves;
     }
+
+    @Override
+    public Piece clone() {
+        return new Queen(this.color);
+    }
 }
