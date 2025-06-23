@@ -3,7 +3,7 @@ package game;
 import java.util.Scanner;
 
 public class InputHandler {
-    private Scanner scanner;
+    private final Scanner scanner;
 
     public InputHandler() {
         this.scanner = new Scanner(System.in);
@@ -15,14 +15,17 @@ public class InputHandler {
         String mode = scanner.nextLine();
 
         switch (mode) {
-            case "1v1":
+            case "1v1" -> {
                 return "1v1";
-            case "1vBot":
+            }
+            case "1vBot" -> {
                 System.out.println("1vBot mode is not implemented yet. Defaulting to 1v1.");
                 return "1v1";
-            default:
+            }
+            default -> {
                 System.out.println("Invalid mode: '" + mode + "'");
                 return selectMode();
+            }
         }
     }
 
