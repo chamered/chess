@@ -10,11 +10,11 @@ import java.util.List;
 
 public class RulesEngine {
     /**
-     *
-     * @param board the board
-     * @param move the alleged movement to be performed
-     * @param color the color of the player
-     * @return true iff the movement is legal
+     * Checks if a move is legal.
+     * @param board the board to check the move on
+     * @param move the move to check
+     * @param color the player's color
+     * @return true if the move is legal, false otherwise
      */
     public static boolean isMoveLegal(BoardImpl board, Move move, Color color) {
         Piece piece = board.getPieceAt(move.from());
