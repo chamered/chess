@@ -1,118 +1,183 @@
+/*--------------------------------------------------------------------
+ *  Improved BoardTest — JUnit 5
+ *-------------------------------------------------------------------*/
 import board.BoardImpl;
 import board.Position;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import pieces.Color;
-import pieces.Piece;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import pieces.*;
 
-public class BoardTest {
-    @DisplayName("Should verify that the board has all the pawns setup correctly!")
-    @Test
-    public void shouldVerifyTheBoard(){
-       BoardImpl board = new BoardImpl();
-       verifyBoard(board);
+import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+@DisplayName("BoardImpl – canonical behaviour test‑suite")
+class BoardTest {
+
+    private BoardImpl board;   // fresh board injected before every test
+
+    /*------------------------------------------------------------*/
+    /*  LIFECYCLE                                                 */
+    /*------------------------------------------------------------*/
+    @BeforeEach
+    void setUp() {
+        board = new BoardImpl();
     }
 
-    @DisplayName("Provided position does not respect the shape of the board, should return null")
+    /*------------------------------------------------------------*/
+    /*  1. BOARD INITIALISATION                                   */
+    /*------------------------------------------------------------*/
     @Test
-    public void shouldReturnNull(){
-        BoardImpl board = new BoardImpl();
-        Assertions.assertNull(board.getPieceAt(new Position(-2, -4)));
-        Assertions.assertNull(board.getPieceAt(new Position(-1, -1)));
-        Assertions.assertNull(board.getPieceAt(new Position(-100, -100)));
+    @DisplayName("Initial position contains the correct arrangement of major pieces & pawns")
+    void initialBoardLayout_isCorrect() {
+
+        // Assertions grouped by piece‑type for better failure reporting
+        assertAll("Major pieces",
+            // Knights
+            () -> assertKnight(new Position(0, 1)),
+            () -> assertKnight(new Position(0, 6)),
+            () -> assertKnight(new Position(7, 1)),
+            () -> assertKnight(new Position(7, 6)),
+
+            // Rooks
+            () -> assertRook(new Position(0, 0)),
+            () -> assertRook(new Position(0, 7)),
+            () -> assertRook(new Position(7, 0)),
+            () -> assertRook(new Position(7, 7)),
+
+            // Bishops
+            () -> assertBishop(new Position(0, 2)),
+            () -> assertBishop(new Position(0, 5)),
+            () -> assertBishop(new Position(7, 2)),
+            () -> assertBishop(new Position(7, 5)),
+
+            // Queen & King (note: Queen on d‑file)
+            () -> assertInstanceOf(Queen.class, piece(0, 3)),
+            () -> assertInstanceOf(Queen.class, piece(7, 3)),
+            () -> assertInstanceOf(King.class,  piece(0, 4)),
+            () -> assertInstanceOf(King.class,  piece(7, 4))
+        );
+
+        // Pawns – iterate programmatically, one assertion per file
+        IntStream.range(0, 8).forEach(col -> {
+            assertAll("Pawns @" + col,
+                () -> assertPawn(new Position(1, col)),
+                () -> assertPawn(new Position(6, col))
+            );
+        });
     }
 
-    @DisplayName("Provided position is valid, should return the pieces properly after move is performed")
+    /*------------------------------------------------------------*/
+    /*  2. ILLEGAL COORDINATES                                    */
+    /*------------------------------------------------------------*/
+    @ParameterizedTest(name = "[{index}] invalid pos → {0}")
+    @MethodSource("invalidPositions")
+    @DisplayName("getPieceAt returns null for out‑of‑bounds coordinates")
+    void getPieceAt_withInvalidPosition_returnsNull(Position invalid) {
+        Assertions.assertNull(board.getPieceAt(invalid));
+    }
+    private static Stream<Position> invalidPositions() {
+        return Stream.of(
+            new Position(-2, -4),
+            new Position(-1, -1),
+            new Position(-100, 99)
+        );
+    }
+
+    /*------------------------------------------------------------*/
+    /*  3. PIECE MOVEMENT API                                     */
+    /*------------------------------------------------------------*/
     @Test
-    public void shouldReturnPieceAfterMove(){
-        BoardImpl board = new BoardImpl();
-        Piece rook = board.getPieceAt(new Position(0,0));
+    @DisplayName("setPieceAt moves a piece correctly and clears its source square")
+    void setPieceAt_movesPiece() {
+        Position a8 = new Position(0, 0);
+        Position a7 = new Position(1, 0);
+        Piece rook = piece(a8);
 
-        Assertions.assertNotNull(board.getPieceAt(new Position(0,0)));
-        Assertions.assertEquals("pieces.Rook", rook.getClass().getName());
+        assertAll(
+            () -> assertInstanceOf(Rook.class, rook),
+            () -> board.setPieceAt(a7, rook),
+            () -> board.setPieceAt(a8, null),
+            () -> Assertions.assertNull(piece(a8)),
+            () -> Assertions.assertEquals(rook, piece(a7))
+        );
+    }
 
-        board.setPieceAt(new Position(1,0), rook);
+    /*------------------------------------------------------------*/
+    /*  4. KING POSITION TRACKING                                 */
+    /*------------------------------------------------------------*/
+    @Test
+    @DisplayName("getKingPosition tracks the King when it moves")
+    void kingPosition_updatesAfterMove() {
+        Position whiteStart = new Position(7, 4);
+        Position target     = new Position(6, 4);
+
+        Assertions.assertEquals(whiteStart, board.getKingPosition(Color.WHITE));
+
+        board.setPieceAt(target, piece(whiteStart));
+        board.setPieceAt(whiteStart, null);
+
+        Assertions.assertEquals(target, board.getKingPosition(Color.WHITE));
+    }
+
+    /*------------------------------------------------------------*/
+    /*  5. RESET FUNCTIONALITY                                    */
+    /*------------------------------------------------------------*/
+    @Test
+    @DisplayName("resetBoard restores canonical starting layout after arbitrary moves")
+    void resetBoard_restoresInitialSetup() {
+        // scramble a few pieces
+        board.setPieceAt(new Position(1,3), piece(0, 3));  board.setPieceAt(new Position(0,3), null);
+        board.setPieceAt(new Position(6,2), piece(7, 2));  board.setPieceAt(new Position(7,2), null);
+
+        // verify the scramble took effect
+        Assertions.assertAll(
+            () -> Assertions.assertNull(piece(0,3)),
+            () -> Assertions.assertNull(piece(7,2)),
+            () -> assertNotNullPiece(1,3),
+            () -> assertNotNullPiece(6,2)
+        );
+
+        board.resetBoard();  // action
+        initialBoardLayout_isCorrect();  // reuse logic
+    }
+
+    /*------------------------------------------------------------*/
+    /*  6. DEEP COPY                                              */
+    /*------------------------------------------------------------*/
+    @Test
+    @DisplayName("copy() produces a deep clone, independent of original board")
+    void copy_producesDeepClone() {
+        // simple move to differentiate
+        board.setPieceAt(new Position(1,0), piece(0, 0));
         board.setPieceAt(new Position(0,0), null);
 
-        Assertions.assertNull(board.getPieceAt(new Position(0, 0)));
-        Assertions.assertNotNull(board.getPieceAt(new Position(1,0)));
+        BoardImpl cloned = board.copy();
+
+        Assertions.assertAll(
+            () -> assertInstanceOf(Rook.class, cloned.getPieceAt(new Position(1,0))),
+            () -> Assertions.assertNull(cloned.getPieceAt(new Position(0,0))),
+            () -> { // mutate original, expect clone unaffected
+                   board.setPieceAt(new Position(2,0), piece(1, 0));
+                   Assertions.assertNotEquals(board.getPieceAt(new Position(2,0)),
+                                              cloned.getPieceAt(new Position(2,0)));
+            }
+        );
     }
 
-    @DisplayName("Should return the position of the King")
-    @Test
-    public void shouldReturnKingPosition(){
-        BoardImpl board = new BoardImpl();
+    /*------------------------------------------------------------*/
+    /*  Helper Methods                                            */
+    /*------------------------------------------------------------*/
+    private Piece piece(int row, int col) { return board.getPieceAt(new Position(row, col)); }
+    private Piece piece(Position p)       { return board.getPieceAt(p);                    }
 
-        Assertions.assertEquals(new Position(7,4), board.getKingPosition(Color.WHITE));
-        board.setPieceAt(new Position(6,4), board.getPieceAt(new Position(7,4)));
-        board.setPieceAt(new Position(7,4), null);
-        Assertions.assertEquals(new Position(6,4), board.getKingPosition(Color.WHITE));
+    private void assertKnight(Position p){ assertInstanceOf(Knight.class, piece(p)); }
+    private void assertRook(Position p)  { assertInstanceOf(Rook.class,   piece(p)); }
+    private void assertBishop(Position p){ assertInstanceOf(Bishop.class, piece(p)); }
+    private void assertPawn(Position p)  { assertInstanceOf(Pawn.class,   piece(p)); }
+
+    private void assertNotNullPiece(int r, int c) {
+        Assertions.assertNotNull(piece(r, c), "Expected piece at " + r + "," + c);
     }
-
-    @DisplayName("Should reset the board properly!")
-    @Test
-    public void shouldResetBoard(){
-        BoardImpl board = new BoardImpl();
-        verifyBoard(board);
-
-        board.setPieceAt(new Position(1,3), board.getPieceAt(new Position(0, 3)));
-        board.setPieceAt(new Position(0,3), null);
-
-        board.setPieceAt(new Position(6,2), board.getPieceAt(new Position(7,2)));
-        board.setPieceAt(new Position(7, 2), null);
-
-        Assertions.assertNotNull(board.getPieceAt(new Position(1,3)));
-        Assertions.assertNull(board.getPieceAt(new Position(0,3)));
-        Assertions.assertNotNull(board.getPieceAt(new Position(6,2)));
-        Assertions.assertNull(board.getPieceAt(new Position(7,2)));
-
-        board.resetBoard();
-        verifyBoard(board);
-    }
-
-    @DisplayName("Should copy the other board correctly")
-    @Test
-    public void shouldCopyBoard(){
-        BoardImpl board = new BoardImpl();
-        board.setPieceAt(new Position(1,0), board.getPieceAt(new Position(0, 0)));
-        board.setPieceAt(new Position(0, 0), null);
-
-        BoardImpl boardCopy = board.copy();
-        Assertions.assertEquals(boardCopy.getPieceAt(new Position(1, 0)).getClass(), board.getPieceAt(new Position(1,0)).getClass());
-        Assertions.assertEquals(boardCopy.getPieceAt(new Position(0, 0)), board.getPieceAt(new Position(0, 0)));
-    }
-
-    /**
-     * Verifies the proper structure of the board
-     * @param board the board to verify the placement of its Pieces
-     */
-    private void verifyBoard(BoardImpl board){
-        Assertions.assertEquals("pieces.Knight", board.getPieceAt(new Position(0,6)).getClass().getName());
-        Assertions.assertEquals("pieces.Knight", board.getPieceAt(new Position(0,1)).getClass().getName());
-        Assertions.assertEquals("pieces.Knight", board.getPieceAt(new Position(7,1)).getClass().getName());
-        Assertions.assertEquals("pieces.Knight", board.getPieceAt(new Position(7,6)).getClass().getName());
-
-        Assertions.assertEquals("pieces.King", board.getPieceAt(new Position(0,4)).getClass().getName());
-        Assertions.assertEquals("pieces.King", board.getPieceAt(new Position(7,4)).getClass().getName());
-
-        Assertions.assertEquals("pieces.Rook", board.getPieceAt(new Position(0,0)).getClass().getName());
-        Assertions.assertEquals("pieces.Rook", board.getPieceAt(new Position(0,7)).getClass().getName());
-        Assertions.assertEquals("pieces.Rook", board.getPieceAt(new Position(7,0)).getClass().getName());
-        Assertions.assertEquals("pieces.Rook", board.getPieceAt(new Position(7, 7)).getClass().getName());
-
-        Assertions.assertEquals("pieces.Bishop", board.getPieceAt(new Position(0,2)).getClass().getName());
-        Assertions.assertEquals("pieces.Bishop", board.getPieceAt(new Position(0,5)).getClass().getName());
-        Assertions.assertEquals("pieces.Bishop", board.getPieceAt(new Position(7, 2)).getClass().getName());
-        Assertions.assertEquals("pieces.Bishop", board.getPieceAt(new Position(7, 5)).getClass().getName());
-
-        Assertions.assertEquals("pieces.Queen", board.getPieceAt(new Position(0,3)).getClass().getName());
-        Assertions.assertEquals("pieces.Queen", board.getPieceAt(new Position(7,3)).getClass().getName());
-
-        for(int i = 0; i < 8; i++){
-            Assertions.assertEquals("pieces.Pawn", board.getPieceAt(new Position(1, i)).getClass().getName());
-            Assertions.assertEquals("pieces.Pawn", board.getPieceAt(new Position(6, i)).getClass().getName());
-        }
-    }
-
 }
