@@ -3,18 +3,13 @@ package game;
 import java.util.Scanner;
 
 public class InputHandler {
-    private final Scanner scanner;
-
-    // Constructor
-    public InputHandler() {
-        this.scanner = new Scanner(System.in);
-    }
+    private static final Scanner scanner = new Scanner(System.in);
 
     /**
      * Returns a string with the selected mode.
      * @return the selected mode as String
      */
-    public String selectMode() {
+    public static String selectMode() {
         System.out.println("Select the game mode. [\"1v1\"/\"1vBot\"]:");
         System.out.print("> ");
         String mode = scanner.nextLine();
@@ -33,7 +28,7 @@ public class InputHandler {
      * Returns a string with the color selected by the user.
      * @return the chosen color
      */
-    public String chooseColor() {
+    public static String chooseColor() {
         System.out.println("What side would you like to play as. [w/b]:");
         System.out.print("> ");
         String color = scanner.nextLine().toLowerCase();
@@ -49,7 +44,7 @@ public class InputHandler {
         };
     }
 
-    public int selectDepth() {
+    public static int selectDepth() {
         System.out.println("How deep should the BOT look for moves?");
         System.out.println("\u001B[31mWarning\u001B[0m: values above 3 will be very slow. [n]?");
         System.out.print("> ");
@@ -62,7 +57,7 @@ public class InputHandler {
      * Returns the user input without spaces.
      * @return the user input
      */
-    public String readLine() {
+    public static String readLine() {
         return scanner.nextLine().trim();
     }
 }

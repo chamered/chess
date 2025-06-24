@@ -15,13 +15,11 @@ public class Game {
     private Player blackPlayer;
     private Color currentTurn;
     private GameState gameState;
-    private final InputHandler inputHandler;
 
     // Constructor
     public Game() {
         board = new BoardImpl();
         currentTurn = Color.WHITE;
-        inputHandler = new InputHandler();
     }
 
     /**
@@ -29,15 +27,15 @@ public class Game {
      */
     public void start() {
         printWelcomeMessage();
-        String mode = inputHandler.selectMode();
+        String mode = InputHandler.selectMode();
 
         if (mode.equals("1v1")) {
             whitePlayer = new HumanPlayer("White Player's", Color.WHITE);
             blackPlayer = new HumanPlayer("Black Player's", Color.BLACK);
         } else if (mode.equals("1vBot")) {
-            String color = inputHandler.chooseColor();
+            String color = InputHandler.chooseColor();
             System.out.println("You will play as " + (color.equals("w") ? "\u001B[33mwhite\u001B[0m" : "\u001B[34mblack\u001B[0m"));
-            int depth = inputHandler.selectDepth();
+            int depth = InputHandler.selectDepth();
             whitePlayer = color.equals("w") ? new HumanPlayer("It's your", Color.WHITE) : new BotPlayer(Color.WHITE, depth);
             blackPlayer = color.equals("b") ? new HumanPlayer("It's your", Color.BLACK) : new BotPlayer(Color.BLACK, depth);
         }
@@ -145,7 +143,7 @@ public class Game {
             } else {
                 System.out.println("Enter your move. [e2 e4]:");
                 System.out.print("> ");
-                String input = inputHandler.readLine().toLowerCase();
+                String input = InputHandler.readLine().toLowerCase();
 
                 if (input.equalsIgnoreCase("exit")) exit();
 
