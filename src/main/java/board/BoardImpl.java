@@ -3,6 +3,8 @@ package board;
 import pieces.*;
 import game.Move;
 
+import java.util.Optional;
+
 public class BoardImpl implements Board {
     private Piece[][] board;
 
@@ -76,7 +78,7 @@ public class BoardImpl implements Board {
 
     @Override
     public Piece getPieceAt(Position pos) {
-        return board[pos.getRow()][pos.getColumn()];
+        return pos.getRow() > 0 && pos.getColumn() > 0 ? board[pos.getRow()][pos.getColumn()] : null;
     }
 
     @Override
@@ -86,9 +88,9 @@ public class BoardImpl implements Board {
 
     @Override
     public void makeMove(Move move) {
-        Piece piece = getPieceAt(move.getFrom());
-        setPieceAt(move.getFrom(), null);
-        setPieceAt(move.getTo(), piece);
+        Piece piece = getPieceAt(move.from());
+        setPieceAt(move.from(), null);
+        setPieceAt(move.to(), piece);
     }
 
     @Override

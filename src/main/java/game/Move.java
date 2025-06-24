@@ -4,22 +4,7 @@ import board.Position;
 import pieces.Piece;
 import java.util.Objects;
 
-public class Move {
-    private final Position from;
-    private final Position to;
-
-    public Move(Position from, Position to) {
-        this.from = from;
-        this.to = to;
-    }
-
-    public Position getFrom() {
-        return from;
-    }
-
-    public Position getTo() {
-        return to;
-    }
+public record Move(Position from, Position to) {
 
     @Override
     public String toString() {
@@ -35,8 +20,4 @@ public class Move {
                 Objects.equals(to, move.to);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(from, to);
-    }
 }

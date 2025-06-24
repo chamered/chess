@@ -50,14 +50,14 @@ public class Game {
      * @return true if the move is valid and was executed, false otherwise
      */
     public boolean movePiece(Move move) {
-        Piece piece = board.getPieceAt(move.getFrom());
+        Piece piece = board.getPieceAt(move.from());
 
         if (piece == null || piece.getColor() != currentTurn || !isMoveValid(move)) {
             return false;
         }
 
-        board.setPieceAt(move.getFrom(), null);
-        board.setPieceAt(move.getTo(), piece);
+        board.setPieceAt(move.from(), null);
+        board.setPieceAt(move.to(), piece);
 
         switchPlayer();
 

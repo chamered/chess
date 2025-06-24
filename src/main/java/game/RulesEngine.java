@@ -14,12 +14,12 @@ public class RulesEngine {
 
     //Check if a move is legal
     public boolean isLegalMove(BoardImpl board, Move move, Color color) {
-        Piece piece = board.getPieceAt(move.getFrom());
+        Piece piece = board.getPieceAt(move.from());
 
         if (piece == null || piece.getColor() != color) return false;
 
-        List<String> legalDestinations = piece.generatePossibleMoves(board, move.getFrom());
-        String toAlgebraic = Piece.toAlgebraic(move.getTo());
+        List<String> legalDestinations = piece.generatePossibleMoves(board, move.from());
+        String toAlgebraic = Piece.toAlgebraic(move.to());
 
         if (!legalDestinations.contains(toAlgebraic)) return false;
 
