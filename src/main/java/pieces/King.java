@@ -12,10 +12,25 @@ public class King extends Piece {
         super(color == Color.WHITE ? 1000 : -1000, 'K', color); // Kings are usually very high value (1000+)
     }
 
+    private boolean hasMoved = false;
+
+    public boolean hasMoved() {
+        return hasMoved;
+    }
+
+    public void setHasMoved(boolean moved) {
+        this.hasMoved = moved;
+    }
+
+
+
 
     @Override
     public Piece copy() {
-        return new King(this.color);
+        King copy = new King(this.color);
+        copy.setHasMoved(this.hasMoved);
+        return copy;
+
     }
 
     @Override
@@ -24,31 +39,57 @@ public class King extends Piece {
         return piece != null && piece.color != this.color;
     }
 
-    @Override
-    public List<String> generatePossibleMoves(BoardImpl board, Position currentPos) {
-        List<String> possibleMoves = new ArrayList<>();
 
-        int row = currentPos.getRow();
-        int col = currentPos.getColumn();
-        Piece[][] boardState = board.getBoard();
+        @Override
+        public List<String> generatePossibleMoves(BoardImpl board, Position currentPos) {
+            List<String> moves = new ArrayList<>();
 
-        // King can move to 8 surrounding squares (one step in each direction)
-        for (int rowOffset = -1; rowOffset <= 1; rowOffset++) {
-            for (int colOffset = -1; colOffset <= 1; colOffset++) {
-                if (rowOffset == 0 && colOffset == 0) continue; // skip the current position
+            int row = currentPos.getRow();
+            int col = currentPos.getColumn();
+            Piece[][] boardState = board.getBoard();
 
-                Position pos = new Position(row + rowOffset, col + colOffset);
-
-                if (isInsideBoard(pos)) {
-                    Piece target = boardState[pos.getRow()][pos.getColumn()];
-
-                    if (target == null || eatOtherPiece(target)) {
-                        possibleMoves.add(toAlgebraic(pos));
+            // Standard 8 surrounding squares
+            for (int r = -1; r <= 1; r++) {
+                for (int c = -1; c <= 1; c++) {
+                    if (r == 0 && c == 0) continue;
+                    Position pos = new Position(row + r, col + c);
+                    if (isInsideBoard(pos)) {
+                        Piece target = boardState[pos.getRow()][pos.getColumn()];
+                        if (target == null || eatOtherPiece(target)) {
+                            moves.add(toAlgebraic(pos));
+                        }
                     }
                 }
             }
+
+            // === CASTLING (basic version) ===
+            if (!hasMoved) {
+                // Short Castling (kingside)
+                if (canCastle(board, row, 5, 6, 7)) {
+                    moves.add(toAlgebraic(new Position(row, 6)));
+                }
+
+                // Long Castling (queenside)
+                if (canCastle(board, row, 1, 2, 3, 0)) {
+                    moves.add(toAlgebraic(new Position(row, 2)));
+                }
+            }
+
+            return moves;
         }
 
-        return possibleMoves;
+        // Simple castling check: all between squares are empty & rook exists and didn't move
+        private boolean canCastle(BoardImpl board, int row, int... cols) {
+            // Check if all squares between the king and the rook are empty
+            for (int i = 0; i < cols.length - 1; i++) {
+                // If any square is not empty, castling is not allowed
+                if (board.getPieceAt(new Position(row, cols[i])) != null) return false;
+            }
+            // Check the final square (expected position of the rook)
+            Piece rook = board.getPieceAt(new Position(row, cols[cols.length - 1]));
+
+            // Return true if it's a rook and it hasn't moved yet
+
+            return (rook instanceof Rook r && !r.hasMoved());
+        }
     }
-}

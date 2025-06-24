@@ -52,7 +52,7 @@ public class Game {
         if(RulesEngine.isKingInCheck(Color.BLACK, board) || RulesEngine.isKingInCheck(Color.WHITE, board)) gameState = GameState.CHECK;
         if(RulesEngine.isCheckmate(Color.BLACK, board) || RulesEngine.isCheckmate(Color.WHITE, board)) gameState = GameState.CHECKMATE;
         if(RulesEngine.isStalemate(Color.BLACK, board) || RulesEngine.isStalemate(Color.WHITE, board)) gameState = GameState.STALEMATE;
-        if(RulesEngine.isFiftyMoveRule(board, whitePlayer) || RulesEngine.isFiftyMoveRule(board, blackPlayer)) gameState = GameState.DRAW;
+        if(RulesEngine.isFiftyMoveRule(whitePlayer) || RulesEngine.isFiftyMoveRule(blackPlayer)) gameState = GameState.DRAW;
 
         switch(gameState){
             case CHECK -> System.out.println("CHECK");
@@ -75,6 +75,12 @@ public class Game {
         }
 
         board.setPieceAt(move.from(), null);
+        Piece pieceTo = board.getPieceAt(move.to());
+
+        if(piece.eatOtherPiece(pieceTo)){
+            Move.moveHistory.put(piece.getColor(), new ArrayList<>(Collections.singleton(move)));
+        }
+
         board.setPieceAt(move.to(), piece);
 
         switchPlayer();
@@ -97,7 +103,11 @@ public class Game {
         return whitePlayer.getColor() == currentTurn ? whitePlayer : blackPlayer;
     }
 
-    //Used in getLegalMoves
+    /**
+     *
+     * @param from the initial position
+     * @return a List of Strings containing all the possibles moves for the given Piece in the position
+     */
     public List<String> getUnfilteredPossibleMoves(Position from) {
         Piece piece = board.getPieceAt(from);
 
