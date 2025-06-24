@@ -12,7 +12,13 @@ public class RulesEngine {
 
     //Legality validation
 
-    //Check if a move is legal
+    /**
+     *
+     * @param board the board
+     * @param move the alleged movement wanting to be performed
+     * @param color the color of the player
+     * @return true iff the movement is legal
+     */
     public static boolean isLegalMove(BoardImpl board, Move move, Color color) {
         Piece piece = board.getPieceAt(move.from());
 
@@ -26,14 +32,25 @@ public class RulesEngine {
         return !wouldCauseSelfCheck(board, move, color);
     }
 
-    //Check if the move is going to cause a self check (illegal)
+    /**
+     * Takes in the board and checks with a copy of the current board, if a move may cause a self check (Illegal).
+     * @param board the current board
+     * @param move the movement
+     * @param color the color of the Player
+     * @return true iff the movement causes the king to be in check
+     */
     public static boolean wouldCauseSelfCheck(BoardImpl board, Move move, Color color) {
         BoardImpl simulatedBoard = board.copy();
         simulatedBoard.makeMove(move);
         return isKingInCheck(color, simulatedBoard);
     }
 
-    //Returns a list of valid moves (not illegal)
+    /**
+     *
+     * @param board the current board
+     * @param color the current player
+     * @return a List of moves containing all the valid moves
+     */
     public static List<Move> getAllValidMoves(BoardImpl board, Color color) {
         List<Move> validMoves = new ArrayList<>();
         Piece[][] boardState = board.getBoard();
@@ -58,7 +75,12 @@ public class RulesEngine {
         return validMoves;
     }
 
-    //Checks if the king is in check
+    /**
+     *
+     * @param color the current player playing
+     * @param board the current board
+     * @return
+     */
     public static boolean isKingInCheck(Color color, BoardImpl board) {
         Position kingPos = board.getKingPosition(color);
         Piece[][] boardState = board.getBoard();
