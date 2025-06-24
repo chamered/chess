@@ -32,8 +32,8 @@ public class Game {
         String mode = inputHandler.selectMode();
 
         if (mode.equals("1v1")) {
-            whitePlayer = new Player("White Player", Color.WHITE);
-            blackPlayer = new Player("Black Player", Color.BLACK);
+            whitePlayer = new HumanPlayer("White Player", Color.WHITE);
+            blackPlayer = new HumanPlayer("Black Player", Color.BLACK);
 
             runGameLoop();
         }
