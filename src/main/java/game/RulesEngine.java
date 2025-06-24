@@ -45,8 +45,7 @@ public class RulesEngine {
                     Position from = new Position(row, col);
                     List<String> possibleDestinations = piece.generatePossibleMoves(board, from);
                     for (String algebraic : possibleDestinations) {
-                        int[] coordinates = Piece.fromAlgebraic(algebraic);
-                        Position to = new Position(coordinates[0], coordinates[1]);
+                        Position to = Piece.fromAlgebraic(algebraic);
                         Move move = new Move(from, to);
                         if (isLegalMove(board, move, color)) {
                             validMoves.add(move);
@@ -71,8 +70,8 @@ public class RulesEngine {
                     Position from = new Position(row, col);
                     List<String> enemyMoves = piece.generatePossibleMoves(board, from);
                     for (String move : enemyMoves) {
-                        int[] coords = Piece.fromAlgebraic(move);
-                        if (coords[0] == kingPos.getRow() && coords[1] == kingPos.getColumn()) {
+                        Position coordinates = Piece.fromAlgebraic(move);
+                        if (coordinates.getRow() == kingPos.getRow() && coordinates.getColumn() == kingPos.getColumn()) {
                             return true;
                         }
                     }

@@ -106,8 +106,8 @@ public class Game {
         List<String> legalMoves = new ArrayList<>();
         List<String> possibleMoves = getUnfilteredPossibleMoves(from);
         for (String m : possibleMoves) {
-            int[] coordinates = Piece.fromAlgebraic(m);
-            Move move = new Move(from, new Position(coordinates[0], coordinates[1]));
+            Position coordinates = Piece.fromAlgebraic(m);
+            Move move = new Move(from, coordinates);
             if (isMoveValid(move)) {
                 legalMoves.add(m);
             }
@@ -147,8 +147,8 @@ public class Game {
             }
 
             try {
-                Position from = new Position(Piece.fromAlgebraic(tokens[0])[0], Piece.fromAlgebraic(tokens[0])[1]);
-                Position to = new Position(Piece.fromAlgebraic(tokens[1])[0], Piece.fromAlgebraic(tokens[1])[1]);
+                Position from = new Position(Piece.fromAlgebraic(tokens[0]).getRow(), Piece.fromAlgebraic(tokens[0]).getColumn());
+                Position to = new Position(Piece.fromAlgebraic(tokens[1]).getRow(), Piece.fromAlgebraic(tokens[1]).getColumn());
 
                 boolean success = movePiece(new Move(from, to));
                 if (!success) {
