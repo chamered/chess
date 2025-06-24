@@ -41,6 +41,10 @@ public class Game {
             int depth = InputHandler.selectDepth();
             whitePlayer = color.equals("w") ? new HumanPlayer("It's your", Color.WHITE) : new BotPlayer(Color.WHITE, depth);
             blackPlayer = color.equals("b") ? new HumanPlayer("It's your", Color.BLACK) : new BotPlayer(Color.BLACK, depth);
+        } else if (mode.equals("BvB")) {
+            int depth = InputHandler.selectDepth();
+            whitePlayer = new BotPlayer(Color.WHITE, depth);
+            blackPlayer = new BotPlayer(Color.BLACK, depth);
         }
 
         runGameLoop();

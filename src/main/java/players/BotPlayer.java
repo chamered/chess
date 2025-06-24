@@ -45,7 +45,7 @@ public class BotPlayer extends Player{
         }
 
         Move.addMoveToHistory(getColor(), bestMove);
-        
+
         return bestMove;
     }
 

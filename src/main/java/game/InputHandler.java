@@ -10,13 +10,14 @@ public class InputHandler {
      * @return the selected mode as String
      */
     public static String selectMode() {
-        System.out.println("Select the game mode. [\"1v1\"/\"1vBot\"]:");
+        System.out.println("Select the game mode. [\"1v1\" / \"1vBot\" / \"BvB\"(\u001B[33mBeta\u001B[0m)]:");
         System.out.print("> ");
         String mode = scanner.nextLine();
 
         return switch (mode) {
             case "1v1" -> "1v1";
             case "1vBot" -> "1vBot";
+            case "BvB" -> "BvB";
             default -> {
                 System.out.println("\u001B[31mInvalid mode: '" + mode + "'\u001B[0m");
                 yield selectMode();
