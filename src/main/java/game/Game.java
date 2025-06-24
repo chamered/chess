@@ -105,21 +105,20 @@ public class Game {
     public List<String> getLegalMoves(Position from) {
         List<String> legalMoves = new ArrayList<>();
         List<String> possibleMoves = getUnfilteredPossibleMoves(from);
-        for (String m : possibleMoves) {
+
+        possibleMoves.forEach(m -> {
             Position coordinates = Piece.fromAlgebraic(m);
             Move move = new Move(from, coordinates);
-            if (isMoveValid(move)) {
-                legalMoves.add(m);
-            }
-        }
+            if(isMoveValid(move)) legalMoves.add(m);
+        });
         return legalMoves;
     }
 
     /**
-     * Starts the main game loop for the chess match.
-     * This method alternates turns between players, prints the updated state of the board,
-     * reads player input from the console, and attempts to perform the specified move.
-     * The loop continues until the one player types "exit" or the game ends by other rules
+     * Starts main game loop for chess match.
+     * Alternates turns between players, prints updated state of the board,
+     * reads player input from console, attempts to perform the specified move.
+     * Continues until one player types "exit" or the game ends by other rules
      * (e.g., checkmate or stalemate).
      * Invalid input formats and illegal moves are detected and handled with appropriate messages.
      */

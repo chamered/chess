@@ -1,5 +1,7 @@
 package board;
 
+import java.util.Objects;
+
 public class Position {
     private int row;
     private int column;
@@ -40,6 +42,17 @@ public class Position {
      */
     public int getColumn() {
         return column;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Position position)) return false;
+        return row == position.row && column == position.column;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(row, column);
     }
 
     @Override

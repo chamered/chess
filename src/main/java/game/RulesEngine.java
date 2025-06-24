@@ -13,7 +13,7 @@ public class RulesEngine {
     //Legality validation
 
     //Check if a move is legal
-    public boolean isLegalMove(BoardImpl board, Move move, Color color) {
+    public static boolean isLegalMove(BoardImpl board, Move move, Color color) {
         Piece piece = board.getPieceAt(move.from());
 
         if (piece == null || piece.getColor() != color) return false;
@@ -27,14 +27,14 @@ public class RulesEngine {
     }
 
     //Check if the move is going to cause a self check (illegal)
-    public boolean wouldCauseSelfCheck(BoardImpl board, Move move, Color color) {
+    public static boolean wouldCauseSelfCheck(BoardImpl board, Move move, Color color) {
         BoardImpl simulatedBoard = board.copy();
         simulatedBoard.makeMove(move);
         return isKingInCheck(color, simulatedBoard);
     }
 
     //Returns a list of valid moves (not illegal)
-    public List<Move> getAllValidMoves(BoardImpl board, Color color) {
+    public static List<Move> getAllValidMoves(BoardImpl board, Color color) {
         List<Move> validMoves = new ArrayList<>();
         Piece[][] boardState = board.getBoard();
 
@@ -59,7 +59,7 @@ public class RulesEngine {
     }
 
     //Checks if the king is in check
-    public boolean isKingInCheck(Color color, BoardImpl board) {
+    public static boolean isKingInCheck(Color color, BoardImpl board) {
         Position kingPos = board.getKingPosition(color);
         Piece[][] boardState = board.getBoard();
 
@@ -82,7 +82,7 @@ public class RulesEngine {
     }
 
     //Check if it is checkmate
-    public boolean isCheckmate(Color color, BoardImpl board) {
+    public static boolean isCheckmate(Color color, BoardImpl board) {
         if (!isKingInCheck(color, board)) return false;
         List<Move> validMoves = getAllValidMoves(board, color);
 
@@ -90,7 +90,7 @@ public class RulesEngine {
     }
 
     //Check for stalemate
-    public boolean isStalemate(Color color, BoardImpl board) {
+    public static boolean isStalemate(Color color, BoardImpl board) {
         if (isKingInCheck(color, board)) return false;
         List<Move> validMoves = getAllValidMoves(board, color);
 
