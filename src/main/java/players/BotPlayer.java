@@ -12,9 +12,8 @@ import java.util.List;
 
 public class BotPlayer extends Player{
 
-    private int depth;
+    private final int depth;
 
-    public record MinimaxResult(int score, Move bestMove) {};
 
     public BotPlayer(Color color, int depth) {
         super("Juice Bot's", color);
@@ -44,7 +43,9 @@ public class BotPlayer extends Player{
                 bestMove = move;
             }
         }
+
         Move.addMoveToHistory(getColor(), bestMove);
+        
         return bestMove;
     }
 
