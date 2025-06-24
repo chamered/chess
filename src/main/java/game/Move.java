@@ -12,6 +12,7 @@ import java.util.Objects;
 
 public record Move(Position from, Position to) {
     static final Map<Color, ArrayList<Move>> moveHistory = new HashMap<>();
+
     @Override
     public @NotNull String toString() {
         return Piece.toAlgebraic(from) + " -> " + Piece.toAlgebraic(to);
@@ -31,6 +32,7 @@ public record Move(Position from, Position to) {
         moves.add(move);
         moveHistory.put(color, moves);
     }
+
     public static Map<Color, ArrayList<Move>> getMoveHistory(){
         return moveHistory;
     }

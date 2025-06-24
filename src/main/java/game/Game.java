@@ -4,6 +4,9 @@ import board.BoardImpl;
 import board.Position;
 import pieces.Color;
 import pieces.Piece;
+import players.BotPlayer;
+import players.HumanPlayer;
+import players.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;

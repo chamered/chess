@@ -1,4 +1,4 @@
-package game;
+package players;
 
 import pieces.*;
 
