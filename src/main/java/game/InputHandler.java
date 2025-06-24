@@ -50,7 +50,7 @@ public class InputHandler {
     }
 
     public int selectDepth() {
-        System.out.println("How deep should AI look for moves?");
+        System.out.println("How deep should the BOT look for moves?");
         System.out.println("\u001B[31mWarning\u001B[0m: values above 3 will be very slow. [n]?");
         System.out.print("> ");
         int depth = scanner.nextInt();

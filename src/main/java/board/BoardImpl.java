@@ -3,8 +3,6 @@ package board;
 import pieces.*;
 import game.Move;
 
-import java.util.Optional;
-
 public class BoardImpl implements Board {
     private Piece[][] board;
 
