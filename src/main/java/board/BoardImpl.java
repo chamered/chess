@@ -122,7 +122,7 @@ public class BoardImpl implements Board {
             for (int col = 0; col < 8; col++) {
                 Piece piece = board[row][col];
                 if (piece != null) {
-                    boardCopy[row][col] = piece.clone();
+                    boardCopy[row][col] = piece.copy();
                 }
             }
         }

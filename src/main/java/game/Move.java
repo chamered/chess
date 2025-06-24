@@ -19,5 +19,4 @@ public record Move(Position from, Position to) {
         return Objects.equals(from, move.from) &&
                 Objects.equals(to, move.to);
     }
-
 }

@@ -45,6 +45,7 @@ public class BoardTest {
             Assertions.assertEquals("pieces.Pawn", board.getPieceAt(new Position(6, i)).getClass().getName());
         }
     }
+
     @Test
     public void testPieceAt(){
         BoardImpl board = new BoardImpl();
