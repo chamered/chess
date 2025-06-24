@@ -38,6 +38,11 @@ public abstract class Piece {
      */
     abstract public List<String> generatePossibleMoves(BoardImpl board, Position currentPos);
 
+    /**
+     * Converts row and column to a string representation.
+     * @param pos - Position of the cell to convert
+     * @return a String pair representing the coordinates of a cell (e.g (e2, e4)).
+     */
     public static String toAlgebraic(Position pos) {
         int row = pos.getRow();
         int col = pos.getColumn();
@@ -54,7 +59,12 @@ public abstract class Piece {
         return "" + file +rank;
     }
 
-    public static int[] fromAlgebraic(String notation) {
+    /**
+     * {@link #toAlgebraic(Position)}
+     * @param notation String representation of the coordinates
+     * @return the Position
+     */
+    public static Position fromAlgebraic(String notation) {
         if (notation == null || notation.length() != 2) {
             throw new IllegalArgumentException("Invalid algebraic notation: " + notation);
         }
@@ -69,7 +79,7 @@ public abstract class Piece {
             throw new IllegalArgumentException("Algebraic notation out of bounds: " + notation);
         }
 
-        return new int[]{row, col};
+        return new Position(row, col);
     }
 
     /**
