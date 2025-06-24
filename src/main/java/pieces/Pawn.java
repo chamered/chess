@@ -32,7 +32,6 @@ public class Pawn extends Piece{
     /**
      * Generate a list of all possible moves this pawn can make from currentPos on the given board
      */
-
     @Override
     public List<String> generatePossibleMoves(BoardImpl board, Position currentPos) {
         List<String> possibleMoves = new ArrayList<>();

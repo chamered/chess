@@ -8,6 +8,5 @@ public class RulesEngineTest {
     @Test
     public void moveShouldBeLegal(){
         BoardImpl board = new BoardImpl();
-        //RulesEngine.isLegalMove();
     }
 }

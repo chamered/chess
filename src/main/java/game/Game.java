@@ -44,9 +44,21 @@ public class Game {
         runGameLoop();
     }
 
-    //Check, Checkmate, etc.
-    private void checkGameState() {
-        //TODO
+    /**
+     * Checks the game state, providing meaningful messages
+     */
+    private void checkGameState(Player p) {
+        if(RulesEngine.isKingInCheck(Color.BLACK, board) || RulesEngine.isKingInCheck(Color.WHITE, board)) gameState = GameState.CHECK;
+        if(RulesEngine.isCheckmate(Color.BLACK, board) || RulesEngine.isCheckmate(Color.WHITE, board)) gameState = GameState.CHECKMATE;
+        if(RulesEngine.isStalemate(Color.BLACK, board) || RulesEngine.isStalemate(Color.WHITE, board)) gameState = GameState.STALEMATE;
+        if(RulesEngine.isFiftyMoveRule(board, whitePlayer) || RulesEngine.isFiftyMoveRule(blackPlayer)) gameState = GameState.DRAW;
+
+        switch(gameState){
+            case CHECK -> System.out.println("CHECK");
+            case CHECKMATE -> System.out.println("CHECKMATE");
+            case DRAW -> System.out.println("DRAW!");
+            case STALEMATE -> System.out.println("STALEMATE");
+        }
     }
 
     /**

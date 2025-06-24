@@ -2,22 +2,25 @@ package game;
 
 import pieces.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public abstract class Player {
     private final String name;
     private final Color color;
-    private Set<Piece> capturedPieces;
+    private final Set<Piece> capturedPieces = new HashSet<>();
 
-    // Constructor
     public Player(String name, Color color) {
         this.name = name;
         this.color = color;
     }
 
-    //add a piece to the set of capturedPieces
+    /**
+     * Adds the captured piece to the list
+     * @param piece the piece that has been captured
+     */
     public void addCapturedPiece(Piece piece){
-        //TODO
+        capturedPieces.add(piece);
     }
 
     /**

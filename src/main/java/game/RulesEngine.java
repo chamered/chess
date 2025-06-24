@@ -9,13 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RulesEngine {
-
-    //Legality validation
-
     /**
      *
      * @param board the board
-     * @param move the alleged movement wanting to be performed
+     * @param move the alleged movement to be performed
      * @param color the color of the player
      * @return true iff the movement is legal
      */
@@ -61,13 +58,11 @@ public class RulesEngine {
                 if (piece != null && piece.getColor() == color) {
                     Position from = new Position(row, col);
                     List<String> possibleDestinations = piece.generatePossibleMoves(board, from);
-                    for (String algebraic : possibleDestinations) {
+                    possibleDestinations.forEach(algebraic -> {
                         Position to = Piece.fromAlgebraic(algebraic);
                         Move move = new Move(from, to);
-                        if (isLegalMove(board, move, color)) {
-                            validMoves.add(move);
-                        }
-                    }
+                        if(isLegalMove(board, move, color)) validMoves.add(move);
+                    });
                 }
             }
         }
@@ -79,7 +74,7 @@ public class RulesEngine {
      *
      * @param color the current player playing
      * @param board the current board
-     * @return
+     * @return true iff the King is in check
      */
     public static boolean isKingInCheck(Color color, BoardImpl board) {
         Position kingPos = board.getKingPosition(color);
@@ -119,4 +114,7 @@ public class RulesEngine {
         return validMoves.isEmpty();
     }
 
+    public static boolean isFiftyMoveRule(BoardImpl board, Player player){
+        return Move.moveHistory.get(player.getColor()).size() > 50 && player.getCapturedPieces().isEmpty();
+    }
 }

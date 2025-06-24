@@ -1,5 +1,6 @@
 import board.BoardImpl;
 import board.Position;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -87,7 +88,7 @@ public class BoardTest {
      * Verifies the proper structure of the board
      * @param board the board to verify the placement of its Pieces
      */
-    private void verifyBoard(BoardImpl board){
+    private void verifyBoard(@NotNull BoardImpl board){
         Assertions.assertEquals("pieces.Knight", board.getPieceAt(new Position(0,6)).getClass().getName());
         Assertions.assertEquals("pieces.Knight", board.getPieceAt(new Position(0,1)).getClass().getName());
         Assertions.assertEquals("pieces.Knight", board.getPieceAt(new Position(7,1)).getClass().getName());
