@@ -51,7 +51,7 @@ public class Game {
         if(RulesEngine.isKingInCheck(Color.BLACK, board) || RulesEngine.isKingInCheck(Color.WHITE, board)) gameState = GameState.CHECK;
         if(RulesEngine.isCheckmate(Color.BLACK, board) || RulesEngine.isCheckmate(Color.WHITE, board)) gameState = GameState.CHECKMATE;
         if(RulesEngine.isStalemate(Color.BLACK, board) || RulesEngine.isStalemate(Color.WHITE, board)) gameState = GameState.STALEMATE;
-        if(RulesEngine.isFiftyMoveRule(board, whitePlayer) || RulesEngine.isFiftyMoveRule(blackPlayer)) gameState = GameState.DRAW;
+        if(RulesEngine.isFiftyMoveRule(board, whitePlayer) || RulesEngine.isFiftyMoveRule(board, blackPlayer)) gameState = GameState.DRAW;
 
         switch(gameState){
             case CHECK -> System.out.println("CHECK");

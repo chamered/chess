@@ -16,7 +16,7 @@ public class RulesEngine {
      * @param color the color of the player
      * @return true iff the movement is legal
      */
-    public static boolean isLegalMove(BoardImpl board, Move move, Color color) {
+    public static boolean isMoveLegal(BoardImpl board, Move move, Color color) {
         Piece piece = board.getPieceAt(move.from());
 
         if (piece == null || piece.getColor() != color) return false;
@@ -48,7 +48,7 @@ public class RulesEngine {
      * @param color the current player
      * @return a List of moves containing all the valid moves
      */
-    public static List<Move> getAllValidMoves(BoardImpl board, Color color) {
+    public static List<Move> getAllLegalMoves(BoardImpl board, Color color) {
         List<Move> validMoves = new ArrayList<>();
         Piece[][] boardState = board.getBoard();
 
@@ -61,7 +61,7 @@ public class RulesEngine {
                     possibleDestinations.forEach(algebraic -> {
                         Position to = Piece.fromAlgebraic(algebraic);
                         Move move = new Move(from, to);
-                        if(isLegalMove(board, move, color)) validMoves.add(move);
+                        if(isMoveLegal(board, move, color)) validMoves.add(move);
                     });
                 }
             }
@@ -101,7 +101,7 @@ public class RulesEngine {
     //Check if it is checkmate
     public static boolean isCheckmate(Color color, BoardImpl board) {
         if (!isKingInCheck(color, board)) return false;
-        List<Move> validMoves = getAllValidMoves(board, color);
+        List<Move> validMoves = getAllLegalMoves(board, color);
 
         return validMoves.isEmpty();
     }
@@ -109,7 +109,7 @@ public class RulesEngine {
     //Check for stalemate
     public static boolean isStalemate(Color color, BoardImpl board) {
         if (isKingInCheck(color, board)) return false;
-        List<Move> validMoves = getAllValidMoves(board, color);
+        List<Move> validMoves = getAllLegalMoves(board, color);
 
         return validMoves.isEmpty();
     }
