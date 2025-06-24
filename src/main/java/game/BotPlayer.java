@@ -8,15 +8,7 @@ import java.util.List;
 
 public class BotPlayer extends Player{
 
-    public static class MinimaxResult{
-        public int score;
-        public Move bestMove;
-
-        public MinimaxResult(int score, Move bestMove){
-            this.score = score;
-            this.bestMove = bestMove;
-        }
-    }
+    public record MinimaxResult(int score, Move bestMove) {};
 
     public BotPlayer(Color color) {
         super("Juice Bot", color);
