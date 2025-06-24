@@ -5,17 +5,43 @@ import pieces.Color;
 import pieces.Piece;
 
 import java.util.List;
+import java.util.Random;
 
 public class BotPlayer extends Player{
+
+    private int depth = 2;
 
     public record MinimaxResult(int score, Move bestMove) {};
 
     public BotPlayer(Color color) {
-        super("Juice Bot", color);
+        super("Juice Bot's", color);
     }
 
+    /**
+     * Selects the best move for the bot based on the current state of the board.
+     * @param board the current board from which the bot should decide its move
+     * @return the move that maximizes the bot's advantage (null uf no valid moves are available)
+     */
     public Move chooseMove(BoardImpl board) {
-        return null;
+        List<Move> validMoves = RulesEngine.getAllLegalMoves(board, getColor());
+        if (validMoves.isEmpty()) return null;
+
+        Move bestMove = null;
+        int bestScore = Integer.MIN_VALUE;
+
+        for (Move move : validMoves) {
+            BoardImpl boardCopy = board.copy();
+            boardCopy.makeMove(move);
+
+            int score = minimax(boardCopy, depth - 1, false);
+
+            if (score > bestScore) {
+                bestScore = score;
+                bestMove = move;
+            }
+        }
+
+        return bestMove;
     }
 
     private static Color getOpponentColor(Color color){
@@ -35,19 +61,17 @@ public class BotPlayer extends Player{
      * @param maximizingPlayer true if it's the bot's turn to maximize the score, false if minimizing (opponent)
      * @return the best score the bot can achieve from this state, assuming optimal play by both players
      */
-    public MinimaxResult minimax(BoardImpl board, int depth, boolean maximizingPlayer, Color botCol) {
+    public int minimax(BoardImpl board, int depth, boolean maximizingPlayer) {
         Color botColor = getColor();
         Color currentColor = maximizingPlayer ? botColor : getOpponentColor(botColor);
 
         //Base case: reached mac depth or no valid moves
-        List<Move> validMoves = RulesEngine.getAllValidMoves(board, currentColor);
+        List<Move> validMoves = RulesEngine.getAllLegalMoves(board, currentColor);
         //If the depth is 0 the only evaluation is the board evaluation
         if (depth == 0 || validMoves.isEmpty()) {
-            int score = evaluateBoard(board, botColor);
-            return new MinimaxResult(score, null);
+            return evaluateBoard(board, botColor);
         }
 
-        Move bestMove = null;
         int bestScore = maximizingPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE;
 
         for (Move move : validMoves) {
@@ -56,22 +80,20 @@ public class BotPlayer extends Player{
             boardCopy.makeMove(move);
 
             //Recursive minimax call
-            MinimaxResult result = minimax(boardCopy, depth - 1, !maximizingPlayer, botColor);
+            int result = minimax(boardCopy, depth - 1, !maximizingPlayer);
 
             if (maximizingPlayer) {
-                if (result.score > bestScore) {
-                    bestScore = result.score;
-                    bestMove = move;
+                if (result > bestScore) {
+                    bestScore = result;
                 }
             } else {
-                if (result.score < bestScore) {
-                    bestScore = result.score;
-                    bestMove = move;
+                if (result < bestScore) {
+                    bestScore = result;
                 }
             }
         }
 
-        return new MinimaxResult(bestScore, bestMove);
+        return bestScore;
     }
 
     /**

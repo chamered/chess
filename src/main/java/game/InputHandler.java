@@ -15,7 +15,7 @@ public class InputHandler {
      * @return the selected mode as String
      */
     public String selectMode() {
-        System.out.println("Select the game mode [\"1v1\" or \"1vBot\"]:");
+        System.out.println("Select the game mode [\"1v1\"/\"1vBot\"]:");
         System.out.print("> ");
         String mode = scanner.nextLine();
 
