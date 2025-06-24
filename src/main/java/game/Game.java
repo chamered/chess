@@ -70,8 +70,7 @@ public class Game {
      * @return true if the move is valid
      */
     public boolean isMoveValid(Move move) {
-        RulesEngine engine = new RulesEngine();
-        return engine.isLegalMove(board, move, currentTurn);
+        return RulesEngine.isLegalMove(board, move, currentTurn);
     }
 
     /**
