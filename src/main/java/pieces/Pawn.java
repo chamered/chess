@@ -25,7 +25,6 @@ public class Pawn extends Piece{
 
     @Override
     public boolean eatOtherPiece(Piece piece){
-        // A pawn can only capture opposing pieces
         return piece != null && piece.color != this.color;
     }
 

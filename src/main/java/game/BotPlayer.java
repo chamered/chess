@@ -4,6 +4,8 @@ import board.BoardImpl;
 import pieces.Color;
 import pieces.Piece;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -40,7 +42,7 @@ public class BotPlayer extends Player{
                 bestMove = move;
             }
         }
-
+        Move.moveHistory.put(getColor(), new ArrayList<>(Collections.singleton(bestMove)));
         return bestMove;
     }
 

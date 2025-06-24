@@ -114,7 +114,7 @@ public class RulesEngine {
         return validMoves.isEmpty();
     }
 
-    public static boolean isFiftyMoveRule(BoardImpl board, Player player){
+    public static boolean isFiftyMoveRule(Player player){
         return Move.moveHistory.get(player.getColor()).size() > 50 && player.getCapturedPieces().isEmpty();
     }
 }
