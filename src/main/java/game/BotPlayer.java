@@ -36,12 +36,11 @@ public class BotPlayer extends Player{
      * @return the best score the bot can achieve from this state, assuming optimal play by both players
      */
     public MinimaxResult minimax(BoardImpl board, int depth, boolean maximizingPlayer, Color botCol) {
-        RulesEngine rules = new RulesEngine();
         Color botColor = getColor();
         Color currentColor = maximizingPlayer ? botColor : getOpponentColor(botColor);
 
         //Base case: reached mac depth or no valid moves
-        List<Move> validMoves = rules.getAllValidMoves(board, currentColor);
+        List<Move> validMoves = RulesEngine.getAllValidMoves(board, currentColor);
         //If the depth is 0 the only evaluation is the board evaluation
         if (depth == 0 || validMoves.isEmpty()) {
             int score = evaluateBoard(board, botColor);
