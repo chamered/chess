@@ -34,9 +34,14 @@ public class Game {
         if (mode.equals("1v1")) {
             whitePlayer = new HumanPlayer("White Player", Color.WHITE);
             blackPlayer = new HumanPlayer("Black Player", Color.BLACK);
-
-            runGameLoop();
+        } else if (mode.equals("1vBot")) {
+            String color = inputHandler.chooseColor();
+            whitePlayer = color.equals("w") ? new HumanPlayer("White Player", Color.WHITE) : new BotPlayer(Color.WHITE);
+            blackPlayer = color.equals("b") ? new HumanPlayer("Black Player", Color.BLACK) : new BotPlayer(Color.BLACK);
+            System.out.println("You will play as " + (color.equals("w") ? "white" : "black"));
         }
+
+        runGameLoop();
     }
 
     //Check, Checkmate, etc.
@@ -131,14 +136,16 @@ public class Game {
             String textColor = currentTurn == Color.WHITE ? "\u001B[33m" : "\u001B[34m";
             System.out.println(textColor + getCurrentPlayer().getName() + "'s\u001B[0m turn.");
 
+            if (getCurrentPlayer() instanceof BotPlayer bot) {
+                bot.chooseMove(board);
+                continue;
+            }
+
             System.out.println("Enter your move (e.g., e2 e4)");
             System.out.print("> ");
-            String input = inputHandler.readLine();
+            String input = inputHandler.readLine().toLowerCase();
 
-            if (input.equalsIgnoreCase("exit")) {
-                System.out.println("\u001B[31mGame ended.\u001B[0m");
-                break;
-            }
+            if (input.equalsIgnoreCase("exit")) exit();
 
             String[] tokens = input.split("\\s+"); // Split the input by the white spaces
             if (tokens.length != 2) {
@@ -178,5 +185,10 @@ public class Game {
                 Let the game begin!
                 """
         );
+    }
+
+    public void exit() {
+        System.out.println("\u001B[31mGame ended.\u001B[0m");
+        System.exit(0);
     }
 }
