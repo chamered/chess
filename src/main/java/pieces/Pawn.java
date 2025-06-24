@@ -25,12 +25,14 @@ public class Pawn extends Piece{
 
     @Override
     public boolean eatOtherPiece(Piece piece){
+        // A pawn can only capture opposing pieces
         return piece != null && piece.color != this.color;
     }
 
     /**
      * Generate a list of all possible moves this pawn can make from currentPos on the given board
      */
+
     @Override
     public List<String> generatePossibleMoves(BoardImpl board, Position currentPos) {
         List<String> possibleMoves = new ArrayList<>();
