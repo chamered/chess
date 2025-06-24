@@ -36,9 +36,10 @@ public class Game {
             blackPlayer = new HumanPlayer("Black Player's", Color.BLACK);
         } else if (mode.equals("1vBot")) {
             String color = inputHandler.chooseColor();
-            whitePlayer = color.equals("w") ? new HumanPlayer("It's your", Color.WHITE) : new BotPlayer(Color.WHITE);
-            blackPlayer = color.equals("b") ? new HumanPlayer("It's your", Color.BLACK) : new BotPlayer(Color.BLACK);
-            System.out.println("You will play as " + (color.equals("w") ? "white" : "black"));
+            System.out.println("You will play as " + (color.equals("w") ? "\u001B[33mwhite\u001B[0m" : "\u001B[34mblack\u001B[0m"));
+            int depth = inputHandler.selectDepth();
+            whitePlayer = color.equals("w") ? new HumanPlayer("It's your", Color.WHITE) : new BotPlayer(Color.WHITE, depth);
+            blackPlayer = color.equals("b") ? new HumanPlayer("It's your", Color.BLACK) : new BotPlayer(Color.BLACK, depth);
         }
 
         runGameLoop();
@@ -132,7 +133,7 @@ public class Game {
                 from = new Position(move.from().getRow(), move.from().getColumn());
                 to = new Position(move.to().getRow(), move.to().getColumn());
             } else {
-                System.out.println("Enter your move [e2 e4]:");
+                System.out.println("Enter your move. [e2 e4]:");
                 System.out.print("> ");
                 String input = inputHandler.readLine().toLowerCase();
 

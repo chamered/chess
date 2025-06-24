@@ -15,7 +15,7 @@ public class InputHandler {
      * @return the selected mode as String
      */
     public String selectMode() {
-        System.out.println("Select the game mode [\"1v1\"/\"1vBot\"]:");
+        System.out.println("Select the game mode. [\"1v1\"/\"1vBot\"]:");
         System.out.print("> ");
         String mode = scanner.nextLine();
 
@@ -29,8 +29,12 @@ public class InputHandler {
         };
     }
 
+    /**
+     * Returns a string with the color selected by the user.
+     * @return the chosen color
+     */
     public String chooseColor() {
-        System.out.println("What side would you like to play as [w/b]?");
+        System.out.println("What side would you like to play as. [w/b]:");
         System.out.print("> ");
         String color = scanner.nextLine().toLowerCase();
 
@@ -43,6 +47,13 @@ public class InputHandler {
                 yield chooseColor();
             }
         };
+    }
+
+    public int selectDepth() {
+        System.out.println("How deep should AI look for moves?");
+        System.out.println("\u001B[31mWarning\u001B[0m: values above 3 will be very slow. [n]?");
+        System.out.print("> ");
+        return scanner.nextInt();
     }
 
     /**

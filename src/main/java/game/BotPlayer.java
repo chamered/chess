@@ -9,12 +9,13 @@ import java.util.Random;
 
 public class BotPlayer extends Player{
 
-    private int depth = 2;
+    private int depth;
 
     public record MinimaxResult(int score, Move bestMove) {};
 
-    public BotPlayer(Color color) {
+    public BotPlayer(Color color, int depth) {
         super("Juice Bot's", color);
+        this.depth = depth;
     }
 
     /**
