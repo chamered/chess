@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Game {
-    private static BoardImpl board;
+    private BoardImpl board;
     private Player whitePlayer;
     private Player blackPlayer;
     private Color currentTurn;
