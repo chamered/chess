@@ -26,10 +26,12 @@ public record Move(Position from, Position to) {
                 Objects.equals(to, move.to);
     }
 
-    public static void addMoveToHistory(Move move){
-        moveHistory.add(move);
+    public static void addMoveToHistory(Color color, Move move){
+        ArrayList<Move> moves = new ArrayList<>();
+        moves.add(move);
+        moveHistory.put(color, moves);
     }
-    public static ArrayList<Move> getMoveHistory(){
+    public static Map<Color, ArrayList<Move>> getMoveHistory(){
         return moveHistory;
     }
 }
