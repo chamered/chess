@@ -33,45 +33,59 @@ public class Pawn extends Piece{
      * Generate a list of all possible moves this pawn can make from currentPos on the given board
      */
 
+
+
     @Override
     public List<String> generatePossibleMoves(BoardImpl board, Position currentPos) {
-        List<String> possibleMoves = new ArrayList<>();
+        List<String> moves = new ArrayList<>();
 
+        int direction = (color == Color.WHITE) ? -1 : 1;
+        int startRow = (color == Color.WHITE) ? 6 : 1;
         int row = currentPos.getRow();
         int col = currentPos.getColumn();
-        Piece[][] boardState = board.getBoard();
 
-        int direction = isWhite() ? -1 : 1;
-        int startRow = isWhite() ? 6 : 1;
+        // One square forward
+        Position oneStep = new Position(row + direction, col);
+        if (isInsideBoard(oneStep) && board.getPieceAt(oneStep) == null) {
+            moves.add(toAlgebraic(oneStep));
 
-        // One step forward
-        Position oneStepRowPos = new Position(row + direction, col);
-        if (isInsideBoard(oneStepRowPos) && boardState[oneStepRowPos.getRow()][oneStepRowPos.getColumn()] == null) {
-            possibleMoves.add(toAlgebraic(oneStepRowPos));
-
-            // Two steps forward from starting row
-            Position twoStepRowPos = new Position(row + 2 * direction, col);
-            if (row == startRow && boardState[twoStepRowPos.getRow()][twoStepRowPos.getColumn()] == null) {
-                possibleMoves.add(toAlgebraic(twoStepRowPos));
-            }
-        }
-
-        // Diagonal captures (left and right)
-        int[] diagOffsets = {-1, 1};
-        for (int dc : diagOffsets) {
-            Position pos = new Position( row + direction, col + dc);
-
-            if (isInsideBoard(pos)) {
-                Piece target = boardState[pos.getRow()][pos.getColumn()];
-                if (target != null && eatOtherPiece(target)) {
-                    possibleMoves.add(toAlgebraic(pos));
+            // Two squares forward from starting position
+            if (row == startRow) {
+                Position twoStep = new Position(row + 2 * direction, col);
+                if (isInsideBoard(twoStep) && board.getPieceAt(twoStep) == null) {
+                    moves.add(toAlgebraic(twoStep));
                 }
             }
         }
 
-        return possibleMoves;
+        // Capture diagonally
+        for (int dCol : new int[]{-1, 1}) {
+            Position diag = new Position(row + direction, col + dCol);
+            if (isInsideBoard(diag)) {
+                Piece target = board.getPieceAt(diag);
+                if (eatOtherPiece(target)) {
+                    moves.add(toAlgebraic(diag));
+                }
+            }
+        }
+
+        // En Passant - pseudo valid, actual check is done in Game.java
+        for (int dCol : new int[]{-1, 1}) {
+            int newCol = col + dCol;
+            Position side = new Position(row, newCol);
+            if (isInsideBoard(side)) {
+                Piece adjacent = board.getPieceAt(side);
+                if (adjacent instanceof Pawn && adjacent.getColor() != this.color) {
+                    Position enPassantTarget = new Position(row + direction, newCol);
+                    moves.add(toAlgebraic(enPassantTarget));
+                }
+            }
+        }
+
+        return moves;
     }
 }
+
 
 
 
