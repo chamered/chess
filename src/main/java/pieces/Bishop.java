@@ -29,22 +29,19 @@ public class Bishop extends Piece {
         List<String> possibleMoves = new ArrayList<>();
 
         int[][] directions = {
-                {-1, -1}, // up-left
-                {-1, 1},  // up-right
-                {1, -1},  // down-left
-                {1, 1}    // down-right
+                {-1, -1}, {-1, 1},
+                {1, -1}, {1, 1}
         };
 
         Piece[][] boardState = board.getBoard();
 
         for (int[] dir : directions) {
-            Position pos = new Position(currentPos.getRow() + dir[0], currentPos.getColumn() + dir[1]);
+            int row = currentPos.getRow() + dir[0];
+            int col = currentPos.getColumn() + dir[1];
 
-            while (isInsideBoard(pos)) {
-                int newRow = pos.getRow();
-                int newCol = pos.getColumn();
-
-                Piece target = boardState[newRow][newCol];
+            while (isInsideBoard(new Position(row, col))) {
+                Piece target = boardState[row][col];
+                Position pos = new Position(row, col);
 
                 if (target == null) {
                     possibleMoves.add(toAlgebraic(pos));
@@ -52,11 +49,11 @@ public class Bishop extends Piece {
                     if (eatOtherPiece(target)) {
                         possibleMoves.add(toAlgebraic(pos));
                     }
-                    break; // stop scanning in this direction
+                    break;
                 }
 
-                pos.setRow(pos.getRow() + dir[0]);
-                pos.setColumn(pos.getColumn() + dir[1]);
+                row += dir[0];
+                col += dir[1];
             }
         }
 

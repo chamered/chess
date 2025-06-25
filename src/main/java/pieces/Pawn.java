@@ -37,56 +37,48 @@ public class Pawn extends Piece{
 
     @Override
     public List<String> generatePossibleMoves(BoardImpl board, Position currentPos) {
-        List<String> moves = new ArrayList<>();
+    List<String> moves = new ArrayList<>();
+    int direction = (color == Color.WHITE) ? -1 : 1;
+    int startRow = (color == Color.WHITE) ? 6 : 1;
+    int row = currentPos.getRow();
+    int col = currentPos.getColumn();
 
-        int direction = (color == Color.WHITE) ? -1 : 1;
-        int startRow = (color == Color.WHITE) ? 6 : 1;
-        int row = currentPos.getRow();
-        int col = currentPos.getColumn();
+    Position oneStep = new Position(row + direction, col);
+    if (isInsideBoard(oneStep) && board.getPieceAt(oneStep) == null) {
+        moves.add(toAlgebraic(oneStep));
 
-        // One square forward
-        Position oneStep = new Position(row + direction, col);
-        if (isInsideBoard(oneStep) && board.getPieceAt(oneStep) == null) {
-            moves.add(toAlgebraic(oneStep));
-
-            // Two squares forward from starting position
-            if (row == startRow) {
-                Position twoStep = new Position(row + 2 * direction, col);
-                if (isInsideBoard(twoStep) && board.getPieceAt(twoStep) == null) {
-                    moves.add(toAlgebraic(twoStep));
-                }
+        if (row == startRow) {
+            Position twoStep = new Position(row + 2 * direction, col);
+            if (isInsideBoard(twoStep) && board.getPieceAt(twoStep) == null) {
+                moves.add(toAlgebraic(twoStep));
             }
         }
-
-        // Capture diagonally
-        for (int dCol : new int[]{-1, 1}) {
-            Position diag = new Position(row + direction, col + dCol);
-            if (isInsideBoard(diag)) {
-                Piece target = board.getPieceAt(diag);
-                if (eatOtherPiece(target)) {
-                    moves.add(toAlgebraic(diag));
-                }
-            }
-        }
-
-        // En Passant - pseudo valid, actual check is done in GameImpl.java
-        for (int dCol : new int[]{-1, 1}) {
-            int newCol = col + dCol;
-            Position side = new Position(row, newCol);
-            if (isInsideBoard(side)) {
-                Piece adjacent = board.getPieceAt(side);
-                if (adjacent instanceof Pawn && adjacent.getColor() != this.color) {
-                    Position enPassantTarget = new Position(row + direction, newCol);
-                    moves.add(toAlgebraic(enPassantTarget));
-                }
-            }
-        }
-
-        return moves;
     }
+
+    for (int dCol : new int[]{-1, 1}) {
+        Position diag = new Position(row + direction, col + dCol);
+        if (isInsideBoard(diag)) {
+            Piece target = board.getPieceAt(diag);
+            if (eatOtherPiece(target)) {
+                moves.add(toAlgebraic(diag));
+            }
+        }
+    }
+
+    for (int dCol : new int[]{-1, 1}) {
+        Position side = new Position(row, col + dCol);
+        if (isInsideBoard(side)) {
+            Piece adjacent = board.getPieceAt(side);
+            if (adjacent instanceof Pawn && adjacent.getColor() != this.color) {
+                Position enPassantTarget = new Position(row + direction, col + dCol);
+                moves.add(toAlgebraic(enPassantTarget));
+            }
+        }
+    }
+
+    return moves;
 }
-
-
+}
 
 
 

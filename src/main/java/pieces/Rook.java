@@ -27,7 +27,6 @@ public class Rook extends Piece {
 
 
 
-
     @Override
     public Piece copy() {
 
@@ -55,21 +54,19 @@ public class Rook extends Piece {
     @Override
     public List<String> generatePossibleMoves(BoardImpl board, Position currentPos) {
         List<String> possibleMoves = new ArrayList<>();
-
         int[][] directions = {
-                {-1, 0},  // up
-                {1, 0},   // down
-                {0, -1},  // left
-                {0, 1}    // right
+                {-1, 0}, {1, 0}, {0, -1}, {0, 1}
         };
 
         Piece[][] boardState = board.getBoard();
 
-        for (int[] direction : directions) {
-            Position pos = new Position(currentPos.getRow() + direction[0], currentPos.getColumn() + direction[1]);
+        for (int[] dir : directions) {
+            int row = currentPos.getRow() + dir[0];
+            int col = currentPos.getColumn() + dir[1];
 
-            while (isInsideBoard(pos)) {
-                Piece target = boardState[pos.getRow()][pos.getColumn()];
+            while (isInsideBoard(new Position(row, col))) {
+                Position pos = new Position(row, col);
+                Piece target = boardState[row][col];
 
                 if (target == null) {
                     possibleMoves.add(toAlgebraic(pos));
@@ -80,10 +77,11 @@ public class Rook extends Piece {
                     break;
                 }
 
-                pos.setRow(pos.getRow() + direction[0]);
-                pos.setColumn(pos.getColumn() + direction[1]);
+                row += dir[0];
+                col += dir[1];
             }
         }
+
         return possibleMoves;
     }
 }
