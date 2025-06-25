@@ -130,12 +130,20 @@ public class RulesEngine {
     public static void incrementCounterFromMoveHistory(Color color){
         playersMoves.compute(color, (k, counter) -> counter + 1);
     }
+
+    /**
+     * Resets the move history of the color associated to the player.
+     * @param color the color of the piece/player.
+     */
+    public static void resetMoveHistory(Color color){
+        playersMoves.put(color, 0);
+    }
     /**
      * Verifies the 50-move-rule
      * @param player the player
      * @return true iff the 50-move-rule has been breached
      */
     public static boolean isFiftyMoveRule(Player player){
-        return false;
+        return RulesEngine.playersMoves.get(player.getColor()) >= 50;
     }
 }

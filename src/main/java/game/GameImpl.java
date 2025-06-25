@@ -3,6 +3,7 @@ package game;
 import board.BoardImpl;
 import board.Position;
 import pieces.Color;
+import pieces.Pawn;
 import pieces.Piece;
 import players.BotPlayer;
 import players.HumanPlayer;
@@ -73,19 +74,18 @@ public class GameImpl implements Game {
     @Override
     public boolean movePiece(Move move) {
         Piece piece = board.getPieceAt(move.from());
-
         if (piece == null || piece.getColor() != currentTurn || !RulesEngine.isMoveLegal(board, move, currentTurn)) {
             return false;
         }
 
         board.setPieceAt(move.from(), null);
-        Piece pieceTo = board.getPieceAt(move.to());
+        board.setPieceAt(move.to(), piece);
 
-        if(piece.eatOtherPiece(pieceTo)){
+        if(piece instanceof Pawn){
+            RulesEngine.resetMoveHistory(piece.getColor());
+        }else{
             RulesEngine.incrementCounterFromMoveHistory(piece.getColor());
         }
-
-        board.setPieceAt(move.to(), piece);
 
         switchPlayer();
 
