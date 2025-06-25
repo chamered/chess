@@ -54,21 +54,16 @@ public class GameImpl implements Game {
     }
 
     /**
-     * Checks the game state, changing the state of the
-     * game depending on various conditions
+     * Changes the game's current state, and changes it according to RulesEngine's rules.
+     * @return the current GameState
      */
-    private void checkGameState() {
+    private GameState checkGameState() {
         if(RulesEngine.isKingInCheck(board, Color.BLACK) || RulesEngine.isKingInCheck(board, Color.WHITE)) gameState = GameState.CHECK;
         if(RulesEngine.isCheckmate(board, Color.BLACK) || RulesEngine.isCheckmate(board, Color.WHITE)) gameState = GameState.CHECKMATE;
         if(RulesEngine.isStalemate(board, Color.BLACK) || RulesEngine.isStalemate(board, Color.WHITE)) gameState = GameState.STALEMATE;
         if(RulesEngine.isFiftyMoveRule(whitePlayer) || RulesEngine.isFiftyMoveRule(blackPlayer)) gameState = GameState.DRAW;
 
-        switch(gameState){
-            case CHECK -> System.out.println("CHECK");
-            case CHECKMATE -> System.out.println("CHECKMATE");
-            case DRAW -> System.out.println("DRAW!");
-            case STALEMATE -> System.out.println("STALEMATE");
-        }
+        return gameState;
     }
 
     @Override
