@@ -30,19 +30,23 @@ public class GameImpl implements Game {
         printWelcomeMessage();
         String mode = InputHandler.selectMode();
 
-        if (mode.equals("1v1")) {
-            whitePlayer = new HumanPlayer("White Player's", Color.WHITE);
-            blackPlayer = new HumanPlayer("Black Player's", Color.BLACK);
-        } else if (mode.equals("1vBot")) {
-            String color = InputHandler.chooseColor();
-            System.out.println("You will play as " + (color.equals("w") ? "\u001B[33mwhite\u001B[0m" : "\u001B[34mblack\u001B[0m"));
-            int depth = InputHandler.selectDepth();
-            whitePlayer = color.equals("w") ? new HumanPlayer("It's your", Color.WHITE) : new BotPlayer(Color.WHITE, depth);
-            blackPlayer = color.equals("b") ? new HumanPlayer("It's your", Color.BLACK) : new BotPlayer(Color.BLACK, depth);
-        } else if (mode.equals("BvB")) {
-            int depth = InputHandler.selectDepth();
-            whitePlayer = new BotPlayer(Color.WHITE, depth);
-            blackPlayer = new BotPlayer(Color.BLACK, depth);
+        switch (mode) {
+            case "1v1" -> {
+                whitePlayer = new HumanPlayer("White Player's", Color.WHITE);
+                blackPlayer = new HumanPlayer("Black Player's", Color.BLACK);
+            }
+            case "1vBot" -> {
+                String color = InputHandler.chooseColor();
+                System.out.println("You will play as " + (color.equals("w") ? "\u001B[33mwhite\u001B[0m" : "\u001B[34mblack\u001B[0m"));
+                int depth = InputHandler.selectDepth();
+                whitePlayer = color.equals("w") ? new HumanPlayer("It's your", Color.WHITE) : new BotPlayer(Color.WHITE, depth);
+                blackPlayer = color.equals("b") ? new HumanPlayer("It's your", Color.BLACK) : new BotPlayer(Color.BLACK, depth);
+            }
+            case "BvB" -> {
+                int depth = InputHandler.selectDepth();
+                whitePlayer = new BotPlayer(Color.WHITE, depth);
+                blackPlayer = new BotPlayer(Color.BLACK, depth);
+            }
         }
 
         runGameLoop();
