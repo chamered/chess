@@ -5,6 +5,8 @@ import java.util.List;
 
 import board.BoardImpl;
 import board.Position;
+import game.RulesEngine;
+
 
 public class King extends Piece {
 
@@ -39,56 +41,61 @@ public class King extends Piece {
     }
 
 
-        @Override
-        public List<String> generatePossibleMoves(BoardImpl board, Position currentPos) {
-            List<String> moves = new ArrayList<>();
 
-            int row = currentPos.row();
-            int col = currentPos.column();
-            Piece[][] boardState = board.getBoard();
+         @Override
+         public List<String> generatePossibleMoves(BoardImpl b, Position pos) {
+        List<String> m = new ArrayList<>();
 
-            // Standard 8 surrounding squares
-            for (int r = -1; r <= 1; r++) {
-                for (int c = -1; c <= 1; c++) {
-                    if (r == 0 && c == 0) continue;
-                    Position pos = new Position(row + r, col + c);
-                    if (isInsideBoard(pos)) {
-                        Piece target = boardState[pos.row()][pos.column()];
-                        if (target == null || eatOtherPiece(target)) {
-                            moves.add(toAlgebraic(pos));
-                        }
-                    }
-                }
-            }
-
-            // === CASTLING (basic version) ===
-            if (!hasMoved) {
-                // Short Castling (kingside)
-                if (canCastle(board, row, 5, 6, 7)) {
-                    moves.add(toAlgebraic(new Position(row, 6)));
+        /* ------- normal 1-square moves ----------------------------------- */
+        for (int dr = -1; dr <= 1; dr++)
+            for (int dc = -1; dc <= 1; dc++)
+                if (dr != 0 || dc != 0) {
+                    Position q = new Position(pos.row() + dr,
+                            pos.column() + dc);
+                    if (!isInsideBoard(q)) continue;
+                    Piece tgt = b.getPieceAt(q);
+                    if (tgt == null || eatOtherPiece(tgt))
+                        m.add(toAlgebraic(q));
                 }
 
-                // Long Castling (queenside)
-                if (canCastle(board, row, 1, 2, 3, 0)) {
-                    moves.add(toAlgebraic(new Position(row, 2)));
+        /* ------- castling ------------------------------------------------- */
+        addCastlingMoves(b, pos, m);
+
+        return m;
+    }
+
+    private void addCastlingMoves(BoardImpl b, Position kingPos,
+                                  List<String> moves) {
+        if (hasMoved || RulesEngine.isKingInCheck(b, getColor())) return;
+
+        int row = kingPos.row();
+        int[][] sides = {{7, 6, 5}, {0, 2, 3}};  // rook file, kingDest, through
+
+        for (int[] s : sides) {
+            Piece rook = b.getPieceAt(new Position(row, s[0]));
+            if (!(rook instanceof Rook) || ((Rook) rook).hasMoved()) continue;
+
+            // squares between king and rook must be empty
+            boolean pathClear = true;
+            for (int c = Math.min(kingPos.column(), s[0]) + 1;
+                 c < Math.max(kingPos.column(), s[0]); c++) {
+                if (b.getPieceAt(new Position(row, c)) != null) {
+                    pathClear = false; break;
                 }
             }
+            if (!pathClear) continue;
 
-            return moves;
-        }
+            // king may not pass through attacked squares
+            Position through = new Position(row, s[2]);
+            Position dest   = new Position(row, s[1]);
+            if (RulesEngine.isSquareAttacked(b, through, getColor())
+                    || RulesEngine.isSquareAttacked(b, dest, getColor()))
+                continue;
 
-        // Simple castling check: all between squares are empty & rook exists and didn't move
-        private boolean canCastle(BoardImpl board, int row, int... cols) {
-            // Check if all squares between the king and the rook are empty
-            for (int i = 0; i < cols.length - 1; i++) {
-                // If any square is not empty, castling is not allowed
-                if (board.getPieceAt(new Position(row, cols[i])) != null) return false;
-            }
-            // Check the final square (expected position of the rook)
-            Piece rook = board.getPieceAt(new Position(row, cols[cols.length - 1]));
-
-            // Return true if it's a rook and it hasn't moved yet
-
-            return (rook instanceof Rook r && !r.hasMoved());
+            moves.add(toAlgebraic(dest));
         }
     }
+}
+
+
+

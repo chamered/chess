@@ -6,6 +6,7 @@ import java.util.List;
 
 import board.BoardImpl;
 import board.Position;
+import game.Move;
 
 
 public class Pawn extends Piece{
@@ -34,50 +35,59 @@ public class Pawn extends Piece{
      */
 
 
-
     @Override
-    public List<String> generatePossibleMoves(BoardImpl board, Position currentPos) {
-    List<String> moves = new ArrayList<>();
+    public List<String> generatePossibleMoves(BoardImpl b, Position pos) {
+        List<String> moves = new ArrayList<>();
     int direction = (color == Color.WHITE) ? -1 : 1;
     int startRow = (color == Color.WHITE) ? 6 : 1;
-    int row = currentPos.row();
-    int col = currentPos.column();
 
-    Position oneStep = new Position(row + direction, col);
-    if (isInsideBoard(oneStep) && board.getPieceAt(oneStep) == null) {
-        moves.add(toAlgebraic(oneStep));
+        int row = pos.row();
+        int col = pos.column();
 
-        if (row == startRow) {
-            Position twoStep = new Position(row + 2 * direction, col);
-            if (isInsideBoard(twoStep) && board.getPieceAt(twoStep) == null) {
-                moves.add(toAlgebraic(twoStep));
+        /* ------- forward 1 ------------------------------------------------ */
+        Position oneStep = new Position(row + direction, col);
+        if (isInsideBoard(oneStep) && b.getPieceAt(oneStep) == null) {
+            maybeAddPromotion(moves, oneStep);
+
+            /* forward 2 (only if 1 empty and on start rank) */
+            if ((row == 6 && direction == -1) || (row == 1 && direction == 1)) {
+                Position two = new Position(row + 2 * direction, col);
+                if (b.getPieceAt(two) == null) moves.add(toAlgebraic(two));
             }
         }
-    }
 
-    for (int dCol : new int[]{-1, 1}) {
-        Position diag = new Position(row + direction, col + dCol);
-        if (isInsideBoard(diag)) {
-            Piece target = board.getPieceAt(diag);
-            if (eatOtherPiece(target)) {
-                moves.add(toAlgebraic(diag));
+        /* ------- captures (x-left / x-right) ------------------------------ */
+        for (int dc : new int[]{-1, 1}) {
+            Position diag = new Position(row + direction, col + dc);
+            if (!isInsideBoard(diag)) continue;
+
+            Piece target = b.getPieceAt(diag);
+            if (target != null && eatOtherPiece(target)) {
+                maybeAddPromotion(moves, diag);
             }
         }
-    }
 
-    for (int dCol : new int[]{-1, 1}) {
-        Position side = new Position(row, col + dCol);
-        if (isInsideBoard(side)) {
-            Piece adjacent = board.getPieceAt(side);
-            if (adjacent instanceof Pawn && adjacent.getColor() != this.color) {
-                Position enPassantTarget = new Position(row + direction, col + dCol);
-                moves.add(toAlgebraic(enPassantTarget));
+        /* ------- en-passant ---------------------------------------------- */
+        Move last = b.getLastMove();
+        if (last != null) {
+            Piece lastMoved = b.getPieceAt(last.to());
+            if (lastMoved instanceof Pawn && last.from().row() == row + 2 * direction
+                    && last.to().row() == row
+                    && Math.abs(last.to().column() - col) == 1) {
+                Position epSquare = new Position(row + direction,
+                        last.to().column());
+                moves.add(toAlgebraic(epSquare));
             }
         }
+        return moves;
     }
 
-    return moves;
-}
+    private void maybeAddPromotion(List<String> moves, Position p) {
+        if (p.row() == 0 || p.row() == 7)
+            moves.add(toAlgebraic(p) + "=Q");
+        else
+            moves.add(toAlgebraic(p));
+    }
 }
 
 
