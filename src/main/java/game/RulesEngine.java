@@ -7,9 +7,17 @@ import pieces.Piece;
 import players.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RulesEngine {
+
+     public static final Map<Color, Integer> playersMoves = new HashMap<>(){{
+         put(Color.WHITE, 0);
+         put(Color.BLACK, 0);
+     }};
+
     /**
      * Checks if a move is legal.
      * @param board the board to check the move on
@@ -116,11 +124,18 @@ public class RulesEngine {
     }
 
     /**
+     * Increments the counter of moves of the player.
+     * @param color the color of the player
+     */
+    public static void incrementCounterFromMoveHistory(Color color){
+        playersMoves.compute(color, (k, counter) -> counter + 1);
+    }
+    /**
      * Verifies the 50-move-rule
      * @param player the player
      * @return true iff the 50-move-rule has been breached
      */
     public static boolean isFiftyMoveRule(Player player){
-        return Move.moveHistory.get(player.getColor()).size() >= 50 && player.getCapturedPieces().isEmpty();
+        return false;
     }
 }

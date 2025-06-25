@@ -11,8 +11,6 @@ import java.util.Map;
 import java.util.Objects;
 
 public record Move(Position from, Position to) {
-    static final Map<Color, ArrayList<Move>> moveHistory = new HashMap<>();
-
     @Override
     public @NotNull String toString() {
         return Piece.toAlgebraic(from) + " -> " + Piece.toAlgebraic(to);
@@ -25,15 +23,5 @@ public record Move(Position from, Position to) {
         Move move = (Move) o;
         return Objects.equals(from, move.from) &&
                 Objects.equals(to, move.to);
-    }
-
-    public static void addMoveToHistory(Color color, Move move){
-        ArrayList<Move> moves = new ArrayList<>();
-        moves.add(move);
-        moveHistory.put(color, moves);
-    }
-
-    public static Map<Color, ArrayList<Move>> getMoveHistory(){
-        return moveHistory;
     }
 }

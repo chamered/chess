@@ -78,7 +78,7 @@ public class GameImpl implements Game {
         Piece pieceTo = board.getPieceAt(move.to());
 
         if(piece.eatOtherPiece(pieceTo)){
-            Move.moveHistory.put(piece.getColor(), new ArrayList<>(Collections.singleton(move)));
+            RulesEngine.incrementCounterFromMoveHistory(piece.getColor());
         }
 
         board.setPieceAt(move.to(), piece);
@@ -124,8 +124,8 @@ public class GameImpl implements Game {
 
             if (getCurrentPlayer() instanceof BotPlayer bot) {
                 Move move = bot.chooseMove(board);
-                from = new Position(move.from().getRow(), move.from().getColumn());
-                to = new Position(move.to().getRow(), move.to().getColumn());
+                from = new Position(move.from().row(), move.from().column());
+                to = new Position(move.to().row(), move.to().column());
             } else {
                 System.out.println("Enter your move. [e2 e4]:");
                 System.out.print("> ");
@@ -139,8 +139,8 @@ public class GameImpl implements Game {
                     continue;
                 }
 
-                from = new Position(Piece.fromAlgebraic(tokens[0]).getRow(), Piece.fromAlgebraic(tokens[0]).getColumn());
-                to = new Position(Piece.fromAlgebraic(tokens[1]).getRow(), Piece.fromAlgebraic(tokens[1]).getColumn());
+                from = new Position(Piece.fromAlgebraic(tokens[0]).row(), Piece.fromAlgebraic(tokens[0]).column());
+                to = new Position(Piece.fromAlgebraic(tokens[1]).row(), Piece.fromAlgebraic(tokens[1]).column());
             }
 
             try {

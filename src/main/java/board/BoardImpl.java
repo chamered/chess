@@ -76,12 +76,12 @@ public class BoardImpl implements Board {
 
     @Override
     public Piece getPieceAt(Position pos) {
-        return pos.getRow() > -1 && pos.getColumn() > -1 ? board[pos.getRow()][pos.getColumn()] : null;
+        return pos.row() > -1 && pos.column() > -1 ? board[pos.row()][pos.column()] : null;
     }
 
     @Override
     public void setPieceAt(Position pos, Piece piece) {
-        board[pos.getRow()][pos.getColumn()] = piece;
+        board[pos.row()][pos.column()] = piece;
     }
 
     @Override
