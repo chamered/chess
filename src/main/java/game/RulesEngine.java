@@ -40,7 +40,7 @@ public class RulesEngine {
     public static boolean wouldCauseSelfCheck(BoardImpl board, Move move, Color color) {
         BoardImpl simulatedBoard = board.copy();
         simulatedBoard.makeMove(move);
-        return isKingInCheck(color, simulatedBoard);
+        return isKingInCheck(simulatedBoard, color);
     }
 
     /**
@@ -77,7 +77,7 @@ public class RulesEngine {
      * @param board the current board
      * @return true iff the King is in check
      */
-    public static boolean isKingInCheck(Color color, BoardImpl board) {
+    public static boolean isKingInCheck(BoardImpl board, Color color) {
         Position kingPos = board.getKingPosition(color);
         Piece[][] boardState = board.getBoard();
 
@@ -100,16 +100,16 @@ public class RulesEngine {
     }
 
     //Check if it is checkmate
-    public static boolean isCheckmate(Color color, BoardImpl board) {
-        if (!isKingInCheck(color, board)) return false;
+    public static boolean isCheckmate(BoardImpl board, Color color) {
+        if (!isKingInCheck(board, color)) return false;
         List<Move> validMoves = getAllLegalMoves(board, color);
 
         return validMoves.isEmpty();
     }
 
     //Check for stalemate
-    public static boolean isStalemate(Color color, BoardImpl board) {
-        if (isKingInCheck(color, board)) return false;
+    public static boolean isStalemate(BoardImpl board, Color color) {
+        if (isKingInCheck(board, color)) return false;
         List<Move> validMoves = getAllLegalMoves(board, color);
 
         return validMoves.isEmpty();

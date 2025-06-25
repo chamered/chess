@@ -4,7 +4,6 @@ import game.Move;
 import game.RulesEngine;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pieces.*;
 
@@ -67,7 +66,7 @@ public class RulesEngineTest {
         board.setPieceAt(new Position(7, 4), new King(Color.WHITE));
         board.setPieceAt(new Position(0, 4), new Rook(Color.BLACK));
 
-        boolean result = RulesEngine.isKingInCheck(Color.WHITE, board);
+        boolean result = RulesEngine.isKingInCheck(board, Color.WHITE);
         Assertions.assertTrue(result);
     }
 
@@ -79,7 +78,7 @@ public class RulesEngineTest {
         board.setPieceAt(new Position(0, 3), null);
         board.setPieceAt(new Position(3, 7), new Queen(Color.BLACK));
 
-        boolean result = RulesEngine.isCheckmate(Color.WHITE, board);
+        boolean result = RulesEngine.isCheckmate(board, Color.WHITE);
         Assertions.assertTrue(result);
     }
 
@@ -94,9 +93,9 @@ public class RulesEngineTest {
         board.setPieceAt(new Position(6, 7), new Queen(Color.BLACK));
         board.setPieceAt(new Position(6, 6), new Rook(Color.BLACK));
 
-        Assertions.assertFalse(RulesEngine.isKingInCheck(Color.WHITE, board));
+        Assertions.assertFalse(RulesEngine.isKingInCheck(board, Color.WHITE));
 
-        boolean isStalemate = RulesEngine.isStalemate(Color.WHITE, board);
+        boolean isStalemate = RulesEngine.isStalemate(board, Color.WHITE);
         Assertions.assertTrue(isStalemate);
     }
 }

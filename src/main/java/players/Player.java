@@ -6,7 +6,7 @@ import pieces.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class Player implements PlayerInterface {
+public abstract class Player {
     private final String name;
     private final Color color;
     private final Set<Piece> capturedPieces = new HashSet<>();
@@ -16,22 +16,34 @@ public abstract class Player implements PlayerInterface {
         this.color = color;
     }
 
-    @Override
+    /**
+     * Adds the captured piece to the list.
+     * @param piece captured piece
+     */
     public void addCapturedPiece(Piece piece){
         capturedPieces.add(piece);
     }
 
-    @Override
+    /**
+     * Getter method
+     * @return the player's color
+     */
     public Color getColor(){
         return color;
     }
 
-    @Override
+    /**
+     * Returns a set with all the pieces captured by this player.
+     * @return a set with all captured pieces.
+     */
     public Set<Piece> getCapturedPieces(){
         return capturedPieces;
     }
 
-    @Override
+    /**
+     * Returns the Player's name
+     * @return player's name
+     */
     public String getName(){
         return name;
     }

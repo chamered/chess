@@ -14,7 +14,6 @@ public class BotPlayer extends Player implements Bot{
 
     private final int depth;
 
-
     public BotPlayer(Color color, int depth) {
         super("Juice Bot's", color);
         this.depth = depth;

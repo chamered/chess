@@ -69,7 +69,7 @@ public class Pawn extends Piece{
             }
         }
 
-        // En Passant - pseudo valid, actual check is done in Game.java
+        // En Passant - pseudo valid, actual check is done in GameImpl.java
         for (int dCol : new int[]{-1, 1}) {
             int newCol = col + dCol;
             Position side = new Position(row, newCol);
