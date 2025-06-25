@@ -40,8 +40,8 @@ public class Pawn extends Piece{
     List<String> moves = new ArrayList<>();
     int direction = (color == Color.WHITE) ? -1 : 1;
     int startRow = (color == Color.WHITE) ? 6 : 1;
-    int row = currentPos.getRow();
-    int col = currentPos.getColumn();
+    int row = currentPos.row();
+    int col = currentPos.column();
 
     Position oneStep = new Position(row + direction, col);
     if (isInsideBoard(oneStep) && board.getPieceAt(oneStep) == null) {

@@ -34,8 +34,8 @@ public class Knight extends Piece {
                 {1, 2}, {1, -2}, {-1, 2}, {-1, -2}
         };
 
-        int currentRow = currentPos.getRow();
-        int currentCol = currentPos.getColumn();
+        int currentRow = currentPos.row();
+        int currentCol = currentPos.column();
 
         // Check all possible Knight moves from the current position
         for (int[] offset : moveOffsets) {

@@ -44,8 +44,8 @@ public abstract class Piece {
      * @return a String pair representing the coordinates of a cell (e.g (e2, e4)).
      */
     public static String toAlgebraic(Position pos) {
-        int row = pos.getRow();
-        int col = pos.getColumn();
+        int row = pos.row();
+        int col = pos.column();
 
         if(row <0 || row >7 || col < 0 || col > 7 ){
             throw new IllegalArgumentException(
@@ -86,8 +86,8 @@ public abstract class Piece {
      * Check if given coordinates are inside the chessboard (0-7)
      */
     public static boolean isInsideBoard(Position pos) {
-        int row = pos.getRow();
-        int col = pos.getColumn();
+        int row = pos.row();
+        int col = pos.column();
         return row >= 0 && row < 8 && col >= 0 && col < 8;
     }
 

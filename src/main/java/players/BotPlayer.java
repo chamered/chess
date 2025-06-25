@@ -39,7 +39,7 @@ public class BotPlayer extends Player implements Bot{
             }
         }
 
-        Move.addMoveToHistory(getColor(), bestMove);
+        RulesEngine.incrementCounterFromMoveHistory(getColor());
 
         return bestMove;
     }

@@ -36,8 +36,8 @@ public class Bishop extends Piece {
         Piece[][] boardState = board.getBoard();
 
         for (int[] dir : directions) {
-            int row = currentPos.getRow() + dir[0];
-            int col = currentPos.getColumn() + dir[1];
+            int row = currentPos.row() + dir[0];
+            int col = currentPos.column() + dir[1];
 
             while (isInsideBoard(new Position(row, col))) {
                 Piece target = boardState[row][col];

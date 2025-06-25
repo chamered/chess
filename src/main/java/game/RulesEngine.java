@@ -97,7 +97,7 @@ public class RulesEngine {
                     List<String> enemyMoves = piece.generatePossibleMoves(board, from);
                     for (String move : enemyMoves) {
                         Position coordinates = Piece.fromAlgebraic(move);
-                        if (coordinates.getRow() == kingPos.getRow() && coordinates.getColumn() == kingPos.getColumn()) {
+                        if (coordinates.row() == kingPos.row() && coordinates.column() == kingPos.column()) {
                             return true;
                         }
                     }

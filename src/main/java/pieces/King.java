@@ -43,8 +43,8 @@ public class King extends Piece {
         public List<String> generatePossibleMoves(BoardImpl board, Position currentPos) {
             List<String> moves = new ArrayList<>();
 
-            int row = currentPos.getRow();
-            int col = currentPos.getColumn();
+            int row = currentPos.row();
+            int col = currentPos.column();
             Piece[][] boardState = board.getBoard();
 
             // Standard 8 surrounding squares
@@ -53,7 +53,7 @@ public class King extends Piece {
                     if (r == 0 && c == 0) continue;
                     Position pos = new Position(row + r, col + c);
                     if (isInsideBoard(pos)) {
-                        Piece target = boardState[pos.getRow()][pos.getColumn()];
+                        Piece target = boardState[pos.row()][pos.column()];
                         if (target == null || eatOtherPiece(target)) {
                             moves.add(toAlgebraic(pos));
                         }
