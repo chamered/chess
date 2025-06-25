@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Game {
+public class Game implements GameFlow {
     private BoardImpl board;
     private Player whitePlayer;
     private Player blackPlayer;
@@ -25,9 +25,7 @@ public class Game {
         currentTurn = Color.WHITE;
     }
 
-    /**
-     * Start the game.
-     */
+    @Override
     public void start() {
         printWelcomeMessage();
         String mode = InputHandler.selectMode();
@@ -51,9 +49,10 @@ public class Game {
     }
 
     /**
-     * Checks the game state, providing meaningful messages
+     * Checks the game state, changing the state of the
+     * game depending on various conditions
      */
-    private void checkGameState(Player p) {
+    private void checkGameState() {
         if(RulesEngine.isKingInCheck(Color.BLACK, board) || RulesEngine.isKingInCheck(Color.WHITE, board)) gameState = GameState.CHECK;
         if(RulesEngine.isCheckmate(Color.BLACK, board) || RulesEngine.isCheckmate(Color.WHITE, board)) gameState = GameState.CHECKMATE;
         if(RulesEngine.isStalemate(Color.BLACK, board) || RulesEngine.isStalemate(Color.WHITE, board)) gameState = GameState.STALEMATE;
@@ -67,11 +66,7 @@ public class Game {
         }
     }
 
-    /**
-     * Attempts to move a piece.
-     * @param move the move to make
-     * @return true if the move is valid and was executed, false otherwise
-     */
+    @Override
     public boolean movePiece(Move move) {
         Piece piece = board.getPieceAt(move.from());
 
@@ -93,26 +88,17 @@ public class Game {
         return true;
     }
 
-    /**
-     * Switches the turn to the next player.
-     */
+    @Override
     public void switchPlayer() {
         currentTurn = (currentTurn == Color.WHITE) ? Color.BLACK : Color.WHITE;
     }
 
-    /**
-     * Returns the current player.
-     * @return the current player
-     */
+    @Override
     public Player getCurrentPlayer() {
         return whitePlayer.getColor() == currentTurn ? whitePlayer : blackPlayer;
     }
 
-    /**
-     *
-     * @param from the initial position
-     * @return a List of Strings containing all the possibles moves for the given Piece in the position
-     */
+    @Override
     public List<String> getUnfilteredPossibleMoves(Position from) {
         Piece piece = board.getPieceAt(from);
 
@@ -124,14 +110,7 @@ public class Game {
         return piece.generatePossibleMoves(board, from);
     }
 
-    /**
-     * Starts main game loop for chess match.
-     * Alternates turns between players, prints updated state of the board,
-     * reads player input from console, attempts to perform the specified move.
-     * Continues until one player types "exit" or the game ends by other rules
-     * (e.g., checkmate or stalemate).
-     * Invalid input formats and illegal moves are detected and handled with appropriate messages.
-     */
+    @Override
     public void runGameLoop() {
         boolean running = true;
 
@@ -175,9 +154,7 @@ public class Game {
         }
     }
 
-    /**
-     * Prints the welcome message when the program is executed.
-     */
+    @Override
     public void printWelcomeMessage() {
         System.out.println(
                 """
@@ -195,6 +172,7 @@ public class Game {
         );
     }
 
+    @Override
     public void exit() {
         System.out.println("\u001B[31mGame ended.\u001B[0m");
         System.exit(0);
