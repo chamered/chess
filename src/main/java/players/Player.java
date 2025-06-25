@@ -1,11 +1,12 @@
 package players;
 
+import org.jetbrains.annotations.ApiStatus;
 import pieces.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class Player {
+public abstract class Player implements PlayerInterface {
     private final String name;
     private final Color color;
     private final Set<Piece> capturedPieces = new HashSet<>();
@@ -15,34 +16,22 @@ public abstract class Player {
         this.color = color;
     }
 
-    /**
-     * Adds the captured piece to the list
-     * @param piece the piece that has been captured
-     */
+    @Override
     public void addCapturedPiece(Piece piece){
         capturedPieces.add(piece);
     }
 
-    /**
-     * Returns the color of the player.
-     * @return the player's color
-     */
+    @Override
     public Color getColor(){
         return color;
     }
 
-    /**
-     * Returns all the captured pieces by this player.
-     * @return the captured pieces
-     */
+    @Override
     public Set<Piece> getCapturedPieces(){
         return capturedPieces;
     }
 
-    /**
-     * Returns the name of the player.
-     * @return the player's name
-     */
+    @Override
     public String getName(){
         return name;
     }
