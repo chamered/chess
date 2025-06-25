@@ -1,10 +1,10 @@
 package main;
 
-import game.GameImp;
+import game.GameImpl;
 
 public class Main {
     public static void main(String[] args) {
-        GameImp game = new GameImp();
+        GameImpl game = new GameImpl();
         game.start();
     }
 }

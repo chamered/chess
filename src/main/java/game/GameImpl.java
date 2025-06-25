@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GameImp implements Game {
+public class GameImpl implements Game {
     private BoardImpl board;
     private Player whitePlayer;
     private Player blackPlayer;
@@ -20,7 +20,7 @@ public class GameImp implements Game {
     private GameState gameState;
 
     // Constructor
-    public GameImp() {
+    public GameImpl() {
         board = new BoardImpl();
         currentTurn = Color.WHITE;
     }
