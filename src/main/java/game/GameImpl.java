@@ -153,10 +153,8 @@ public class GameImpl implements Game {
             }
         }
 
-        System.out.println("Game ended. Would you like to start a new game [y/n]?");
-        String res = InputHandler.readLine();
-        if (res.equals("y")) start();
-        else exitGame();
+        System.out.println("Game ended. Starting a new game...");
+        start();
     }
 
     @Override
@@ -193,6 +191,7 @@ public class GameImpl implements Game {
                 To make a move, type coordinates in the format: e2 e4
                 
                 Type 'exit' at any time to quit the program.
+                Type 'restart' during a match to start a new game.
                 Let the game begin!
                 """
         );
