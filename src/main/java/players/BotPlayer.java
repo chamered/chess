@@ -28,27 +28,30 @@ public class BotPlayer extends Player implements Bot{
 
     @Override
     public Move chooseMove(BoardImpl board) {
-        List<Move> validMoves = RulesEngine.getAllLegalMoves(board, getColor());
-        if (validMoves.isEmpty()) return null;
+        positionCounts.merge(board.zobristKey(), 1, Integer::sum);
 
-        Move bestMove = null;
-        int bestScore = Integer.MIN_VALUE;
+        List<Move> legalMoves = RulesEngine.getAllLegalMoves(board, getColor());
+        if (legalMoves.isEmpty()) return null;
 
-        for (Move move : validMoves) {
-            BoardImpl boardCopy = board.copy();
-            boardCopy.makeMove(move);
+        Move best = null;
+        int alpha = Integer.MIN_VALUE;
+        int beta  = Integer.MAX_VALUE;
 
-            int score = minimax(boardCopy, depth - 1, false);
+        for (Move move : legalMoves) {
+            BoardImpl copy = board.copy();
+            copy.makeMove(move);
 
-            if (score > bestScore) {
-                bestScore = score;
-                bestMove = move;
+            int score = minimax(copy, depth - 1, alpha, beta, false);
+
+            if (score > alpha) {
+                alpha = score;
+                best  = move;
             }
         }
 
         RulesEngine.incrementCounterFromMoveHistory(getColor());
 
-        return bestMove;
+        return best;
     }
 
     /**

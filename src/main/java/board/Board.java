@@ -83,7 +83,8 @@ public interface Board {
      * String representation to the positionHistory map.
      * @param board - the current board
      */
-    public void updateHistory(@NotNull BoardImpl board);
+    void updateHistory(@NotNull BoardImpl board);
+
     /** Getter method
      * @return the position history.
      */

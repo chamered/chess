@@ -205,6 +205,7 @@ public class BoardImpl implements Board {
         }
         return stringBuilder.toString();
     }
+
     public String zobristKeyWithColorAndType(){
         StringBuilder stringBuilder = new StringBuilder(120);
         for(int i = 0; i < 8; i++){
@@ -215,6 +216,7 @@ public class BoardImpl implements Board {
         }
         return stringBuilder.toString();
     }
+
     @Override
     public boolean isSamePosition(@NotNull BoardImpl simulatedBoard){
         return this.zobristKey().equals(simulatedBoard.zobristKey());
