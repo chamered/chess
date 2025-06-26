@@ -9,7 +9,6 @@ import players.BotPlayer;
 import players.HumanPlayer;
 import players.Player;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -77,9 +76,9 @@ public class GameImpl implements Game {
         board.setPieceAt(move.from(), null);
         board.setPieceAt(move.to(), piece);
 
-        if(piece instanceof Pawn){
+        if (piece instanceof Pawn) {
             RulesEngine.resetMoveHistory(piece.getColor());
-        }else{
+        } else {
             RulesEngine.incrementCounterFromMoveHistory(piece.getColor());
         }
 
@@ -131,8 +130,6 @@ public class GameImpl implements Game {
                 System.out.print("> ");
                 String input = InputHandler.readLine().toLowerCase();
 
-                if (input.equalsIgnoreCase("exit")) exit();
-
                 String[] tokens = input.split("\\s+"); // Split the input by the white spaces
                 if (tokens.length != 2) {
                     System.out.println("\u001B[31mInvalid input. Please use format: e2 e4\u001B[0m");
@@ -166,15 +163,17 @@ public class GameImpl implements Game {
                 White always starts.
                 To make a move, type coordinates in the format: e2 e4
                 
-                Type 'help' for commands or 'exit' to quit.
+                Type 'exit' at any time to quit the program.
                 Let the game begin!
                 """
         );
     }
 
-    @Override
-    public void exit() {
-        System.out.println("\u001B[31mGame ended.\u001B[0m");
+    /**
+     * Exists the program with a red message.
+     */
+    public static void exitGame() {
+        System.out.println("\u001B[35mGoodbye! Even the pieces need rest.\u001B[0m");
         System.exit(0);
     }
 }

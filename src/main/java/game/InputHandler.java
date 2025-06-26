@@ -12,7 +12,7 @@ public class InputHandler {
     public static String selectMode() {
         System.out.println("Select the game mode. [\"1v1\" / \"1vBot\" / \"BvB\"(\u001B[33mBeta\u001B[0m)]:");
         System.out.print("> ");
-        String mode = scanner.nextLine();
+        String mode = readLine();
 
         return switch (mode) {
             case "1v1" -> "1v1";
@@ -26,18 +26,17 @@ public class InputHandler {
     }
 
     /**
-     * Returns a string with the color selected by the user.
+     * Returns a string representing the color selected by the user.
      * @return the chosen color
      */
     public static String chooseColor() {
         System.out.println("What side would you like to play as. [w/b]:");
         System.out.print("> ");
-        String color = scanner.nextLine().toLowerCase();
+        String color = readLine().toLowerCase();
 
         return switch (color) {
             case "w" -> "w";
             case "b" -> "b";
-            case "exit" -> "exit";
             default -> {
                 System.out.println("\u001B[31m" + color + " is not a side.\u001B[0m");
                 yield chooseColor();
@@ -45,13 +44,19 @@ public class InputHandler {
         };
     }
 
+    /**
+     * Returns an integer representing the depth of the bot selected by the user.
+     * @return the chosen depth
+     */
     public static int selectDepth() {
         System.out.println("How deep should the BOT look for moves?");
         System.out.println("\u001B[31mWarning\u001B[0m: values above 3 will be very slow. [n]?");
         System.out.print("> ");
-        int depth = scanner.nextInt();
-        scanner.nextLine();
-        return depth;
+        return Integer.parseInt(readLine());
+    }
+
+    private static void printHelp() {
+        System.out.println("help");
     }
 
     /**
@@ -59,6 +64,10 @@ public class InputHandler {
      * @return the user input
      */
     public static String readLine() {
-        return scanner.nextLine().trim();
+        String input = scanner.nextLine().trim();
+
+        if (input.equals("exit")) GameImpl.exitGame();
+
+        return input;
     }
 }

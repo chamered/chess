@@ -51,9 +51,4 @@ public interface Game {
      * Prints a welcome message when the program starts.
      */
     void printWelcomeMessage();
-
-    /**
-     * Exists the program with a red message.
-     */
-    void exit();
 }
