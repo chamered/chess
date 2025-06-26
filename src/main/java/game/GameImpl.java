@@ -58,10 +58,11 @@ public class GameImpl implements Game {
      * @return the current GameState
      */
     private GameState checkGameState() {
-        if(RulesEngine.isKingInCheck(board, Color.BLACK) || RulesEngine.isKingInCheck(board, Color.WHITE)) gameState = GameState.CHECK;
         if(RulesEngine.isCheckmate(board, Color.BLACK) || RulesEngine.isCheckmate(board, Color.WHITE)) gameState = GameState.CHECKMATE;
-        if(RulesEngine.isStalemate(board, Color.BLACK) || RulesEngine.isStalemate(board, Color.WHITE)) gameState = GameState.STALEMATE;
-        if(RulesEngine.isFiftyMoveRule(whitePlayer) || RulesEngine.isFiftyMoveRule(blackPlayer)) gameState = GameState.DRAW;
+        else if(RulesEngine.isStalemate(board, Color.BLACK) || RulesEngine.isStalemate(board, Color.WHITE)) gameState = GameState.STALEMATE;
+        else if(RulesEngine.isKingInCheck(board, Color.BLACK) || RulesEngine.isKingInCheck(board, Color.WHITE)) gameState = GameState.CHECK;
+        else if(RulesEngine.isFiftyMoveRule(whitePlayer) || RulesEngine.isFiftyMoveRule(blackPlayer)) gameState = GameState.DRAW;
+        else gameState = GameState.ACTIVE;
 
         return gameState;
     }
