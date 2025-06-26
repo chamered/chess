@@ -188,6 +188,7 @@ public class BoardImpl implements Board {
     @Override
     public Move getLastMove() { return lastMove; }
 
+    @Override
     public String zobristKey(){
         StringBuilder stringBuilder = new StringBuilder(70);
 
@@ -199,8 +200,8 @@ public class BoardImpl implements Board {
         }
         return stringBuilder.toString();
     }
-
-    public boolean samePosition(BoardImpl simulatedBoard){
+    @Override
+    public boolean isSamePosition(BoardImpl simulatedBoard){
         return this.zobristKey().equals(simulatedBoard.zobristKey());
     }
 }

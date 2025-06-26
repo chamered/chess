@@ -60,4 +60,8 @@ public interface Board {
      * @return the last move
      */
     Move getLastMove();
+
+    String zobristKey();
+
+    boolean isSamePosition(BoardImpl simulatedBoard);
 }
