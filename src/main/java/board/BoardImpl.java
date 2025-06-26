@@ -187,4 +187,20 @@ public class BoardImpl implements Board {
 
     @Override
     public Move getLastMove() { return lastMove; }
+
+    public String zobristKey(){
+        StringBuilder stringBuilder = new StringBuilder(70);
+
+        for(int i = 0; i < 8; i++){
+            for(int k = 0; k < 8; k++){
+                Piece p = board[i][k];
+                if (p != null) stringBuilder.append(i).append(k);
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    public boolean samePosition(BoardImpl simulatedBoard){
+        return this.zobristKey().equals(simulatedBoard.zobristKey());
+    }
 }

@@ -252,4 +252,8 @@ public class RulesEngine {
     public static boolean isFiftyMoveRule(Player player){
         return RulesEngine.playersMoves.get(player.getColor()) >= 50;
     }
+
+    public static boolean isThreeFoldRepetition(){
+
+    }
 }
