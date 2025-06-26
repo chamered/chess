@@ -1,13 +1,13 @@
 # 🨀 Chess
 ## 👥 Members
-- [Samuele Maltauro](https://github.com/chamered)
-- [Nicholas Zappa](https://github.com/JustVibing-JK)  
-- [Gupta Khushika](https://github.com/Khushika05) 
-- [Kevin Trolese Joachin](https://github.com/KJT0) 
+- **Samuele Maltauro** ([@chamered](https://github.com/chamered))
+- **Nicholas Zappa** ([@JustVibing-JK](https://github.com/JustVibing-JK))
+- **Gupta Khushika** ([@Khushika05](https://github.com/Khushika05))
+- **Kevin Trolese Joachin** ([@KJT0](https://github.com/KJT0)) 
 
 > **Note:** Nicholas has made some changes using his second account 
-> [**NoobDev-Game**](https://github.com/NoobDev-Game), this is still his contribution.
-# 📥 Installation Flow 
+> [**NoobDev-Game**](https://github.com/NoobDev-Game), every contribution by such profile it's still his.
+# 📥 Installation 
 TODO
 
 ---
@@ -15,6 +15,16 @@ TODO
 Chess is a **Java CLI application** that aims to replicate **modern chess** in an old fashion way by providing it's users 
 with a CLI interaction.  
 Our chess has **1v1, 1vBot**, and differently from modern chess, has a **Bot vs Bot** mode. 
+
+# 📑 User's Guide 
+Our **chess** follows the standard rules of modern chess.   
+To play properly, you will be prompted to write a **move** in the console: movement is performed by writing in **chess algebraic notation**, 
+which is identified by writing e.g `e4 e5`.  
+
+If the input provided is both not valid and not allowed, you will receive **feedback**. 
+You are provided with useful commands you can use aside from playing:
+- `restart` - allows the user to restart the game directly
+- `exit` - exits the game 
 # 🛠 Structure of the Project 
 ```plaintext 
 .
@@ -22,42 +32,42 @@ Our chess has **1v1, 1vBot**, and differently from modern chess, has a **Bot vs 
 ├── pom.xml
 ├── README.md
 └── src
-├── main
-│   ├── java
-│   │   ├── board
-│   │   │   ├── BoardImpl.java
-│   │   │   ├── Board.java
-│   │   │   └── Position.java
-│   │   ├── game
-│   │   │   ├── GameImpl.java
-│   │   │   ├── Game.java
-│   │   │   ├── GameState.java
-│   │   │   ├── InputHandler.java
-│   │   │   ├── Move.java
-│   │   │   └── RulesEngine.java
-│   │   ├── main
-│   │   │   └── Main.java
-│   │   ├── pieces
-│   │   │   ├── Bishop.java
-│   │   │   ├── Color.java
-│   │   │   ├── King.java
-│   │   │   ├── Knight.java
-│   │   │   ├── Pawn.java
-│   │   │   ├── Piece.java
-│   │   │   ├── Queen.java
-│   │   │   └── Rook.java
-│   │   └── players
-│   │       ├── Bot.java
-│   │       ├── BotPlayer.java
-│   │       ├── HumanPlayer.java
-│   │       └── Player.java
-│   └── resources
-│       └── ansi_escape_codes
-└── test
-└── java
-├── BoardTest.java
-├── PieceTest.java
-└── RulesEngineTest.java
+    ├── main
+    │   ├── java
+    │   │   ├── board
+    │   │   │   ├── BoardImpl.java
+    │   │   │   ├── Board.java
+    │   │   │   └── Position.java
+    │   │   ├── game
+    │   │   │   ├── GameImpl.java
+    │   │   │   ├── Game.java
+    │   │   │   ├── GameState.java
+    │   │   │   ├── InputHandler.java
+    │   │   │   ├── Move.java
+    │   │   │   └── RulesEngine.java
+    │   │   ├── main
+    │   │   │   └── Main.java
+    │   │   ├── pieces
+    │   │   │   ├── Bishop.java
+    │   │   │   ├── Color.java
+    │   │   │   ├── King.java
+    │   │   │   ├── Knight.java
+    │   │   │   ├── Pawn.java
+    │   │   │   ├── Piece.java
+    │   │   │   ├── Queen.java
+    │   │   │   └── Rook.java
+    │   │   └── players
+    │   │       ├── Bot.java
+    │   │       ├── BotPlayer.java
+    │   │       ├── HumanPlayer.java
+    │   │       └── Player.java
+    │   └── resources
+    │       └── ansi_escape_codes.txt
+    └── test
+        └── java
+            ├── BoardTest.java
+            ├── PieceTest.java
+            └── RulesEngineTest.java
 ```
 ## 🧩 Components
 ### 📂 Packages 
@@ -98,10 +108,14 @@ The components are:
 - [**JUnit**](https://junit.org/) - used for unit testing 
 - [**JetBrains Annotations**](https://www.jetbrains.com/help/idea/annotating-source-code.html) - adds `@NotNull` notations and other useful notations. 
 
+## 🖥️ Techniques/Algorithms 
+For this project in particular, the **minimax** algorithm was implemented to allow the bot to play against the player.  
+
+
 ---
 # 🧑‍🧒‍🧒 The Team's Experience 
 ## 🧰 Distribution of the Workload 
->[**Samuele Maltauro**](https://github.com/chamered)
+>**Samuele Maltauro** ([@chamered](https://github.com/chamered))
 >- `GameImpl`
 >- `Board`
 >- `BoardImpl`
@@ -113,13 +127,13 @@ The components are:
 >- `RulesEngineTest`
 >- `Color`
 >  
->[**Nicholas Zappa**](https://github.com/JustVibing-JK) 
+>**Nicholas Zappa** ([@JustVibing-JK](https://github.com/JustVibing-JK)) 
 >- `BotPlayer::getOpponentColor`
 >- `BotPlayer::minimax`
 >- `BotPlayer::evalutateBoard`
 >- `GameState`  
 >
->[**Gupta Khushika**](https://github.com/Khushika05)  
+>**Gupta Khushika** ([@Khushika05](https://github.com/Khushika05))
 >- `Piece`
 >- `Bishop`
 >- `Pawn`
@@ -128,7 +142,7 @@ The components are:
 >- `Knight`
 >- `Rook`  
 >
->[**Kevin Trolese Joachin**](https://github.com/KJT0)
+>**Kevin Trolese Joachin** ([@KJT0](https://github.com/KJT0))
 >- `Move`
 >- `Position` 
 >- `Game`
@@ -138,4 +152,18 @@ The components are:
 >- `RulesEngine::resetMoveHistory`
 >- `Game::checkGameState`
 
-## 🗃️ Git's usage 
+## 🗃️ Git's Usage
+**Git** version control was used to track the state of our project.  
+First, we created a [repository](https://github.com/chamered/chess) for our project, then we pushed the 
+basic project template. 
+
+---
+# 🏆 Individual Challenges 
+## Samuele  
+>
+## Nicholas
+>
+## Khushika
+>
+## Kevin
+>
