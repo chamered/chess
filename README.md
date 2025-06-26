@@ -7,8 +7,135 @@
 
 > **Note:** Nicholas has made some changes using his second account 
 > [**NoobDev-Game**](https://github.com/NoobDev-Game), this is still his contribution.
+# 📥 Installation Flow 
+TODO
 
- # 🧭 Overview 
-## 🧩 Components and Interfaces 
-Components in this project are divided 
+---
+# 🧭 Overview 
+Chess is a **Java CLI application** that aims to replicate **modern chess** in an old fashion way by providing it's users 
+with a CLI interaction.  
+Our chess has **1v1, 1vBot**, and differently from modern chess, has a **Bot vs Bot** mode. 
+# 🛠 Structure of the Project 
+```plaintext 
+.
+├── LICENSE
+├── pom.xml
+├── README.md
+└── src
+├── main
+│   ├── java
+│   │   ├── board
+│   │   │   ├── BoardImpl.java
+│   │   │   ├── Board.java
+│   │   │   └── Position.java
+│   │   ├── game
+│   │   │   ├── GameImpl.java
+│   │   │   ├── Game.java
+│   │   │   ├── GameState.java
+│   │   │   ├── InputHandler.java
+│   │   │   ├── Move.java
+│   │   │   └── RulesEngine.java
+│   │   ├── main
+│   │   │   └── Main.java
+│   │   ├── pieces
+│   │   │   ├── Bishop.java
+│   │   │   ├── Color.java
+│   │   │   ├── King.java
+│   │   │   ├── Knight.java
+│   │   │   ├── Pawn.java
+│   │   │   ├── Piece.java
+│   │   │   ├── Queen.java
+│   │   │   └── Rook.java
+│   │   └── players
+│   │       ├── Bot.java
+│   │       ├── BotPlayer.java
+│   │       ├── HumanPlayer.java
+│   │       └── Player.java
+│   └── resources
+│       └── ansi_escape_codes
+└── test
+└── java
+├── BoardTest.java
+├── PieceTest.java
+└── RulesEngineTest.java
+```
+## 🧩 Components
+### 📂 Packages 
+Components in this project are divided into packages, each containing it's own "component":
+The packages are as follows:
+- [Board](./src/main/java/board) - contains all components and interfaces for the board logic 
+- [Game](./src/main/java/game) - contains all components and interfaces for the game logic 
+- [Main](./src/main/java/main) - contains the entry point of this program (main)
+- [Pieces](./src/main/java/pieces) - contains an **abstract class** [Piece](./src/main/java/pieces/Piece.java) and all it's subclasses
+- [Players](./src/main/java/players) - contains all the logic for the players (bot and human player)
 
+### 🖊️ Interfaces and Abstract Classes  
+The **interfaces** of the project are:
+- [Board](./src/main/java/board/Board.java) - specifies the behavior of the [BoardImpl](./src/main/java/board/BoardImpl.java) class
+- [Game](./src/main/java/game/Game.java) - specifies all the methods of the [GameImpl](./src/main/java/game/GameImpl.java) class
+- [Bot](./src/main/java/players/Bot.java) - specifies all the methods implemented by [BotPlayer](./src/main/java/players/BotPlayer.java)
+
+The **abstract** classes are:
+- [Player](./src/main/java/players/Player.java) - specifies the methods and the constructor implemented by both [BotPlayer](./src/main/java/players/BotPlayer.java) and [HumanPlayer](./src/main/java/players/HumanPlayer.java)
+- [Piece](./src/main/java/pieces/Piece.java) - specifies the standard behavior of all pieces (which then according to the need, override the standard methods).
+
+## 🎮 Game components
+The components listed here are the "essential" components, or classes that have 
+been used to build **chess**.   
+This components include elementary building blocks, such as the **Pieces** on the board, or the **Board** itself, or include classes used to 
+check **game state** or apply **rules**.
+The components are:
+- [Board](./src/main/java/board/BoardImpl.java) - represents the board where the game is played; it has all the methods to handle and manage the board state and pieces' movements. 
+- [Position](./src/main/java/board/Position.java) - a record used to store the position of the piece on the board.
+- [Game](./src/main/java/game/GameImpl.java) - represents the game, has methods to interact with the user and to manage the game state.
+- [GameState](./src/main/java/game/GameState.java) - enum used to represent all the possible game states. 
+- [InputHandler](./src/main/java/game/InputHandler.java) - used to handle incoming inputs from the user. 
+- [Move](./src/main/java/game/Move.java) - record used to store the movement via the `Position` class. 
+- [RulesEngine](./src/main/java/game/RulesEngine.java) - represents all the in-game rules.
+- `Pieces` - are all self-explanatory, they represent the various pieces on the board, having all override methods based on the need.
+
+## 📦 External Libraries 
+- [**JUnit**](https://junit.org/) - used for unit testing 
+- [**JetBrains Annotations**](https://www.jetbrains.com/help/idea/annotating-source-code.html) - adds `@NotNull` notations and other useful notations. 
+
+---
+# 🧑‍🧒‍🧒 The Team's Experience 
+## 🧰 Distribution of the Workload 
+>[**Samuele Maltauro**](https://github.com/chamered)
+>- `GameImpl`
+>- `Board`
+>- `BoardImpl`
+>- `Input Handler`
+>- `BotPlayer::chooseMove`
+>- `HumanPlayer`
+>- `BoardTest`
+>- `PieceTest`
+>- `RulesEngineTest`
+>- `Color`
+>  
+>[**Nicholas Zappa**](https://github.com/JustVibing-JK) 
+>- `BotPlayer::getOpponentColor`
+>- `BotPlayer::minimax`
+>- `BotPlayer::evalutateBoard`
+>- `GameState`  
+>
+>[**Gupta Khushika**](https://github.com/Khushika05)  
+>- `Piece`
+>- `Bishop`
+>- `Pawn`
+>- `Queen`
+>- `King`
+>- `Knight`
+>- `Rook`  
+>
+>[**Kevin Trolese Joachin**](https://github.com/KJT0)
+>- `Move`
+>- `Position` 
+>- `Game`
+>- `Bot`
+>- `RulesEngine::isFiftyMoveRule`
+>- `RulesEngine::incrementCounterFromMoveHistory`
+>- `RulesEngine::resetMoveHistory`
+>- `Game::checkGameState`
+
+## 🗃️ Git's usage 
