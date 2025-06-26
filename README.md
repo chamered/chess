@@ -167,4 +167,5 @@ basic project template.
 ## Khushika
 >
 ## Kevin
->
+> For me the biggest challenge was to coincide everyone's personal life with working on the project.  
+> I, for one, admit that I had the most hardship on coinciding my time with this project.
