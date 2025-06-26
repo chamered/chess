@@ -46,28 +46,27 @@ public class InputHandler {
      * Returns an integer representing the depth of the bot selected by the user.
      * @return the chosen depth
      */
-    public static int selectDepth() {
+    public static int[] selectDepth() {
         System.out.println("How deep should the BOT look for moves?");
         System.out.println("\u001B[31mWarning\u001B[0m: values above 3 will be very slow. [n]?");
         System.out.print("> ");
 
-        int depth;
+        String[] depth = readLine().split(" ");
+        int depth1;
+        int depth2;
         try {
-            depth = Integer.parseInt(readLine());
+            depth1 = Integer.parseInt(depth[0]);
+            depth2 = depth.length == 1 ? 1 : Integer.parseInt(depth[1]);
         } catch (NumberFormatException e) {
             System.out.println("\u001B[31mInvalid number.\u001B[0m");
             return selectDepth();
         }
 
-        if (depth < 1) {
+        if (depth1 < 1 || depth2 < 1) {
             System.out.println("\u001B[31mThe depth must be more than 0.\u001B[0m");
-            selectDepth();
+            return selectDepth();
         }
-        return depth;
-    }
-
-    private static void printHelp() {
-        System.out.println("help");
+        return new int[]{depth1, depth2};
     }
 
     /**

@@ -18,7 +18,7 @@ public class GameImpl implements Game {
     private Player blackPlayer;
     private Color currentTurn;
     private GameState gameState;
-    public static boolean running = true;
+    private static boolean running = true;
 
     // Constructor
     public GameImpl() {
@@ -40,14 +40,14 @@ public class GameImpl implements Game {
             case "1vBot" -> {
                 String color = InputHandler.chooseColor();
                 System.out.println("You will play as " + (color.equals("w") ? "\u001B[33mwhite\u001B[0m" : "\u001B[34mblack\u001B[0m"));
-                int depth = InputHandler.selectDepth();
-                whitePlayer = color.equals("w") ? new HumanPlayer("It's your", Color.WHITE) : new BotPlayer(Color.WHITE, depth);
-                blackPlayer = color.equals("b") ? new HumanPlayer("It's your", Color.BLACK) : new BotPlayer(Color.BLACK, depth);
+                int[] depth = InputHandler.selectDepth();
+                whitePlayer = color.equals("w") ? new HumanPlayer("It's your", Color.WHITE) : new BotPlayer(Color.WHITE, depth[0]);
+                blackPlayer = color.equals("b") ? new HumanPlayer("It's your", Color.BLACK) : new BotPlayer(Color.BLACK, depth[0]);
             }
             case "BvB" -> {
-                int depth = InputHandler.selectDepth();
-                whitePlayer = new BotPlayer(Color.WHITE, depth);
-                blackPlayer = new BotPlayer(Color.BLACK, depth);
+                int[] depth = InputHandler.selectDepth();
+                whitePlayer = new BotPlayer(Color.WHITE, depth[0]);
+                blackPlayer = new BotPlayer(Color.BLACK, depth[1]);
             }
         }
 
