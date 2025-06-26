@@ -19,11 +19,6 @@ public abstract class Piece {
     }
 
     /**
-     * @return a copy of the piece
-     */
-    public abstract Piece copy();
-
-    /**
      * @param piece The piece that's being allegedly eaten
      * @return true iff this Piece can eat the other piece
      */
@@ -102,4 +97,9 @@ public abstract class Piece {
     public int getValue() {
         return value;
     }
+
+    /**
+     * @return a copy of the piece
+     */
+    public abstract Piece copy();
 }
