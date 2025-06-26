@@ -79,8 +79,9 @@ public interface Board {
     boolean isSamePosition(@NotNull BoardImpl simulatedBoard);
 
     /**
-     *
-     * @param board
+     * Updates the positionHistory, by calling the method {@link #zobristKeyWithColorAndType()} and adding it's
+     * String representation to the positionHistory map.
+     * @param board - the current board
      */
     public void updateHistory(@NotNull BoardImpl board);
     /** Getter method
