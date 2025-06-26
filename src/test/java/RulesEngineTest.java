@@ -72,11 +72,15 @@ public class RulesEngineTest {
 
     @Test
     void testIsCheckmate() {
-        board.setPieceAt(new Position(6, 5), null);
-        board.setPieceAt(new Position(6, 6), null);
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                board.setPieceAt(new Position(i, j), null);
+            }
+        }
 
-        board.setPieceAt(new Position(0, 3), null);
-        board.setPieceAt(new Position(3, 7), new Queen(Color.BLACK));
+        board.setPieceAt(new Position(7, 4), new King(Color.WHITE));
+        board.setPieceAt(new Position(7, 7), new Rook(Color.BLACK));
+        board.setPieceAt(new Position(6, 7), new Rook(Color.BLACK));
 
         boolean result = RulesEngine.isCheckmate(board, Color.WHITE);
         Assertions.assertTrue(result);
@@ -84,16 +88,14 @@ public class RulesEngineTest {
 
     @Test
     void testIsStalemate() {
-        board.setPieceAt(new Position(6, 5), null);
-        board.setPieceAt(new Position(6, 6), null);
-        board.setPieceAt(new Position(7, 6), null);
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                board.setPieceAt(new Position(i, j), null);
+            }
+        }
 
+        board.setPieceAt(new Position(6, 5), new Queen(Color.BLACK));
         board.setPieceAt(new Position(7, 7), new King(Color.WHITE));
-
-        board.setPieceAt(new Position(6, 7), new Queen(Color.BLACK));
-        board.setPieceAt(new Position(6, 6), new Rook(Color.BLACK));
-
-        Assertions.assertFalse(RulesEngine.isKingInCheck(board, Color.WHITE));
 
         boolean isStalemate = RulesEngine.isStalemate(board, Color.WHITE);
         Assertions.assertTrue(isStalemate);

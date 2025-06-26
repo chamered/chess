@@ -48,6 +48,12 @@ public interface Game {
     void runGameLoop();
 
     /**
+     * Handles the different scenarios based on the current game state.
+     * @param state the game state to handle
+     */
+    void handleGameState(GameState state);
+
+    /**
      * Prints a welcome message when the program starts.
      */
     void printWelcomeMessage();

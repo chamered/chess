@@ -145,10 +145,27 @@ public class GameImpl implements Game {
                 if (!success) {
                     System.out.println("\u001B[31mInvalid move. Try again.\u001B[0m");
                 }
+                handleGameState(checkGameState());
             } catch (IllegalArgumentException e) {
                 System.out.println("Invalid coordinates. Please use format: e2 e4");
             }
         }
+    }
+
+    @Override
+    public void handleGameState(GameState state) {
+        String strState;
+        switch (state) {
+            case CHECK -> strState = "CHECK";
+            case CHECKMATE -> strState = "CHECKMATE";
+            case STALEMATE -> strState = "STALEMATE";
+            case DRAW -> strState = "DRAW";
+            default -> strState = "ACTIVE";
+        }
+
+        if (strState.equals("ACTIVE")) return;
+
+        System.out.println(strState);
     }
 
     @Override
