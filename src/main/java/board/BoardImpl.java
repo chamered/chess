@@ -92,6 +92,15 @@ public class BoardImpl implements Board {
         setPieceAt(move.to(), piece);
     }
 
+    private void movePiece(Position from, Position to) {
+        movePiece(from, to, getPieceAt(from));
+    }
+
+    private void movePiece(Position from, Position to, Piece piece) {
+        setPieceAt(from, null);
+        setPieceAt(to, piece);
+    }
+
     @Override
     public Position getKingPosition(Color color) {
         for (int row = 0; row < 8; row++) {
