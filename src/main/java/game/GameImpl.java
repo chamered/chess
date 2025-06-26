@@ -18,6 +18,7 @@ public class GameImpl implements Game {
     private Player blackPlayer;
     private Color currentTurn;
     private GameState gameState;
+    public static boolean running = true;
 
     // Constructor
     public GameImpl() {
@@ -28,6 +29,7 @@ public class GameImpl implements Game {
     @Override
     public void start() {
         printWelcomeMessage();
+        running = true;
         String mode = InputHandler.selectMode();
 
         switch (mode) {
@@ -112,8 +114,6 @@ public class GameImpl implements Game {
 
     @Override
     public void runGameLoop() {
-        boolean running = true;
-
         while (running) {
             board.printBoard();
             String textColor = currentTurn == Color.WHITE ? "\u001B[33m" : "\u001B[34m";
@@ -132,7 +132,8 @@ public class GameImpl implements Game {
                 String input = InputHandler.readLine().toLowerCase();
 
                 String[] tokens = input.split("\\s+"); // Split the input by the white spaces
-                if (tokens.length != 2) {
+                if (input.equals("restart")) break;
+                else if (tokens.length != 2) {
                     System.out.println("\u001B[31mInvalid input. Please use format: e2 e4\u001B[0m");
                     continue;
                 }
@@ -151,6 +152,11 @@ public class GameImpl implements Game {
                 System.out.println("Invalid coordinates. Please use format: e2 e4");
             }
         }
+
+        System.out.println("Game ended. Would you like to start a new game [y/n]?");
+        String res = InputHandler.readLine();
+        if (res.equals("y")) start();
+        else exitGame();
     }
 
     @Override
@@ -190,6 +196,10 @@ public class GameImpl implements Game {
                 Let the game begin!
                 """
         );
+    }
+
+    public static void restartGame() {
+        running = false;
     }
 
     /**

@@ -79,9 +79,7 @@ public class InputHandler {
         String input = scanner.nextLine().trim();
 
         if (input.equals("exit")) GameImpl.exitGame();
-        else if (input.equals("help")) {
-            printHelp();
-        }
+        else if (input.equals("restart")) GameImpl.restartGame();
 
         return input;
     }
