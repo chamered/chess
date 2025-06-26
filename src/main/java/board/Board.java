@@ -54,4 +54,10 @@ public interface Board {
      * @return a new Board instance with the same state
      */
     BoardImpl copy();
+
+    /**
+     * Returns the last move made.
+     * @return the last move
+     */
+    Move getLastMove();
 }

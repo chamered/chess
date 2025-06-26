@@ -5,6 +5,7 @@ import game.Move;
 
 public class BoardImpl implements Board {
     private Piece[][] board;
+    private Move lastMove;
 
     // First constructor
     public BoardImpl() {
@@ -125,6 +126,12 @@ public class BoardImpl implements Board {
             }
         }
 
-        return new BoardImpl(boardCopy);
+        BoardImpl newBoard = new BoardImpl(boardCopy);
+        newBoard.lastMove = lastMove;
+
+        return newBoard;
     }
+
+    @Override
+    public Move getLastMove() { return lastMove; }
 }

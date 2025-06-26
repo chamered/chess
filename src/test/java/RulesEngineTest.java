@@ -38,10 +38,10 @@ public class RulesEngineTest {
 
         board.setPieceAt(new Position(7, 4), new King(Color.WHITE));
         board.setPieceAt(new Position(0, 4), new Rook(Color.BLACK));
-        board.setPieceAt(new Position(6, 4), new Pawn(Color.WHITE));
+        board.setPieceAt(new Position(6, 4), new Bishop(Color.WHITE));
 
         Position from = new Position(6, 4);
-        Position to = new Position(4, 4);
+        Position to = new Position(3, 5);
         boolean result = RulesEngine.wouldCauseSelfCheck(board, new Move(from, to), Color.WHITE);
 
         Assertions.assertTrue(result);
