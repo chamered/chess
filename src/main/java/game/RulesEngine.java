@@ -25,16 +25,30 @@ public class RulesEngine {
      * @return true if the move is legal, false otherwise
      */
     public static boolean isMoveLegal(BoardImpl board, Move move, Color color) {
-        Piece piece = board.getPieceAt(move.from());
 
+        /* ---------- 1. piece ownership ------------------------------------ */
+        Piece piece = board.getPieceAt(move.from());
         if (piece == null || piece.getColor() != color) return false;
 
-        List<String> legalDestinations = piece.generatePossibleMoves(board, move.from());
-        String toAlgebraic = Piece.toAlgebraic(move.to());
+        /* ---------- 2. destination among pseudo-legal moves --------------- */
+        List<String> pseudoMoves = piece.generatePossibleMoves(board, move.from());
+        String destAlg = Piece.toAlgebraic(move.to());
 
-        if (!legalDestinations.contains(toAlgebraic)) return false;
+        boolean destinationFound = false;
+        for (String s : pseudoMoves) {
+            /* strip “=Q”, “=R”, … so promotions match as well               */
+            String core = (s.indexOf('=') >= 0) ? s.substring(0, s.indexOf('=')) : s;
+            if (core.equals(destAlg)) {
+                destinationFound = true;
+                break;
+            }
+        }
+        if (!destinationFound) return false;
 
-        return !wouldCauseSelfCheck(board, move, color);
+        /* ---------- 3. no self-check after making the move ---------------- */
+        BoardImpl simulated = board.copy();
+        simulated.makeMove(move);
+        return !isKingInCheck(simulated, color);
     }
 
     /**
@@ -57,25 +71,25 @@ public class RulesEngine {
      * @return a List of moves containing all the valid moves
      */
     public static List<Move> getAllLegalMoves(BoardImpl board, Color color) {
-        List<Move> validMoves = new ArrayList<>();
-        Piece[][] boardState = board.getBoard();
+        List<Move> allLegal = new ArrayList<>();
 
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                Piece piece = boardState[row][col];
-                if (piece != null && piece.getColor() == color) {
-                    Position from = new Position(row, col);
-                    List<String> possibleDestinations = piece.generatePossibleMoves(board, from);
-                    possibleDestinations.forEach(algebraic -> {
-                        Position to = Piece.fromAlgebraic(algebraic);
-                        Move move = new Move(from, to);
-                        if(isMoveLegal(board, move, color)) validMoves.add(move);
-                    });
+        for (int r = 0; r < 8; r++) {
+            for (int c = 0; c < 8; c++) {
+                Position from = new Position(r, c);
+                Piece p = board.getPieceAt(from);
+                if (p == null || p.getColor() != color) continue;
+
+                for (String targetStr : p.generatePossibleMoves(board, from)) {
+                    Position to = Piece.fromAlgebraic(targetStr.replace("=Q", ""));
+                    Move m = new Move(from, to);
+                    if (isMoveLegal(board, m, color)) {
+                        allLegal.add(m);
+                    }
                 }
             }
         }
 
-        return validMoves;
+        return allLegal;
     }
 
     /**
@@ -85,25 +99,15 @@ public class RulesEngine {
      * @return true iff the King is in check
      */
     public static boolean isKingInCheck(BoardImpl board, Color color) {
-        Position kingPos = board.getKingPosition(color);
-        Piece[][] boardState = board.getBoard();
-
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                Piece piece = boardState[row][col];
-                if (piece != null && piece.getColor() != color) {
-                    Position from = new Position(row, col);
-                    List<String> enemyMoves = piece.generatePossibleMoves(board, from);
-                    for (String move : enemyMoves) {
-                        Position coordinates = Piece.fromAlgebraic(move);
-                        if (coordinates.row() == kingPos.row() && coordinates.column() == kingPos.column()) {
-                            return true;
-                        }
-                    }
+        for (int r = 0; r < 8; r++) {
+            for (int c = 0; c < 8; c++) {
+                Piece p = board.getPieceAt(new Position(r, c));
+                if (p instanceof King && p.getColor() == color) {
+                    return isSquareAttacked(board, new Position(r, c), color);
                 }
             }
         }
-        return false;
+        return false; // Should never happen unless the king is missing
     }
 
     /**
