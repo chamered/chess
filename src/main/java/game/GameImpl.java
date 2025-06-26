@@ -198,4 +198,9 @@ public class GameImpl implements Game {
         System.out.println("\u001B[35mGoodbye! Even the pieces need rest.\u001B[0m");
         System.exit(0);
     }
+
+    public void undoMove(Piece piece, Move move){
+        board.setPieceAt(move.to(), null);
+        board.setPieceAt(move.from(), piece);
+    }
 }
