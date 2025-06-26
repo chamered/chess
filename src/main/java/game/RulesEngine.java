@@ -253,7 +253,8 @@ public class RulesEngine {
         return RulesEngine.playersMoves.get(player.getColor()) >= 50;
     }
 
-    public static boolean isThreeFoldRepetition(){
-
+    public static boolean isThreeFoldRepetition(BoardImpl board){
+        String key = board.zobristKeyWithColorAndType();
+        return board.getPositionHistory().getOrDefault(key, 0) >= 3;
     }
 }

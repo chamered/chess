@@ -1,8 +1,11 @@
 package board;
 
 import game.Move;
+import org.jetbrains.annotations.NotNull;
 import pieces.Color;
 import pieces.Piece;
+
+import java.util.Map;
 
 public interface Board {
 
@@ -61,7 +64,27 @@ public interface Board {
      */
     Move getLastMove();
 
+    /**
+     * Implements the zobrist hash algorithm
+     * @return a String representation of the coordinates of every piece in the board
+     */
     String zobristKey();
 
-    boolean isSamePosition(BoardImpl simulatedBoard);
+    /**
+     * Implements a variant of the zobrist hash algorithm.
+     * @return a String representation of the coordinates, type and color of every piece in the board.
+     */
+    String zobristKeyWithColorAndType();
+
+    boolean isSamePosition(@NotNull BoardImpl simulatedBoard);
+
+    /**
+     *
+     * @param board
+     */
+    public void updateHistory(@NotNull BoardImpl board);
+    /** Getter method
+     * @return the position history.
+     */
+    Map<String, Integer> getPositionHistory();
 }

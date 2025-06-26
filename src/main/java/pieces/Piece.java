@@ -98,6 +98,10 @@ public abstract class Piece {
         return value;
     }
 
+    public String getType(){
+        return this.getClass().getName().split("\\.")[1];
+    }
+
     /**
      * @return a copy of the piece
      */

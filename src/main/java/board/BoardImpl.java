@@ -1,11 +1,16 @@
 package board;
 
+import org.jetbrains.annotations.NotNull;
 import pieces.*;
 import game.Move;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class BoardImpl implements Board {
     private Piece[][] board;
     private Move lastMove;
+    private Map<String, Integer> positionHistory = new HashMap<>();
 
     // First constructor
     public BoardImpl() {
@@ -120,7 +125,7 @@ public class BoardImpl implements Board {
 
         // REGULAR MOVE
         movePiece(move.from(), move.to(), piece);
-
+        updateHistory(this);
         // Flag updates
         if (piece instanceof Rook r)  r.setHasMoved(true);
         if (piece instanceof King k)  k.setHasMoved(true);
@@ -200,8 +205,28 @@ public class BoardImpl implements Board {
         }
         return stringBuilder.toString();
     }
+    public String zobristKeyWithColorAndType(){
+        StringBuilder stringBuilder = new StringBuilder(120);
+        for(int i = 0; i < 8; i++){
+            for(int k = 0; k < 8; k++){
+                Piece p = board[i][k];
+                if (p != null) stringBuilder.append(i).append(k).append(p.getColor()).append(p.getType());
+            }
+        }
+        return stringBuilder.toString();
+    }
     @Override
-    public boolean isSamePosition(BoardImpl simulatedBoard){
+    public boolean isSamePosition(@NotNull BoardImpl simulatedBoard){
         return this.zobristKey().equals(simulatedBoard.zobristKey());
+    }
+
+    public void updateHistory(@NotNull BoardImpl board){
+        String key = board.zobristKeyWithColorAndType();
+        positionHistory.put(key, positionHistory.getOrDefault(key, 0) + 1);
+    }
+
+    @Override
+    public Map<String, Integer> getPositionHistory(){
+        return positionHistory;
     }
 }
