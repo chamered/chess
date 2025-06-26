@@ -2,8 +2,7 @@ package game;
 
 import board.BoardImpl;
 import board.Position;
-import pieces.Color;
-import pieces.Piece;
+import pieces.*;
 import players.Player;
 
 import java.util.ArrayList;
@@ -104,6 +103,109 @@ public class RulesEngine {
                 }
             }
         }
+        return false;
+    }
+
+    /**
+     * Returns {@code true} iff the square {@code sq} is attacked by *any* piece of the
+     * side opposite to {@code friendly}.  “Attacked” means that, ignoring whose turn
+     * it is and whether the attacking king would be in check itself, the enemy could
+     * legally capture a piece standing on {@code sq}.
+     *
+     * This method is intentionally self-contained – it does *not* call
+     * {@code generatePossibleMoves} for the hostile pieces (that could recurse back
+     * into us, especially for king castling).  Instead it hard-codes the attack
+     * patterns for each piece type.
+     */
+    public static boolean isSquareAttacked(BoardImpl b, Position sq, Color friendly) {
+
+        final Color enemy = (friendly == Color.WHITE) ? Color.BLACK : Color.WHITE;
+        final int r = sq.row(), c = sq.column();
+        final Piece[][] board = b.getBoard();
+
+        /*----------------------------------------------------------------------
+         * 1.  Pawn attacks
+         *--------------------------------------------------------------------*/
+        int pawnDir = (enemy == Color.WHITE) ? -1 : 1;          // row change of a pawn *from* its square *to* target
+        int pawnRow = r + pawnDir;
+        if (pawnRow >= 0 && pawnRow < 8) {
+            for (int dc : new int[]{-1, 1}) {
+                int pc = c + dc;
+                if (pc >= 0 && pc < 8) {
+                    Piece p = board[pawnRow][pc];
+                    if (p instanceof Pawn && p.getColor() == enemy) return true;
+                }
+            }
+        }
+
+        /*----------------------------------------------------------------------
+         * 2.  Knight attacks
+         *--------------------------------------------------------------------*/
+        int[][] knightDeltas = {
+                {-2, -1}, {-2, 1}, {-1, -2}, {-1, 2},
+                { 1, -2}, { 1, 2}, { 2, -1}, { 2, 1}
+        };
+        for (int[] d : knightDeltas) {
+            int nr = r + d[0], nc = c + d[1];
+            if (nr >= 0 && nr < 8 && nc >= 0 && nc < 8) {
+                Piece p = board[nr][nc];
+                if (p instanceof Knight && p.getColor() == enemy) return true;
+            }
+        }
+
+        /*----------------------------------------------------------------------
+         * 3.  Bishop / Queen (diagonals)
+         *--------------------------------------------------------------------*/
+        int[][] diagDirs = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
+        for (int[] dir : diagDirs) {
+            int nr = r + dir[0], nc = c + dir[1];
+            while (nr >= 0 && nr < 8 && nc >= 0 && nc < 8) {
+                Piece p = board[nr][nc];
+                if (p != null) {
+                    if (p.getColor() == enemy && (p instanceof Bishop || p instanceof Queen))
+                        return true;
+                    break;                  // blocked
+                }
+                nr += dir[0];
+                nc += dir[1];
+            }
+        }
+
+        /*----------------------------------------------------------------------
+         * 4.  Rook / Queen (files & ranks)
+         *--------------------------------------------------------------------*/
+        int[][] orthoDirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        for (int[] dir : orthoDirs) {
+            int nr = r + dir[0], nc = c + dir[1];
+            while (nr >= 0 && nr < 8 && nc >= 0 && nc < 8) {
+                Piece p = board[nr][nc];
+                if (p != null) {
+                    if (p.getColor() == enemy && (p instanceof Rook || p instanceof Queen))
+                        return true;
+                    break;                  // blocked
+                }
+                nr += dir[0];
+                nc += dir[1];
+            }
+        }
+
+        /*----------------------------------------------------------------------
+         * 5.  King (adjacent squares)
+         *--------------------------------------------------------------------*/
+        for (int dr = -1; dr <= 1; dr++) {
+            for (int dc = -1; dc <= 1; dc++) {
+                if (dr == 0 && dc == 0) continue;
+                int nr = r + dr, nc = c + dc;
+                if (nr >= 0 && nr < 8 && nc >= 0 && nc < 8) {
+                    Piece p = board[nr][nc];
+                    if (p instanceof King && p.getColor() == enemy) return true;
+                }
+            }
+        }
+
+        /*----------------------------------------------------------------------
+         * 6.  Not attacked
+         *--------------------------------------------------------------------*/
         return false;
     }
 
