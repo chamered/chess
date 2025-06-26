@@ -1,6 +1,7 @@
 package game;
 
 import board.Position;
+import pieces.Piece;
 import players.Player;
 
 import java.util.List;
@@ -57,4 +58,11 @@ public interface Game {
      * Prints a welcome message when the program starts.
      */
     void printWelcomeMessage();
+
+    /**
+     * Undoes the precedent movement of the piece.
+     * @param piece the piece
+     * @param move the movement performed by the piece
+     */
+    void undoMove(Piece piece, Move move);
 }

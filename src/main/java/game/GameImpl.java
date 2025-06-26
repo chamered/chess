@@ -199,6 +199,7 @@ public class GameImpl implements Game {
         System.exit(0);
     }
 
+    @Override
     public void undoMove(Piece piece, Move move){
         board.setPieceAt(move.to(), null);
         board.setPieceAt(move.from(), piece);
