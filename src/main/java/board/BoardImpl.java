@@ -88,8 +88,52 @@ public class BoardImpl implements Board {
     @Override
     public void makeMove(Move move) {
         Piece piece = getPieceAt(move.from());
-        setPieceAt(move.from(), null);
-        setPieceAt(move.to(), piece);
+        if (piece == null)
+            throw new IllegalStateException("No piece on " + move.from());
+
+        // CASTLING
+        if (piece instanceof King
+                && Math.abs(move.to().column() - move.from().column()) == 2) {
+
+            final int homeRow = move.from().row();
+            if (move.to().column() == 6) {               // king-side
+                movePiece(new Position(homeRow, 7), new Position(homeRow, 5));
+            } else {                                  // queen-side
+                movePiece(new Position(homeRow, 0), new Position(homeRow, 3));
+            }
+            ((King) piece).setHasMoved(true);
+        }
+
+        // EN PASSANT
+        if (piece instanceof Pawn
+                && move.from().column() != move.to().column()         // diagonal
+                && getPieceAt(move.to()) == null) {                // into empty
+            int dir = ((Pawn) piece).getColor() == Color.WHITE ? 1 : -1;
+            setPieceAt(new Position(move.to().row() + dir, move.to().column()), null);
+        }
+
+        // PROMOTION
+        if (piece instanceof Pawn
+                && (move.to().row() == 0 || move.to().row() == 7)) {
+            piece = new Queen(((Pawn) piece).getColor());
+        }
+
+        // REGULAR MOVE
+        movePiece(move.from(), move.to(), piece);
+
+        // Flag updates
+        if (piece instanceof Rook r)  r.setHasMoved(true);
+        if (piece instanceof King k)  k.setHasMoved(true);
+
+        // En passant target for next turn
+        if (piece instanceof Pawn
+                && Math.abs(move.to().row() - move.from().row()) == 2) {
+            // Square “passed over”
+            int midRow = (move.from().row() + move.to().row()) >>> 1;
+            lastMove = new Move(move.from(), new Position(midRow, move.from().column()));
+        } else {
+            lastMove = move;
+        }
     }
 
     private void movePiece(Position from, Position to) {
