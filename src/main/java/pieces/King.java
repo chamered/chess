@@ -66,7 +66,7 @@ public class King extends Piece {
 
     private void addCastlingMoves(BoardImpl b, Position kingPos,
                                   List<String> moves) {
-        if (hasMoved || RulesEngine.isKingInCheck(b, getColor())) return;
+        if (hasMoved || RulesEngine.isSquareAttacked(b, kingPos, getColor())) return;
 
         int row = kingPos.row();
         int[][] sides = {{7, 6, 5}, {0, 2, 3}};  // rook file, kingDest, through
