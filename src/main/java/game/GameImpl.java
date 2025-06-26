@@ -156,18 +156,18 @@ public class GameImpl implements Game {
     public void handleGameState(GameState state) {
         switch (state) {
             case CHECK:
-                System.out.println("Your king is under threat. Defend wisely.");
+                System.out.println("\u001B[33mCHECK!\u001B[0m Your king is under threat. Defend wisely.");
                 break;
             case CHECKMATE:
-                System.out.println("CHECKMATE! Game over." + getCurrentPlayer().getName() + " wins!");
+                System.out.println("\u001B[31mCHECKMATE!\u001B[0m Game over." + getCurrentPlayer().getName() + " wins!");
                 exitGame();
                 break;
             case STALEMATE:
-                System.out.println("STALEMATE! The game ends in a draw. No legal move left.");
+                System.out.println("\u001B[34mSTALEMATE!\u001B[0m The game ends in a draw. No legal move left.");
                 exitGame();
                 break;
             case DRAW:
-                System.out.println("DRAW");
+                System.out.println("\u001B[36mDRAW!\u001B[0m 50 moves without pawn movement or capture. It’s a draw!");
                 exitGame();
                 break;
         }

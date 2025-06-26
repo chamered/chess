@@ -3,8 +3,6 @@ package game;
 import java.util.Scanner;
 
 public class InputHandler {
-    private static final Scanner scanner = new Scanner(System.in);
-
     /**
      * Returns a string with the selected mode.
      * @return the selected mode as String
@@ -52,7 +50,20 @@ public class InputHandler {
         System.out.println("How deep should the BOT look for moves?");
         System.out.println("\u001B[31mWarning\u001B[0m: values above 3 will be very slow. [n]?");
         System.out.print("> ");
-        return Integer.parseInt(readLine());
+
+        int depth;
+        try {
+            depth = Integer.parseInt(readLine());
+        } catch (NumberFormatException e) {
+            System.out.println("\u001B[31mInvalid number.\u001B[0m");
+            return selectDepth();
+        }
+
+        if (depth < 1) {
+            System.out.println("\u001B[31mThe depth must be more than 0.\u001B[0m");
+            selectDepth();
+        }
+        return depth;
     }
 
     private static void printHelp() {
@@ -64,9 +75,13 @@ public class InputHandler {
      * @return the user input
      */
     public static String readLine() {
+        Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine().trim();
 
         if (input.equals("exit")) GameImpl.exitGame();
+        else if (input.equals("help")) {
+            printHelp();
+        }
 
         return input;
     }
