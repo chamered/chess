@@ -150,7 +150,7 @@ For this project in particular, the **minimax** algorithm was implemented to all
 >- `RulesEngine::isFiftyMoveRule`
 >- `RulesEngine::incrementCounterFromMoveHistory`
 >- `RulesEngine::resetMoveHistory`
->- `GameImpl::chweckGameState`
+>- `GameImpl::checkGameState`
 >- `GameImpl::undoMove`
 
 ## 🗃️ Git's Usage
