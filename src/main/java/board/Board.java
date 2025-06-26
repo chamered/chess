@@ -76,6 +76,11 @@ public interface Board {
      */
     String zobristKeyWithColorAndType();
 
+    /**
+     *
+     * @param simulatedBoard the simulated board
+     * @return true iff the zobristKey for both boards is equivalent
+     */
     boolean isSamePosition(@NotNull BoardImpl simulatedBoard);
 
     /**
