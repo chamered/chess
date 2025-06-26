@@ -154,18 +154,23 @@ public class GameImpl implements Game {
 
     @Override
     public void handleGameState(GameState state) {
-        String strState;
         switch (state) {
-            case CHECK -> strState = "CHECK";
-            case CHECKMATE -> strState = "CHECKMATE";
-            case STALEMATE -> strState = "STALEMATE";
-            case DRAW -> strState = "DRAW";
-            default -> strState = "ACTIVE";
+            case CHECK:
+                System.out.println("Your king is under threat. Defend wisely.");
+                break;
+            case CHECKMATE:
+                System.out.println("CHECKMATE! Game over." + getCurrentPlayer().getName() + " wins!");
+                exitGame();
+                break;
+            case STALEMATE:
+                System.out.println("STALEMATE! The game ends in a draw. No legal move left.");
+                exitGame();
+                break;
+            case DRAW:
+                System.out.println("DRAW");
+                exitGame();
+                break;
         }
-
-        if (strState.equals("ACTIVE")) return;
-
-        System.out.println(strState);
     }
 
     @Override
