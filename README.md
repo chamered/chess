@@ -116,42 +116,47 @@ For this project in particular, the **minimax** algorithm was implemented to all
 # 🧑‍🧒‍🧒 The Team's Experience 
 ## 🧰 Distribution of the Workload 
 >**Samuele Maltauro** ([@chamered](https://github.com/chamered))
->- `GameImpl`
->- `Board`
->- `BoardImpl`
->- `Input Handler`
+>- `GameImpl::*`
+>- `Board::*`
+>- `BoardImpl::*`
+>- `Input Handler::*`
 >- `BotPlayer::chooseMove`
->- `HumanPlayer`
->- `BoardTest`
->- `PieceTest`
->- `RulesEngineTest`
->- `Color`
+>- `HumanPlayer::*`
+>- `BoardTest::*`
+>- `PieceTest::*`
+>- `RulesEngineTest::*`
+>- `Color::*`
 >  
 >**Nicholas Zappa** ([@JustVibing-JK](https://github.com/JustVibing-JK)) 
 >- `BotPlayer::getOpponentColor`
 >- `BotPlayer::minimax`
 >- `BotPlayer::evalutateBoard`
->- `GameState`  
+>- `GameState::*`  
 >
 >**Gupta Khushika** ([@Khushika05](https://github.com/Khushika05))
->- `Piece`
->- `Bishop`
->- `Pawn`
->- `Queen`
->- `King`
->- `Knight`
->- `Rook`  
+>- `Piece::*`
+>- `Bishop::*`
+>- `Pawn::*`
+>- `Queen::*`
+>- `King::*`
+>- `Knight::*`
+>- `Rook::*`  
 >
 >**Kevin Trolese Joachin** ([@KJT0](https://github.com/KJT0))
->- `Move`
->- `Position` 
->- `Game`
->- `Bot`
+>- `Move::*`
+>- `Position::*` 
+>- `Game::*`
+>- `Bot::*`
 >- `RulesEngine::isFiftyMoveRule`
 >- `RulesEngine::incrementCounterFromMoveHistory`
 >- `RulesEngine::resetMoveHistory`
 >- `GameImpl::checkGameState`
 >- `GameImpl::undoMove`
+>- `BoardImpl::isSamePosition`
+>- `BoardImpl::zobristKeyWithColorAndType`
+>- `BoardImpl::zobristKey`
+>- `BoardImpl::updateHistory`
+>- `BoardImpl::getPositionHistory`
 
 ## 🗃️ Git's Usage
 **Git** version control was used to track the state of our project.  
