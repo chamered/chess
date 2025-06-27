@@ -9,6 +9,8 @@ import players.BotPlayer;
 import players.HumanPlayer;
 import players.Player;
 
+import java.util.Optional;
+
 public class GameImpl implements Game {
     private BoardImpl board;
     private Player whitePlayer;
@@ -76,11 +78,18 @@ public class GameImpl implements Game {
         }
 
         board.setPieceAt(move.from(), null);
+        Optional<Piece> possibleEatenPiece = Optional.ofNullable(board.getPieceAt(move.to()));
         board.setPieceAt(move.to(), piece);
+
+
 
         if (piece instanceof Pawn) {
             RulesEngine.resetMoveHistory(piece.getColor());
-        } else {
+        }
+        else if(possibleEatenPiece.isPresent() && piece.eatOtherPiece(possibleEatenPiece.get())){
+            RulesEngine.resetMoveHistory(piece.getColor());
+        }
+        else {
             RulesEngine.incrementCounterFromMoveHistory(piece.getColor());
         }
 
