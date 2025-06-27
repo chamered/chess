@@ -178,7 +178,7 @@ basic project template.
 ## Nicholas
 >
 ## Khushika
->
+> The biggest challenge for me was to program a whole project from scratch. 
 ## Kevin
 > For me the biggest challenge was to coincide everyone's personal life with working on the project.  
 > I, for one, admit that I had the most hardship on coinciding my time with this project.
