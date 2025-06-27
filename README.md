@@ -14,7 +14,7 @@ The installation and execution flow is as follows:
     > 
     >**SSH:** `git clone git@github.com:chamered/chess.git`
 2. Compile the project via the `mvn compile` command 
-3. Execute the program via the `mvn exec:java -Dexec.mainClass="main.Main""` command
+3. Execute the program via the `mvn exec:java -Dexec.mainClass="main.Main"` command
 
 ---
 # 🧭 Overview 
