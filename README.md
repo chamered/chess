@@ -8,7 +8,12 @@
 > **Note:** Nicholas has made some changes using his second account 
 > [**NoobDev-Game**](https://github.com/NoobDev-Game), every contribution by such profile it's still his.
 # 📥 Installation 
-TODO
+>The installation and execution flow is as follows:
+>1. Clone the repo using either:
+>>**HTTPS:** `git clone https://github.com/chamered/chess.git`
+>>**SSH:** `git clone git@github.com:chamered/chess.git`
+>2. Compile the project via the `mvn compile` prompt 
+>3. Execute the program via the `mvn exec:java -Dexec.mainClass="main.Main""`
 
 ---
 # 🧭 Overview 
@@ -110,8 +115,9 @@ The components are:
 - [**JetBrains Annotations**](https://www.jetbrains.com/help/idea/annotating-source-code.html) - adds `@NotNull` notations and other useful notations. 
 
 ## 🖥️ Techniques/Algorithms 
-For this project in particular, the **minimax** algorithm was implemented to allow the bot to play against the player.  
+For this project in particular, the [minimax](https://www.geeksforgeeks.org/dsa/minimax-algorithm-in-game-theory-set-1-introduction/) algorithm was implemented to allow the bot to play against the player.  
 
+Also the [zobrist hashing](https://www.chessprogramming.org/Zobrist_Hashing) algorithm was used to determine whether two players trigger the **three-fold repetition** rule.
 
 ---
 # 🧑‍🧒‍🧒 The Team's Experience 
