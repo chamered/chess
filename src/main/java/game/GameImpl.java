@@ -142,9 +142,10 @@ public class GameImpl implements Game {
                 System.out.print("> ");
                 String input = InputHandler.readLine().toLowerCase(); // Get the user input
 
-                // If it is 'restart', exit the loop
+                // If the input is 'restart', exit the loop
                 if (input.equals("restart")) break;
 
+                // If the input is 'undo', undo the last move (if possible)
                 if (input.equals("undo")) {
                     boolean success = undoMove();
                     if (!success) System.out.println("\u001B[31mYou can not undo now.\u001B[0m");
