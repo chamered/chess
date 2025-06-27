@@ -43,8 +43,8 @@ public class InputHandler {
     }
 
     /**
-     * Returns an integer representing the depth of the bot selected by the user.
-     * @return the chosen depth
+     * Returns an array of integers representing the depths selected by the user.
+     * @return the chosen depths
      */
     public static int[] selectDepth() {
         System.out.println("How deep should the BOT look for moves?");
@@ -52,8 +52,7 @@ public class InputHandler {
         System.out.print("> ");
 
         String[] depth = readLine().split(" ");
-        int depth1;
-        int depth2;
+        int depth1, depth2;
         try {
             depth1 = Integer.parseInt(depth[0]);
             depth2 = depth.length == 1 ? 1 : Integer.parseInt(depth[1]);
@@ -70,7 +69,8 @@ public class InputHandler {
     }
 
     /**
-     * Returns the user input without spaces.
+     * Returns the user input, handling the case in which the user
+     * type 'exit' and 'restart'.
      * @return the user input
      */
     public static String readLine() {

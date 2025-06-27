@@ -176,7 +176,8 @@ basic project template.
 ## Samuele  
 > The biggest challenge for me in this project was handling user input properly and displaying the right feedback messages at the right time.
 ## Nicholas
->
+> The biggest challenge for me was fixing and implmenting the minimax algorithm for the bot, I really like the BotVSBot mode, where I
+> can see what the bot still lacks
 ## Khushika
 > The biggest challenge for me was to program a whole project from scratch. 
 ## Kevin
