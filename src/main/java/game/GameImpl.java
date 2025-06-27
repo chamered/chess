@@ -112,36 +112,40 @@ public class GameImpl implements Game {
             String textColor = currentTurn == Color.WHITE ? "\u001B[33m" : "\u001B[34m";
             System.out.println(textColor + getCurrentPlayer().getName() + "\u001B[0m turn.");
 
-            Position from;
-            Position to;
-
+            Move move;
             if (getCurrentPlayer() instanceof BotPlayer bot) {
-                Move move = bot.chooseMove(board);
-                from = new Position(move.from().row(), move.from().column());
-                to = new Position(move.to().row(), move.to().column());
+                move = bot.chooseMove(board); // Set move to the bot chosen move
             } else {
                 System.out.println("Enter your move. [a-h 1-8]:");
                 System.out.print("> ");
-                String input = InputHandler.readLine().toLowerCase();
+                String input = InputHandler.readLine().toLowerCase(); // Get the user input
 
+                // If it is 'restart', exit the loop
                 if (input.equals("restart")) break;
 
+                // If the input length is 4, adds a space in between (e.g., e2e4 -> e2 e4)
                 if (input.length() == 4) input = input.substring(0, 2) + " " + input.substring(2);
 
-                String[] tokens = input.split("\\s+"); // Split the input by the white spaces
+                // Split the input by the white spaces
+                String[] tokens = input.split("\\s+");
 
+                // If the input is invalid
                 if (tokens.length != 2 || !isValidFormat(tokens[0]) || !isValidFormat(tokens[1])) {
-                    System.out.println("\u001B[31mInvalid input. Please use format: [a-h 1-8]\u001B[0m");
-                    continue;
+                    System.out.println("\u001B[31mInvalid input. Please use format: [a-h 1-8]\u001B[0m"); // Prints a feedback
+                    continue; // And ask for a new input
                 }
 
-                from = new Position(Piece.fromAlgebraic(tokens[0]).row(), Piece.fromAlgebraic(tokens[0]).column());
-                to = new Position(Piece.fromAlgebraic(tokens[1]).row(), Piece.fromAlgebraic(tokens[1]).column());
+                // Gets the from and to position from the input
+                Position from = new Position(Piece.fromAlgebraic(tokens[0]).row(), Piece.fromAlgebraic(tokens[0]).column());
+                Position to = new Position(Piece.fromAlgebraic(tokens[1]).row(), Piece.fromAlgebraic(tokens[1]).column());
+                move = new Move(from, to); // Set move to user chosen move
             }
 
-            boolean success = movePiece(new Move(from, to));
+            // If the move failed, prints a feedback
+            boolean success = movePiece(move);
             if (!success) System.out.println("\u001B[31mInvalid move. Try again.\u001B[0m");
 
+            // After the move handle the game state
             handleGameState(checkGameState());
         }
 
@@ -151,6 +155,7 @@ public class GameImpl implements Game {
         start();
     }
 
+    // Returns true if the input string matches the algebraic chess notation
     private static boolean isValidFormat(String input) {
         return input.matches("^[a-h][1-8]$");
     }
