@@ -1,10 +1,7 @@
 package game;
 
-import board.Position;
 import pieces.Piece;
 import players.Player;
-
-import java.util.List;
 
 public interface Game {
 
@@ -21,6 +18,13 @@ public interface Game {
     boolean movePiece(Move move);
 
     /**
+     * Undoes the precedent movement of the piece.
+     * @param piece the piece
+     * @param move the movement performed by the piece
+     */
+    void undoMove(Piece piece, Move move);
+
+    /**
      * Switches the turn to the next player.
      */
     void switchPlayer();
@@ -30,13 +34,6 @@ public interface Game {
      * @return the current Player.
      */
     Player getCurrentPlayer();
-
-    /**
-     *
-     * @param from the initial position
-     * @return a list of Strings containing all the possibles moves for the given Piece in the provided position.
-     */
-    List<String> getUnfilteredPossibleMoves(Position from);
 
     /**
      * Starts main game loop for chess match.
@@ -58,11 +55,4 @@ public interface Game {
      * Prints a welcome message when the program starts.
      */
     void printWelcomeMessage();
-
-    /**
-     * Undoes the precedent movement of the piece.
-     * @param piece the piece
-     * @param move the movement performed by the piece
-     */
-    void undoMove(Piece piece, Move move);
 }

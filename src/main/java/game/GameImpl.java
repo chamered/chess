@@ -9,16 +9,13 @@ import players.BotPlayer;
 import players.HumanPlayer;
 import players.Player;
 
-import java.util.Collections;
-import java.util.List;
-
 public class GameImpl implements Game {
     private BoardImpl board;
     private Player whitePlayer;
     private Player blackPlayer;
     private Color currentTurn;
     private GameState gameState;
-    private static boolean running = true;
+    private static boolean running;
 
     // Constructor
     public GameImpl() {
@@ -29,6 +26,8 @@ public class GameImpl implements Game {
     @Override
     public void start() {
         printWelcomeMessage();
+        board = new BoardImpl();
+        currentTurn = Color.WHITE;
         running = true;
         String mode = InputHandler.selectMode();
 
@@ -91,6 +90,12 @@ public class GameImpl implements Game {
     }
 
     @Override
+    public void undoMove(Piece piece, Move move){
+        board.setPieceAt(move.to(), null);
+        board.setPieceAt(move.from(), piece);
+    }
+
+    @Override
     public void switchPlayer() {
         currentTurn = (currentTurn == Color.WHITE) ? Color.BLACK : Color.WHITE;
     }
@@ -98,18 +103,6 @@ public class GameImpl implements Game {
     @Override
     public Player getCurrentPlayer() {
         return whitePlayer.getColor() == currentTurn ? whitePlayer : blackPlayer;
-    }
-
-    @Override
-    public List<String> getUnfilteredPossibleMoves(Position from) {
-        Piece piece = board.getPieceAt(from);
-
-        if (piece == null) {
-            System.out.println("No piece at given position.");
-            return Collections.emptyList();
-        }
-
-        return piece.generatePossibleMoves(board, from);
     }
 
     @Override
@@ -130,8 +123,9 @@ public class GameImpl implements Game {
                 System.out.println("Enter your move. [e2 e4]:");
                 System.out.print("> ");
                 String input = InputHandler.readLine().toLowerCase();
+                String finalInput = input.substring(0, 2) + " " + input.substring(2);
 
-                String[] tokens = input.split("\\s+"); // Split the input by the white spaces
+                String[] tokens = finalInput.split("\\s+"); // Split the input by the white spaces
                 if (input.equals("restart")) break;
                 else if (tokens.length != 2) {
                     System.out.println("\u001B[31mInvalid input. Please use format: e2 e4\u001B[0m");
@@ -142,18 +136,15 @@ public class GameImpl implements Game {
                 to = new Position(Piece.fromAlgebraic(tokens[1]).row(), Piece.fromAlgebraic(tokens[1]).column());
             }
 
-            try {
-                boolean success = movePiece(new Move(from, to));
-                if (!success) {
-                    System.out.println("\u001B[31mInvalid move. Try again.\u001B[0m");
-                }
-                handleGameState(checkGameState());
-            } catch (IllegalArgumentException e) {
-                System.out.println("Invalid coordinates. Please use format: e2 e4");
-            }
+            boolean success = movePiece(new Move(from, to));
+            if (!success) System.out.println("\u001B[31mInvalid move. Try again.\u001B[0m");
+
+            handleGameState(checkGameState());
         }
 
-        System.out.println("Game ended. Starting a new game...");
+        // Resets to start a new game
+        board = new BoardImpl();
+        currentTurn = Color.WHITE;
         start();
     }
 
@@ -197,8 +188,12 @@ public class GameImpl implements Game {
         );
     }
 
+    /**
+     * Ends the current game and start a new one.
+     */
     public static void restartGame() {
         running = false;
+        System.out.println("\u001B[35mGame ended.\u001B[0m Starting a new game...\n");
     }
 
     /**
@@ -207,11 +202,5 @@ public class GameImpl implements Game {
     public static void exitGame() {
         System.out.println("\u001B[35mGoodbye! Even the pieces need rest.\u001B[0m");
         System.exit(0);
-    }
-
-    @Override
-    public void undoMove(Piece piece, Move move){
-        board.setPieceAt(move.to(), null);
-        board.setPieceAt(move.from(), piece);
     }
 }
