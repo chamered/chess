@@ -120,15 +120,18 @@ public class GameImpl implements Game {
                 from = new Position(move.from().row(), move.from().column());
                 to = new Position(move.to().row(), move.to().column());
             } else {
-                System.out.println("Enter your move. [e2 e4]:");
+                System.out.println("Enter your move. [a-h 1-8]:");
                 System.out.print("> ");
                 String input = InputHandler.readLine().toLowerCase();
-                String finalInput = input.substring(0, 2) + " " + input.substring(2);
 
-                String[] tokens = finalInput.split("\\s+"); // Split the input by the white spaces
                 if (input.equals("restart")) break;
-                else if (tokens.length != 2) {
-                    System.out.println("\u001B[31mInvalid input. Please use format: e2 e4\u001B[0m");
+
+                if (input.length() == 4) input = input.substring(0, 2) + " " + input.substring(2);
+
+                String[] tokens = input.split("\\s+"); // Split the input by the white spaces
+
+                if (tokens.length != 2 || !isValidFormat(tokens[0]) || !isValidFormat(tokens[1])) {
+                    System.out.println("\u001B[31mInvalid input. Please use format: [a-h 1-8]\u001B[0m");
                     continue;
                 }
 
@@ -146,6 +149,10 @@ public class GameImpl implements Game {
         board = new BoardImpl();
         currentTurn = Color.WHITE;
         start();
+    }
+
+    private static boolean isValidFormat(String input) {
+        return input.matches("^[a-h][1-8]$");
     }
 
     @Override
