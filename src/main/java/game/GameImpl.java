@@ -10,6 +10,7 @@ import players.HumanPlayer;
 import players.Player;
 
 import java.util.Optional;
+import java.util.Scanner;
 
 public class GameImpl implements Game {
     private BoardImpl board;
@@ -197,17 +198,26 @@ public class GameImpl implements Game {
                 break;
             case CHECKMATE:
                 System.out.println("\u001B[31mCHECKMATE!\u001B[0m Game over." + getCurrentPlayer().getName() + " wins!");
-                exitGame();
+                endGame();
                 break;
             case STALEMATE:
                 System.out.println("\u001B[34mSTALEMATE!\u001B[0m The game ends in a draw. No legal move left.");
-                exitGame();
+                endGame();
                 break;
             case DRAW:
                 System.out.println("\u001B[36mDRAW!\u001B[0m 50 moves without pawn movement or capture. It’s a draw!");
-                exitGame();
+                endGame();
                 break;
         }
+    }
+
+    // Handles the end game
+    private void endGame() {
+        System.out.print("Do you want to start a new game [y/n]? ");
+        String res = InputHandler.readLine();
+
+        if (res.equals("y")) restartGame();
+        else exitGame();
     }
 
     @Override
