@@ -1,4 +1,4 @@
-# 🨀 Chess
+# ♟️Chess
 ## 👥 Members
 - **Samuele Maltauro** ([@chamered](https://github.com/chamered))
 - **Nicholas Zappa** ([@JustVibing-JK](https://github.com/JustVibing-JK))
@@ -122,10 +122,10 @@ For this project in particular, the **minimax** algorithm was implemented to all
 >- `InputHandler::*`
 >- `BotPlayer::chooseMove`
 >- `HumanPlayer::*`
+>- `Color::*`
 >- `BoardTest::*`
 >- `PieceTest::*`
 >- `RulesEngineTest::*`
->- `Color::*`
 >  
 >**Nicholas Zappa** ([@JustVibing-JK](https://github.com/JustVibing-JK)) 
 >- `BotPlayer::getOpponentColor`
@@ -139,6 +139,8 @@ For this project in particular, the **minimax** algorithm was implemented to all
 >- `RulesEngine::isSquaredAttacked`
 >- `RulesEngine::isCheckmate`
 >- `RulesEngine::isStalemate`
+>- `Piece::copy`
+>- `Piece:eatOtherPiece`
 >
 >**Gupta Khushika** ([@Khushika05](https://github.com/Khushika05))
 >- `Piece::*`
@@ -148,7 +150,6 @@ For this project in particular, the **minimax** algorithm was implemented to all
 >- `King::*`
 >- `Knight::*`
 >- `Rook::*`
->- `BoardImpl::makeMove`
 >
 >**Kevin Trolese Joachin** ([@KJT0](https://github.com/KJT0))
 >- `Move::*`
