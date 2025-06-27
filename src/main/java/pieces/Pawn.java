@@ -44,7 +44,7 @@ public class Pawn extends Piece{
         int row = pos.row();
         int col = pos.column();
 
-        /* ------- forward 1 ------------------------------------------------ */
+        //forward 1
         Position oneStep = new Position(row + direction, col);
         if (isInsideBoard(oneStep) && b.getPieceAt(oneStep) == null) {
             maybeAddPromotion(moves, oneStep);
@@ -56,7 +56,7 @@ public class Pawn extends Piece{
             }
         }
 
-        /* ------- captures (x-left / x-right) ------------------------------ */
+        //captures (x-left / x-right)
         for (int dc : new int[]{-1, 1}) {
             Position diag = new Position(row + direction, col + dc);
             if (!isInsideBoard(diag)) continue;
@@ -64,19 +64,6 @@ public class Pawn extends Piece{
             Piece target = b.getPieceAt(diag);
             if (target != null && eatOtherPiece(target)) {
                 maybeAddPromotion(moves, diag);
-            }
-        }
-
-        /* ------- en-passant ---------------------------------------------- */
-        Move last = b.getLastMove();
-        if (last != null) {
-            Piece lastMoved = b.getPieceAt(last.to());
-            if (lastMoved instanceof Pawn && last.from().row() == row + 2 * direction
-                    && last.to().row() == row
-                    && Math.abs(last.to().column() - col) == 1) {
-                Position epSquare = new Position(row + direction,
-                        last.to().column());
-                moves.add(toAlgebraic(epSquare));
             }
         }
         return moves;

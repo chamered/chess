@@ -7,35 +7,17 @@ import board.BoardImpl;
 import board.Position;
 
 public class Rook extends Piece {
-    private boolean hasMoved= false;
-
-
 
     // Constructor: set rook value based on color
     public Rook(Color color) {
         super(color == Color.WHITE ? 50 : -50, 'R', color);
     }
 
-    public boolean hasMoved() {
-        return hasMoved;
-    }
-
-    public void setHasMoved(boolean moved) {
-        this.hasMoved = moved;
-    }
-
-
-
-
     @Override
     public Piece copy() {
-
         Rook copy = new Rook(this.color);
-        copy.setHasMoved(this.hasMoved);
         return copy;
     }
-
-
 
     /**
      * Check if this rook can capture the other piece.

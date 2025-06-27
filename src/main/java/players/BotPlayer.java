@@ -13,7 +13,7 @@ import java.util.List;
 public class BotPlayer extends Player implements Bot{
 
     private final int depth;
-    private static final int  REPETITION_PENALTY = 20; // discourage repetition
+    private static final int  REPETITION_PENALTY = 40; // discourage repetition
     private static final int  CHECK_BONUS = 25; // reward giving check
     private static final int CAPTURE_BONUS = 20;   // reward capturing piece
     private static final int  MATE_SCORE = 10_000;
