@@ -179,9 +179,6 @@ public class GameImpl implements Game {
             handleGameState(checkGameState());
         }
 
-        // Resets to start a new game
-        board = new BoardImpl();
-        currentTurn = Color.WHITE;
         start();
     }
 
