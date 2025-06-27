@@ -18,11 +18,10 @@ public interface Game {
     boolean movePiece(Move move);
 
     /**
-     * Undoes the precedent movement of the piece.
-     * @param piece the piece
-     * @param move the movement performed by the piece
+     * Undoes the precedent movement of the piece if possible.
+     * @return true if the undo happened successfully, false otherwise
      */
-    void undoMove(Piece piece, Move move);
+    boolean undoMove();
 
     /**
      * Switches the turn to the next player.

@@ -102,9 +102,19 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public void undoMove(Piece piece, Move move){
-        board.setPieceAt(move.to(), null);
-        board.setPieceAt(move.from(), piece);
+    public boolean undoMove(){
+        if (lastTwoMoves[0] == null || lastTwoMoves[1] == null) return false;
+
+        board.setPieceAt(lastTwoMoves[0].from(), board.getPieceAt(lastTwoMoves[0].to()));
+        board.setPieceAt(lastTwoMoves[0].to(), null);
+
+        board.setPieceAt(lastTwoMoves[1].from(), board.getPieceAt(lastTwoMoves[1].to()));
+        board.setPieceAt(lastTwoMoves[1].to(), null);
+
+        lastTwoMoves[0] = null;
+        lastTwoMoves[1] = null;
+
+        return true;
     }
 
     @Override
@@ -136,10 +146,8 @@ public class GameImpl implements Game {
                 if (input.equals("restart")) break;
 
                 if (input.equals("undo")) {
-                    if (lastTwoMoves[0] != null && lastTwoMoves[1] != null) {
-                        undoMove(board.getPieceAt(lastTwoMoves[0].to()), lastTwoMoves[0]);
-                        undoMove(board.getPieceAt(lastTwoMoves[1].to()), lastTwoMoves[1]);
-                    } else System.out.println("\u001B[31mYou can't undo at the first move.\u001B[0m");
+                    boolean success = undoMove();
+                    if (!success) System.out.println("\u001B[31mYou can not undo now.\u001B[0m");
                     continue;
                 }
 
@@ -214,7 +222,7 @@ public class GameImpl implements Game {
                 To make a move, type coordinates in the format: [a-h 1-8]
                 (e.g., 'e2 e4')
                 
-                Type 'undo' during a match to undo your move.
+                Type 'undo' during a match to undo your latest move.
                 Type 'restart' during a match to start a new game.
                 Type 'exit' at any time to quit the program.
                 Let the game begin!
