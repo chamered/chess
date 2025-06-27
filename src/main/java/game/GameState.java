@@ -5,6 +5,7 @@ public enum GameState {
     CHECK,
     CHECKMATE,
     STALEMATE,
-    DRAW,
+    DRAW_BY_50_MOVES,
+    DRAW_BY_THREE_FOLD,
     RESIGNED
 }

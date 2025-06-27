@@ -8,12 +8,13 @@
 > **Note:** Nicholas has made some changes using his second account 
 > [**NoobDev-Game**](https://github.com/NoobDev-Game), every contribution by such profile it's still his.
 # 📥 Installation 
->The installation and execution flow is as follows:
->1. Clone the repo using either:
->>**HTTPS:** `git clone https://github.com/chamered/chess.git`
->>**SSH:** `git clone git@github.com:chamered/chess.git`
->2. Compile the project via the `mvn compile` prompt 
->3. Execute the program via the `mvn exec:java -Dexec.mainClass="main.Main""`
+The installation and execution flow is as follows:
+1. Clone the repository using either:
+    >**HTTPS:** `git clone https://github.com/chamered/chess.git`
+    > 
+    >**SSH:** `git clone git@github.com:chamered/chess.git`
+2. Compile the project via the `mvn compile` command 
+3. Execute the program via the `mvn exec:java -Dexec.mainClass="main.Main""` command
 
 ---
 # 🧭 Overview 

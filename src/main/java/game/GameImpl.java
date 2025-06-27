@@ -67,8 +67,8 @@ public class GameImpl implements Game {
         if(RulesEngine.isCheckmate(board, Color.BLACK) || RulesEngine.isCheckmate(board, Color.WHITE)) gameState = GameState.CHECKMATE;
         else if(RulesEngine.isStalemate(board, Color.BLACK) || RulesEngine.isStalemate(board, Color.WHITE)) gameState = GameState.STALEMATE;
         else if(RulesEngine.isKingInCheck(board, Color.BLACK) || RulesEngine.isKingInCheck(board, Color.WHITE)) gameState = GameState.CHECK;
-        else if(RulesEngine.isThreeFoldRepetition(board)) gameState = GameState.DRAW;
-        else if(RulesEngine.isFiftyMoveRule(whitePlayer) || RulesEngine.isFiftyMoveRule(blackPlayer)) gameState = GameState.DRAW;
+        else if(RulesEngine.isThreeFoldRepetition(board)) gameState = GameState.DRAW_BY_THREE_FOLD;
+        else if(RulesEngine.isFiftyMoveRule(whitePlayer) || RulesEngine.isFiftyMoveRule(blackPlayer)) gameState = GameState.DRAW_BY_50_MOVES;
         else gameState = GameState.ACTIVE;
 
         return gameState;
@@ -204,8 +204,12 @@ public class GameImpl implements Game {
                 System.out.println("\u001B[34mSTALEMATE!\u001B[0m The game ends in a draw. No legal move left.");
                 endGame();
                 break;
-            case DRAW:
-                System.out.println("\u001B[36mDRAW!\u001B[0m 50 moves without pawn movement or capture. It’s a draw!");
+            case DRAW_BY_50_MOVES:
+                System.out.println("\u001B[36mDRAW!\u001B[0m 50 moves without pawn movement or capture. Draw by 50 moves rule.");
+                endGame();
+                break;
+            case DRAW_BY_THREE_FOLD:
+                System.out.println("\u001B[36mDRAW!\u001B[0m The same position has occurred three times. Draw by threefold repetition.");
                 endGame();
                 break;
         }
