@@ -24,7 +24,7 @@ which is identified by writing e.g `e4 e5`.
 If the input provided is both not valid and not allowed, you will receive **feedback**. 
 You are provided with useful commands you can use aside from playing:
 - `restart` - allows the user to restart the game directly
-- `exit` - exits the game 
+- `exit` - exits the program 
 # 🛠 Structure of the Project 
 ```plaintext 
 .
@@ -119,7 +119,7 @@ For this project in particular, the **minimax** algorithm was implemented to all
 >- `GameImpl::*`
 >- `Board::*`
 >- `BoardImpl::*`
->- `Input Handler::*`
+>- `InputHandler::*`
 >- `BotPlayer::chooseMove`
 >- `HumanPlayer::*`
 >- `BoardTest::*`
@@ -131,7 +131,14 @@ For this project in particular, the **minimax** algorithm was implemented to all
 >- `BotPlayer::getOpponentColor`
 >- `BotPlayer::minimax`
 >- `BotPlayer::evalutateBoard`
->- `GameState::*`  
+>- `GameState::*`
+>- `RulesEngine::isMoveLegal`
+>- `RulesEngine::wouldCauseSelfCheck`
+>- `RulesEngine::getAllLegalMoves`
+>- `RulesEngine::isKingInCheck`
+>- `RulesEngine::isSquaredAttacked`
+>- `RulesEngine::isCheckmate`
+>- `RulesEngine::isStalemate`
 >
 >**Gupta Khushika** ([@Khushika05](https://github.com/Khushika05))
 >- `Piece::*`
@@ -140,7 +147,8 @@ For this project in particular, the **minimax** algorithm was implemented to all
 >- `Queen::*`
 >- `King::*`
 >- `Knight::*`
->- `Rook::*`  
+>- `Rook::*`
+>- `BoardImpl::makeMove`
 >
 >**Kevin Trolese Joachin** ([@KJT0](https://github.com/KJT0))
 >- `Move::*`
@@ -166,7 +174,7 @@ basic project template.
 ---
 # 🏆 Individual Challenges 
 ## Samuele  
->
+> The biggest challenge for me in this project was handling user input properly and displaying the right feedback messages at the right time.
 ## Nicholas
 >
 ## Khushika
