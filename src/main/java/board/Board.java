@@ -59,12 +59,6 @@ public interface Board {
     BoardImpl copy();
 
     /**
-     * Returns the last move made.
-     * @return the last move
-     */
-    Move getLastMove();
-
-    /**
      * Implements the zobrist hash algorithm
      * @return a String representation of the coordinates of every piece in the board
      */

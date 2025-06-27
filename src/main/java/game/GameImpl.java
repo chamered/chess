@@ -81,8 +81,6 @@ public class GameImpl implements Game {
         Optional<Piece> possibleEatenPiece = Optional.ofNullable(board.getPieceAt(move.to()));
         board.setPieceAt(move.to(), piece);
 
-
-
         if (piece instanceof Pawn) {
             RulesEngine.resetMoveHistory(piece.getColor());
         }

@@ -9,7 +9,6 @@ import java.util.Map;
 
 public class BoardImpl implements Board {
     private Piece[][] board;
-    private Move lastMove;
     private Map<String, Integer> positionHistory = new HashMap<>();
 
     // First constructor
@@ -131,9 +130,6 @@ public class BoardImpl implements Board {
 
         return new BoardImpl(boardCopy);
     }
-
-    @Override
-    public Move getLastMove() { return lastMove; }
 
     @Override
     public String zobristKey(){
