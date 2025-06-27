@@ -23,6 +23,7 @@ which is identified by writing e.g `e4 e5`.
 
 If the input provided is both not valid and not allowed, you will receive **feedback**. 
 You are provided with useful commands you can use aside from playing:
+- `undo` - allows the user to undo the last move
 - `restart` - allows the user to restart the game directly
 - `exit` - exits the program 
 # 🛠 Structure of the Project 

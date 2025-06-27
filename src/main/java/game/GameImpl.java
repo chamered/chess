@@ -16,6 +16,7 @@ public class GameImpl implements Game {
     private Player whitePlayer;
     private Player blackPlayer;
     private Color currentTurn;
+    private Move[] lastTwoMoves;
     private GameState gameState;
     private static boolean running;
 
@@ -23,6 +24,7 @@ public class GameImpl implements Game {
     public GameImpl() {
         board = new BoardImpl();
         currentTurn = Color.WHITE;
+        lastTwoMoves = new Move[2];
     }
 
     @Override
@@ -30,6 +32,7 @@ public class GameImpl implements Game {
         printWelcomeMessage();
         board = new BoardImpl();
         currentTurn = Color.WHITE;
+        lastTwoMoves = new Move[2];
         running = true;
         String mode = InputHandler.selectMode();
 
@@ -80,6 +83,8 @@ public class GameImpl implements Game {
         board.setPieceAt(move.from(), null);
         Optional<Piece> possibleEatenPiece = Optional.ofNullable(board.getPieceAt(move.to()));
         board.setPieceAt(move.to(), piece);
+        lastTwoMoves[0] = lastTwoMoves[1];
+        lastTwoMoves[1] = move;
 
         if (piece instanceof Pawn) {
             RulesEngine.resetMoveHistory(piece.getColor());
@@ -129,6 +134,14 @@ public class GameImpl implements Game {
 
                 // If it is 'restart', exit the loop
                 if (input.equals("restart")) break;
+
+                if (input.equals("undo")) {
+                    if (lastTwoMoves[0] != null && lastTwoMoves[1] != null) {
+                        undoMove(board.getPieceAt(lastTwoMoves[0].to()), lastTwoMoves[0]);
+                        undoMove(board.getPieceAt(lastTwoMoves[1].to()), lastTwoMoves[1]);
+                    } else System.out.println("\u001B[31mYou can't undo at the first move.\u001B[0m");
+                    continue;
+                }
 
                 // If the input length is 4, adds a space in between (e.g., e2e4 -> e2 e4)
                 if (input.length() == 4) input = input.substring(0, 2) + " " + input.substring(2);
@@ -198,10 +211,12 @@ public class GameImpl implements Game {
                 Welcome to the game of Chess!
                 
                 White always starts.
-                To make a move, type coordinates in the format: e2 e4
+                To make a move, type coordinates in the format: [a-h 1-8]
+                (e.g., 'e2 e4')
                 
-                Type 'exit' at any time to quit the program.
+                Type 'undo' during a match to undo your move.
                 Type 'restart' during a match to start a new game.
+                Type 'exit' at any time to quit the program.
                 Let the game begin!
                 """
         );

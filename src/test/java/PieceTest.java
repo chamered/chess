@@ -1,9 +1,7 @@
 import board.BoardImpl;
 import board.Position;
-import game.Move;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import pieces.Bishop;
 import pieces.Color;
 import pieces.Pawn;
 import pieces.Piece;
